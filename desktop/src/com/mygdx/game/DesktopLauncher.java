@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.mygdx.engine.utils.GameContainer;
 import com.mygdx.game.MyGame;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
@@ -10,6 +11,7 @@ public class DesktopLauncher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
         config.setTitle("INF1009-P1-6");
-        new Lwjgl3Application(new MyGame(), config);
+        GameContainer container = new GameContainer();
+        new Lwjgl3Application(new MyGame(container), config);
     }
 }
