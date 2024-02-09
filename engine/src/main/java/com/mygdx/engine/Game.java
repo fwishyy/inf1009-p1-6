@@ -2,23 +2,25 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.ApplicationListener;
 
+import com.badlogic.gdx.Gdx;
+import com.mygdx.engine.input.InputManager;
 import com.mygdx.engine.scenes.SceneManager;
 import com.mygdx.engine.utils.GameContainer;
 
 // generic instance of a game
 public class Game implements ApplicationListener {
 
+    protected GameContainer container;
     protected SceneManager sceneManager;
-
-    // TODO: maybe rely on an injector to place variables here
-    // Container here contains all the dependencies that the game needs
-    public Game(GameContainer container) {
-        this.sceneManager = container.getSceneManager();
-    }
+    protected InputManager inputManager;
 
     @Override
     public void create() {
-
+        // we create game dependencies here because input relies on LibGDX to be initialised
+        // from here on we inject GameContainer to use the same management classes
+        container = new GameContainer(this);
+        sceneManager = container.getSceneManager();
+        inputManager = container.getInputManager();
     }
 
     @Override
