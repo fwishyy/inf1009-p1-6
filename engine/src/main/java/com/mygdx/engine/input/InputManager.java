@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputManager extends InputAdapter {
+	// InputMultiplexer is used to handle multiple input processors
     private final InputMultiplexer multiplexer;
 
     public InputManager(Input input) {
@@ -29,14 +30,31 @@ public class InputManager extends InputAdapter {
     // TODO: add keyboard support
     @Override
     public boolean keyDown(int keyCode) {
-        System.out.println("Key pressed");
-        return true;
+    	// Method is called when a key is pressed
+    	if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
+    		// Check if special keys are being pressed
+    		System.out.println("Special keys being pressed");
+            return false;
+    	} else {
+            KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
+    		System.out.println("Key Pressed");
+    		return true;
+    	}
+        
     }
 
     @Override
     public boolean keyUp(int keyCode) {
-        System.out.println("Key released");
-        return false;
+    	// Method is called when a key is released
+    	if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
+    		// Check if special keys are being pressed
+    		System.out.println("Special keys being released");
+            return false;
+    	} else {
+            KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
+    		System.out.println("Key released");
+    		return true;
+    	}
     }
 
     // TODO: add mouse support
