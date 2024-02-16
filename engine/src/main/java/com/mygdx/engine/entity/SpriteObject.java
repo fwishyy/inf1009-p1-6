@@ -1,3 +1,7 @@
+/**
+ * CURRENTLY NOT BEING USED. 16 February 2024 0311H
+ */
+
 package com.mygdx.engine.entity;
 
 import com.badlogic.gdx.Gdx;
