@@ -17,7 +17,7 @@ public class GameScene extends Scene {
         super.show();
         batch = new SpriteBatch();
         em = new EntityManager();
-        em.createEntity(1, Player.class, "badlogic.jpg", 300, 300, 100, "player");
+        em.createEntity(1, Player.class, "badlogic.jpg", 100, 100, 100, "player");
     }
 
     @Override
