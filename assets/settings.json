@@ -1,0 +1,20 @@
+{
+  "controls": [
+    {
+      "action": "MOVE_UP",
+      "key": "W"
+    },
+    {
+      "action": "MOVE_DOWN",
+      "key": "S"
+    },
+    {
+      "action": "MOVE_LEFT",
+      "key": "A"
+    },
+    {
+      "action": "MOVE_RIGHT",
+      "key": "D"
+    }
+  ]
+}

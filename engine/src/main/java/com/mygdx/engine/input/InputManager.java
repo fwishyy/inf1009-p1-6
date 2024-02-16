@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputManager extends InputAdapter {
-	// InputMultiplexer is used to handle multiple input processors
+    // InputMultiplexer is used to handle multiple input processors
     private final InputMultiplexer multiplexer;
 
     public InputManager(Input input) {
@@ -25,39 +25,40 @@ public class InputManager extends InputAdapter {
 
     public void processAllEvents() {
         PointerEvent.processPointerEvents();
+        KeyEvent.processKeyEvents();
     }
 
     // TODO: add keyboard support
     @Override
     public boolean keyDown(int keyCode) {
-    	// Method is called when a key is pressed
-    	if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
-    		// Check if special keys are being pressed
-    		System.out.println("Special keys being pressed");
+        // Method is called when a key is pressed
+        if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
+            // Check if special keys are being pressed
+            System.out.println("Special keys being pressed");
             return false;
-    	} else {
+        } else {
             KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
-    		System.out.println("Key Pressed");
-    		return true;
-    	}
-        
+            System.out.println("Key Pressed");
+            return true;
+        }
+
     }
 
     @Override
     public boolean keyUp(int keyCode) {
-    	// Method is called when a key is released
-    	if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
-    		// Check if special keys are being pressed
-    		System.out.println("Special keys being released");
+        // Method is called when a key is released
+        if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
+            // Check if special keys are being pressed
+            System.out.println("Special keys being released");
             return false;
-    	} else {
+        } else {
             KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
-    		System.out.println("Key released");
-    		return true;
-    	}
+            System.out.println("Key released");
+            return true;
+        }
     }
 
-    // TODO: add mouse support
+    // TODO: add mouse click support
     // *************
     // *** Mouse ***
     // *************

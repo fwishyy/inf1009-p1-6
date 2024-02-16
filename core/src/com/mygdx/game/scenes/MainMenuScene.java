@@ -35,9 +35,10 @@ public class MainMenuScene extends Scene implements Listener<PointerEvent> {
         bitmapFont = new BitmapFont();
         buttonStyle.font = bitmapFont;
         buttonStyle.up = skin.getDrawable("button");
-        buttonStyle.down = skin.getDrawable("button");
+        buttonStyle.down = skin.getDrawable("button-emphasis");
+        buttonStyle.disabled = skin.getDrawable("button-emphasis");
         TextButton testButton = new TextButton("test", buttonStyle);
-        testButton.setPosition(100, 100);
+        testButton.setPosition(100, 150);
         stage.addActor(testButton);
     }
 
@@ -59,7 +60,8 @@ public class MainMenuScene extends Scene implements Listener<PointerEvent> {
         if (hitActor != null && hitActor.isTouchable() && hitActor instanceof Button) {
             if (e.getType() == PointerEvent.Type.HOVER) {
                 // TODO: handle hover events
-                System.out.println("Detected HOVER event");
+                Button hitButton = (Button) hitActor;
+                System.out.println("Found hover event");
             }
 
             // TODO: handle other mouse events

@@ -1,7 +1,8 @@
-package com.mygdx.engine.utils;
+package com.mygdx.engine.core;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.Game;
+import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.input.InputManager;
 import com.mygdx.engine.scenes.SceneManager;
 
@@ -11,12 +12,14 @@ public class GameContainer {
     private final Game parent;
     private final SceneManager sceneManager;
     private final InputManager inputManager;
+    private final PlayerControlManager playerControlManager;
 
     // Instantiate classes here so we can plug and play whenever we need
     public GameContainer(Game game) {
         parent = game;
         sceneManager = new SceneManager();
         inputManager = new InputManager(Gdx.input);
+        playerControlManager = new PlayerControlManager();
     }
 
     public Game getParent() {
@@ -29,5 +32,10 @@ public class GameContainer {
 
     public InputManager getInputManager() {
         return inputManager;
+    }
+
+    public PlayerControlManager getPlayerControlManager() {
+
+        return playerControlManager;
     }
 }

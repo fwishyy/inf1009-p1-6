@@ -29,7 +29,7 @@ public class PointerEvent {
     }
 
     // Static Members
-    private final static Signal<PointerEvent> pointerSignal = new Signal<PointerEvent>();
+    private final static Signal<PointerEvent> pointerSignal = new Signal<>();
 
     private static ArrayList<PointerEvent> pointerEvents = new ArrayList<>();
 
