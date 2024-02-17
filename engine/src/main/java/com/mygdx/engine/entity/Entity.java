@@ -95,7 +95,7 @@ public abstract class Entity {
 		return this.vector2.y;
 	}
 	
-	protected Vector2 getVector2() {
+	public Vector2 getVector2() {
 		return this.vector2;
 	}
 	
@@ -107,11 +107,11 @@ public abstract class Entity {
 		return this.height;
 	}
 	
-	protected String getType() {
+	public String getType() {
 		return this.type;
 	}
 	
-	protected float getSpeed() {
+	public float getSpeed() {
 		return this.speed;
 	}
 	
@@ -127,7 +127,7 @@ public abstract class Entity {
 		this.vector2.y = y;
 	}
 	
-	protected void setVector2(Vector2 vector2) {
+	public void setVector2(Vector2 vector2) {
 		this.vector2 = vector2;
 	}
 	

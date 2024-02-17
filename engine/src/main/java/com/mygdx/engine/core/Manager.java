@@ -4,8 +4,6 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.mygdx.engine.physics.CollisionEvent;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.engine.utils.Listener;
-import com.mygdx.engine.utils.Signal;
-import jdk.internal.event.Event;
 
 public abstract class Manager {
     // Holds all events that a manager is subscribed to

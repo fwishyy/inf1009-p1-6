@@ -1,73 +1,53 @@
 package com.mygdx.engine.behaviour;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityManager;
 
 public class BehaviourManager {
-	
-//	private List<Entity> entities = new ArrayList<Entity>();
-//	private List<Entity> monsters = new ArrayList<Entity>();
-//	private Entity player = null;
-//	private List<Entity> environments = new ArrayList<Entity>();
-//	
-//	public BehaviourManager(List<Entity> entities) {
-//		this.entities = entities;
-//		setBehaviour(entities);
-//	}
-//	
-//	public BehaviourManager(Entity entity) {
-//		setBehaviour(entity, entity.getType());
-//	}
-//	
-//	public void updateMovement() {
-//		monsterMovement1();
-//	}
-//	
-//	public void setBehaviour(Entity entity, String type) {
-//		
-//		this.entities.add(entity);
-//		
-//		for(Entity e: this.entities) {
-//			switch(e.getType()) {
-//				case "player":
-//					this.player = e;
-//				case "monster":
-//					this.monsters.add(e);
-//				default:
-//					this.environments.add(e);
-//			}
-//		}
-//	}
-//	
-//	public void setBehaviour(List<Entity> entities) {
-//		
-//		for(Entity e: entities) {
-//			switch(e.getType()) {
-//				case "player":
-//					this.player = e;
-//				case "monster":
-//					this.monsters.add(e);
-//				default:
-//					this.environments.add(e);
-//			}
-//		}
-//	}
-//	
-//	private void monsterMovement1() {
-//		for(Entity monster: monsters) {
-//			Vector2 v2_monster = monster.getVector2();
-//			Vector2 v2_player = this.player.getVector2();
-//			Vector2 dir = new Vector2();
-//			dir.x = v2_monster.x - v2_player.x;
-//			dir.y = v2_monster.y - v2_player.y;
-//			dir = dir.nor();
-//			monster.getVector2().sub(dir.x * monster.getSpeed() * Gdx.graphics.getDeltaTime(), dir.y * monster.getSpeed() * Gdx.graphics.getDeltaTime());
-//			
-//			
-//		}
-//	}
+    private EntityManager entityManager;
+    // a mapping from entities to their assigned behaviours
+    // this allows each entity to have a specific behaviour
+    private Map<Entity, Behaviour> behaviours;
+
+    /**
+     * constructs a BehaviourManager with a reference to an EntityManager
+     * 
+     * @param entityManager -- the EntityManager that this BehaviourManager should use to access entities
+     */
+    public BehaviourManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        // initialize the mapping of entities to behaviours
+        behaviours = new HashMap<>();
+    }
+
+    /**
+     * assigns a behaviour to a specific entity
+     * 
+     * @param entity -- the entity to which the behaviour should be assigned
+     * @param behaviour -- the behaviour to assign to the entity
+     */
+    public void addBehaviour(Entity entity, Behaviour behaviour) {
+        // put the entity and its corresponding behaviour into the map
+        behaviours.put(entity, behaviour);
+    }
+
+    /**
+     * updates the behaviour of all entities that have been assigned a behaviour
+     * this should be called every frame to ensure that entity behaviours are updated based on game logic
+     * 
+     * @param deltaTime -- the time in seconds since the last update, used for time-based calculations
+     */
+    public void update(float deltaTime) {
+        // iterate over all entities managed by the EntityManager
+        for (Entity entity : entityManager.getEntities()) {
+            // check if the current entity has an assigned behaviour
+            if (behaviours.containsKey(entity)) {
+                // if so, update the entity's behaviour, passing in the entity and the delta time
+                behaviours.get(entity).update(entity, deltaTime);
+            }
+        }
+    }
 }
