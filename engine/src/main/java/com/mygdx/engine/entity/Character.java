@@ -28,30 +28,42 @@ public abstract class Character extends Entity implements IDamageable, IMoveable
 	@Override
 	public void moveLeft() {
 		float move = this.getX() - this.getSpeed() * Gdx.graphics.getDeltaTime();
+		sprite.setX(move);
 		this.setX(move);
 	}
 	
 	@Override
 	public void moveRight() {
 		float move = this.getX() + this.getSpeed() * Gdx.graphics.getDeltaTime();
+		sprite.setX(move);
 		this.setX(move);
 	}
 	
 	@Override
 	public void moveUp() {
 		float move = this.getY() + this.getSpeed() * Gdx.graphics.getDeltaTime();
-		this.setX(move);
+		sprite.setY(move);
+		this.setY(move);
 	}
 	
 	@Override
 	public void moveDown() {
 		float move = this.getY() - this.getSpeed() * Gdx.graphics.getDeltaTime();
-		this.setX(move);
+		sprite.setY(move);
+		this.setY(move);
 	}
 	
 	@Override
 	protected void draw(SpriteBatch batch) {
 		sprite.draw(batch);
 	}
-
+	
+	@Override
+	protected void update() {
+		sprite.setX(this.getX());
+		sprite.setY(this.getY());
+//		System.out.println(this.getEntity().getType() + ": " + this.getX() + "," + this.getY());
+	}
+	
+	
 }

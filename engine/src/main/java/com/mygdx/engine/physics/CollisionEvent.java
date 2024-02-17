@@ -12,6 +12,9 @@ public class CollisionEvent {
 
     // Default Constructor
     public CollisionEvent(Entity entityA, Entity entityB) {
+    	this.entityA = entityA;
+    	this.entityB = entityB;
+    	
     }
 
     // Signal Related Stuff
@@ -19,7 +22,7 @@ public class CollisionEvent {
     private final static ArrayList<CollisionEvent> collisionEvents = new ArrayList<>();
 
     public static void addCollisionListener(Listener<CollisionEvent> listener) {
-        collisionEventSignal.add(listener);
+    		collisionEventSignal.add(listener);
     }
 
     public static void removeCollisionListener(Listener<CollisionEvent> listener) {
@@ -27,6 +30,7 @@ public class CollisionEvent {
     }
 
     public static synchronized void addCollisionEvent(CollisionEvent event) {
+    	collisionEvents.add(event);
         collisionEventSignal.dispatch(event);
     }
 
@@ -40,10 +44,24 @@ public class CollisionEvent {
 
     // Getters
     public Entity getEntityA() {
-        return entityA;
+        return this.entityA;
     }
 
     public Entity getEntityB() {
-        return entityB;
+        return this.entityB;
+    }
+    
+    public static boolean checkRedundant(Entity A, Entity B) {
+    	
+    	for(CollisionEvent e: collisionEvents) {
+    		if(A == e.getEntityA() && B == e.getEntityB())
+    			continue;
+    		if(A == e.getEntityB() && B == e.getEntityA()) {
+    			System.out.println("Redundancy detected");
+    			return true;
+    		}
+    			
+    	}
+    	return false;
     }
 }

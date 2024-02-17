@@ -13,6 +13,7 @@ public abstract class Entity {
 	private float height;
 	private float speed;
 	private String type;
+	private Collider collider;
 	
 	protected Entity() {
 		this.texture = null;
@@ -21,6 +22,7 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = "";
+		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(String texture, float x, float y, float speed, String type) {
@@ -30,6 +32,7 @@ public abstract class Entity {
 		this.height = this.texture.getHeight();
 		this.speed = speed;
 		this.type = type;
+		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y, float speed, String type) {
@@ -39,6 +42,7 @@ public abstract class Entity {
 		this.height = this.texture.getHeight();
 		this.speed = speed;
 		this.type = type;
+		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y, String type) {
@@ -48,6 +52,7 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = type;
+		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y, float speed) {
@@ -57,6 +62,7 @@ public abstract class Entity {
 		this.height = this.texture.getHeight();
 		this.speed = speed;
 		this.type = "";
+		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y) {
@@ -66,6 +72,7 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = "";
+		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(String texture) {
@@ -75,9 +82,12 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = "";
+		this.collider = new Collider(this.getEntity());
 	}
 	
-	protected abstract void move();
+	protected abstract void update();
+	
+	public void collide(Collider other) {}
 	
 	protected void draw(SpriteBatch batch) {
 		batch.draw(this.texture, this.vector2.x, this.vector2.y);
@@ -107,7 +117,7 @@ public abstract class Entity {
 		return this.height;
 	}
 	
-	protected String getType() {
+	public String getType() {
 		return this.type;
 	}
 	
@@ -115,7 +125,15 @@ public abstract class Entity {
 		return this.speed;
 	}
 	
-	public void setTexture(String texture) {
+	public Collider getCollider() {
+		return this.collider;
+	}
+	
+	protected Entity getEntity() {
+		return this;
+	}
+	
+	protected void setTexture(String texture) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 	}
 	
@@ -127,7 +145,7 @@ public abstract class Entity {
 		this.vector2.y = y;
 	}
 	
-	protected void setVector2(Vector2 vector2) {
+	public void setVector2(Vector2 vector2) {
 		this.vector2 = vector2;
 	}
 	
@@ -151,4 +169,6 @@ public abstract class Entity {
 	protected void setSpeed(float speed) {
 		this.speed = speed;
 	}
+	
+	
 }

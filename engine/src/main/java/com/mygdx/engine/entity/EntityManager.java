@@ -158,9 +158,7 @@ public class EntityManager {
 	 * @param entity -- The entity object to remove from the manager
 	 */
 	public void removeEntity(Entity entity) {
-		for(int i=0; i<entities.size(); i++)
-			if(entity == entities.get(i))
-				entities.remove(i);
+		entities.remove(entity);
 	}
 	
 	/**
@@ -228,6 +226,19 @@ public class EntityManager {
 	}
 	
 	/**
+	 * Returns first instance of specified entity type
+	 * @param type -- entity type (E.g "monster")
+	 * @return Entity
+	 */
+	public Entity getEntity(String type) {
+		for(Entity e: this.entities)
+			if(e.getType() == type)
+				return e;
+		
+		return null;
+	}
+	
+	/**
 	 * Draws all entities in the manager
 	 * @param batch -- SpriteBatch object
 	 */
@@ -262,10 +273,14 @@ public class EntityManager {
 	}
 	
 	/**
-	 * Move all entities
+	 * Calls all update functionality of all subclasses
 	 */
-	public void move() {
+	public void update() {
 		for(Entity entity: entities)
-			entity.move();
+		{
+			entity.update();
+			entity.getCollider().update();
+			
+		}
 	}
 }
