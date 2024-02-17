@@ -87,7 +87,7 @@ public abstract class Entity {
 	
 	protected abstract void update();
 	
-	public void collide(Collider other) {}
+	public abstract void collide(Collider other);
 	
 	protected void draw(SpriteBatch batch) {
 		batch.draw(this.texture, this.vector2.x, this.vector2.y);

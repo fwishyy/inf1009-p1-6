@@ -31,8 +31,8 @@ public class Player extends Character{
 	
 	@Override
 	public void collide(Collider other) {
-		if(other.getEntity().getType() == "player1") {
-			this.setVector2(new Vector2(400,400));
+		if(other.getEntity().getType() == "player2") {
+			this.setVector2(new Vector2(0,0));
 		}
 	}
 }
