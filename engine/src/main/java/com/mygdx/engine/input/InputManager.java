@@ -34,11 +34,9 @@ public class InputManager extends InputAdapter {
         // Method is called when a key is pressed
         if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
             // Check if special keys are being pressed
-            System.out.println("Special keys being pressed");
             return false;
         } else {
             KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
-            System.out.println("Key Pressed");
             return true;
         }
 
@@ -49,11 +47,9 @@ public class InputManager extends InputAdapter {
         // Method is called when a key is released
         if ((keyCode < 0 || keyCode > 255) && keyCode < 1000) {
             // Check if special keys are being pressed
-            System.out.println("Special keys being released");
             return false;
         } else {
             KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
-            System.out.println("Key released");
             return true;
         }
     }

@@ -1,8 +1,10 @@
 package com.mygdx.engine.scenes;
 
+import com.mygdx.engine.core.Manager;
+
 import java.util.Stack;
 
-public class SceneManager {
+public class SceneManager extends Manager {
     private Scene currentScene;
     private Stack<Scene> scenes;
 
