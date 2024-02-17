@@ -44,8 +44,15 @@ public class PlayerControlManager extends Manager {
         for (JsonValue control : controlsArray) {
             String actionLabel = control.getString("action");
             String key = control.getString("key");
+            int keyCode;
+            if (key.contains("MOUSE")) {
+                int mouseIndex = key.indexOf("MOUSE");
+                int button = Integer.parseInt(key.substring(mouseIndex + "MOUSE".length()));
+                keyCode = 1000 + button;
+            } else {
+                keyCode = Input.Keys.valueOf(key);
+            }
 
-            int keyCode = Input.Keys.valueOf(key);
             GameAction action = actionMap.getAction(actionLabel);
 
             keybindings.put(keyCode, action);
@@ -64,6 +71,7 @@ public class PlayerControlManager extends Manager {
         GameAction action = keybindings.get(e.getKeyCode());
         // TOOD: This is kept as GameAction for now to handle future actions
         if (action instanceof GameAction) {
+            System.out.println(e.getKeyCode());
             EntityUpdateEvent.addEntityUpdateEvent(new EntityUpdateEvent(action));
         }
     }

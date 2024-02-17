@@ -8,6 +8,7 @@ import com.badlogic.gdx.InputProcessor;
 public class InputManager extends InputAdapter {
     // InputMultiplexer is used to handle multiple input processors
     private final InputMultiplexer multiplexer;
+    private final int mouseButtonOffset = 1001;
 
     public InputManager(Input input) {
         multiplexer = new InputMultiplexer();
@@ -54,16 +55,22 @@ public class InputManager extends InputAdapter {
         }
     }
 
-    // TODO: add mouse click support
     // *************
     // *** Mouse ***
     // *************
 
+    // TODO: maybe check for coordinates here
+    // Currently not checked because InputManager then requires some knowledge of the coordinates, which may not be very friendly
+    // There's also no way to distinguish between clicking buttons and clicking (to shoot), we add a custom mouse offset to define it in our keybindings
     public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.DOWN, button));
+        KeyEvent.addKeyEvent(new KeyEvent(button + mouseButtonOffset, true));
         return true;
     }
 
     public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.UP, button));
+        KeyEvent.addKeyEvent(new KeyEvent(button + mouseButtonOffset, false));
         return true;
     }
 
