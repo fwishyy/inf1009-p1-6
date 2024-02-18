@@ -1,8 +1,11 @@
 package com.mygdx.engine.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.mygdx.engine.Game;
 import com.mygdx.engine.controls.PlayerControlManager;
+import com.mygdx.engine.input.ControllerHandler;
 import com.mygdx.engine.input.InputManager;
 import com.mygdx.engine.scenes.SceneManager;
 

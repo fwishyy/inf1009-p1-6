@@ -4,12 +4,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 
 public class InputManager extends InputAdapter {
     // InputMultiplexer is used to handle multiple input processors
     private final InputMultiplexer multiplexer;
     private final int mouseButtonOffset = 1001;
+
+    private ControllerHandler controllerHandler;
 
     public InputManager(Input input) {
         multiplexer = new InputMultiplexer();
@@ -30,7 +33,6 @@ public class InputManager extends InputAdapter {
         KeyEvent.processKeyEvents();
     }
 
-    // TODO: add keyboard support
     @Override
     public boolean keyDown(int keyCode) {
         // Method is called when a key is pressed
