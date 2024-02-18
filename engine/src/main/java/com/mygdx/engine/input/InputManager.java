@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controllers;
 
 public class InputManager extends InputAdapter {
     // InputMultiplexer is used to handle multiple input processors
