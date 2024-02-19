@@ -26,12 +26,11 @@ public class GameScene extends Scene {
         em = new EntityManager();
         em.createEntity(1, Player.class, "badlogic.jpg", 0, 0, 200, "player1");
         em.createEntity(1, Player.class, "badlogic.jpg", 300, 300, 200, "player2");
-        cm = new CollisionManager();
-        cm.addCollider(em.getEntity("player1"));
-        cm.addCollider(em.getEntity("player2"));
-        
         p1 = (Player)em.getEntity("player1");
         p2 = (Player)em.getEntity("player2");
+        cm = new CollisionManager();
+        cm.addCollider(p1);
+        cm.addCollider(p2);
     }
 
     @Override
@@ -42,7 +41,6 @@ public class GameScene extends Scene {
         em.update();
         cm.update();
         p1.move();
-//        p2.move();
         batch.end();
     	
     }

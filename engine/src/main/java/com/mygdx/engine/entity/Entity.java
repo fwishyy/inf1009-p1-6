@@ -13,7 +13,6 @@ public abstract class Entity {
 	private float height;
 	private float speed;
 	private String type;
-	private Collider collider;
 	
 	protected Entity() {
 		this.texture = null;
@@ -22,7 +21,6 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = "";
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(String texture, float x, float y, float speed, String type) {
@@ -32,7 +30,6 @@ public abstract class Entity {
 		this.height = this.texture.getHeight();
 		this.speed = speed;
 		this.type = type;
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y, float speed, String type) {
@@ -42,7 +39,6 @@ public abstract class Entity {
 		this.height = this.texture.getHeight();
 		this.speed = speed;
 		this.type = type;
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y, String type) {
@@ -52,7 +48,6 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = type;
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y, float speed) {
@@ -62,7 +57,6 @@ public abstract class Entity {
 		this.height = this.texture.getHeight();
 		this.speed = speed;
 		this.type = "";
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(float x, float y) {
@@ -72,7 +66,6 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = "";
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected Entity(String texture) {
@@ -82,7 +75,6 @@ public abstract class Entity {
 		this.height = 0;
 		this.speed = 0;
 		this.type = "";
-		this.collider = new Collider(this.getEntity());
 	}
 	
 	protected abstract void update();
@@ -125,14 +117,6 @@ public abstract class Entity {
 		return this.speed;
 	}
 	
-	public Collider getCollider() {
-		return this.collider;
-	}
-	
-	protected Entity getEntity() {
-		return this;
-	}
-	
 	protected void setTexture(String texture) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 	}
@@ -170,5 +154,8 @@ public abstract class Entity {
 		this.speed = speed;
 	}
 	
+	protected void dispose() {
+ 		this.texture.dispose();
+	}
 	
 }

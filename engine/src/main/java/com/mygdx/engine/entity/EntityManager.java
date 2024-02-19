@@ -4,16 +4,21 @@ import java.util.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Collectors;
+import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class EntityManager {
 	
-	private List<Entity> entities;
+	private HashMap<String, List<Entity>> entityMap;
 	
 	public EntityManager() {
-		entities = new ArrayList<Entity>();
+		this.entityMap = new HashMap<>();
+	}
+	
+	public EntityManager(List<Entity> entityList, HashMap<String, List<Entity>> entityMap) {
+		this.entityMap  = entityMap;
 	}
 	
 	/**
@@ -32,7 +37,8 @@ public class EntityManager {
 			try {
 				// Constructor arguments expected in the concrete class
 				Constructor<T> constructor = c.getDeclaredConstructor(String.class, float.class, float.class, float.class, String.class);
-				entities.add(constructor.newInstance(texture, x, y, speed, type));
+				Entity en = constructor.newInstance(texture, x, y, speed, type);
+				addEntity(en);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -56,7 +62,8 @@ public class EntityManager {
 			try {
 				// Constructor arguments expected in the concrete class
 				Constructor<T> constructor = c.getDeclaredConstructor(float.class, float.class, float.class, String.class);
-				entities.add(constructor.newInstance(x, y, speed, type));
+				Entity en = constructor.newInstance(x, y, speed, type);
+				addEntity(en);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -79,7 +86,8 @@ public class EntityManager {
 			try {
 				// Constructor arguments expected in the concrete class
 				Constructor<T> constructor = c.getDeclaredConstructor(float.class, float.class, String.class);
-				entities.add(constructor.newInstance(x, y, type));
+				Entity en = constructor.newInstance(x, y, type);
+				addEntity(en);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -102,7 +110,8 @@ public class EntityManager {
 			try {
 				// Constructor arguments expected in the concrete class
 				Constructor<T> constructor = c.getDeclaredConstructor(float.class, float.class, float.class);
-				entities.add(constructor.newInstance(x, y, speed));
+				Entity en = constructor.newInstance(x, y, speed);
+				addEntity(en);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -124,7 +133,8 @@ public class EntityManager {
 			try {
 				// Constructor arguments expected in the concrete class
 				Constructor<T> constructor = c.getDeclaredConstructor(float.class, float.class);
-				entities.add(constructor.newInstance(x, y));
+				Entity en = constructor.newInstance(x, y);
+				addEntity(en);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -139,7 +149,8 @@ public class EntityManager {
 	 * preferred usage createEntity(new Entity()) or createEntity(entityObjName)
 	 */
 	public void addEntity(Entity entity) {
-		entities.add(entity);
+		this.entityMap.putIfAbsent(entity.getType(), new ArrayList<>());
+		this.entityMap.get(entity.getType()).add(entity);
 	}
 	
 	/**
@@ -147,10 +158,14 @@ public class EntityManager {
 	 * @param newEntity -- object that replaces the old entity in the manager
 	 * @param oldEntity -- object to be replaced in the manager
 	 */
-	public void updateEntity(Entity newEntity, Entity oldEntity) {
-		for(int i=0; i<entities.size(); i++)
-			if(oldEntity == entities.get(i))
-				entities.set(i, newEntity);
+	public void replaceEntity(Entity newEntity, Entity oldEntity) {
+		if(newEntity.getType() != oldEntity.getType())
+			throw new IllegalArgumentException("new entity and old entity types must be the same");
+		
+		List<Entity> entityList = this.entityMap.get(oldEntity.getType());
+		for(int i=0; i < entityList.size(); i++)
+			if(entityList.get(i) == oldEntity)
+				entityList.set(i, newEntity);
 	}
 	
 	/**
@@ -158,7 +173,7 @@ public class EntityManager {
 	 * @param entity -- The entity object to remove from the manager
 	 */
 	public void removeEntity(Entity entity) {
-		entities.remove(entity);
+		this.entityMap.get(entity.getType()).remove(entity);
 	}
 	
 	/**
@@ -166,7 +181,7 @@ public class EntityManager {
 	 * @return List&lt;Entity&gt;
 	 */
 	public List<Entity> getEntities() {
-		return entities;
+		return getAllEntities();
 	}
 	
 	/**
@@ -179,9 +194,7 @@ public class EntityManager {
 	public List<Entity> getEntities(String type, Vector2 targetPosition, float range) {
 		List<Entity> retList = new ArrayList<Entity>();
 		// filter for entities that matches the type
-		List<Entity> filteredEntities = this.entities.stream()
-				.filter(e -> e.getType() == type)
-				.collect(Collectors.toList());
+		List<Entity> filteredEntities = this.entityMap.get(type);
 		// calculate distance of filtered entities from target position
 		for(Entity e: filteredEntities) {
 				Vector2 currEntPosition = e.getVector2();
@@ -199,10 +212,10 @@ public class EntityManager {
 	 * @param range -- range of detection (E.g 3.0f)
 	 * @return List&lt;Entity&gt;
 	 */
-	public List<Entity> getEntities(Vector2 targetPosition, float range) {
-		List<Entity> retList = new ArrayList<Entity>();
+	public List<Entity> getEntities(Vector2 targetPosition, float range) {				
+		List<Entity> retList = new ArrayList<>();
 		
-		for(Entity e: this.entities) {
+		for(Entity e: getAllEntities()) {
 			Vector2 entityPosition = e.getVector2();
 			float distanceToTarget = entityPosition.dst(targetPosition);
 			if(distanceToTarget <= range)
@@ -218,32 +231,19 @@ public class EntityManager {
 	 * @return List&lt;Entity&gt;
 	 */
 	public List<Entity> getEntities(String type) {
-		List<Entity> retList = new ArrayList<Entity>();
-		for(Entity e: this.entities)
-			if(e.getType() == type)
-				retList.add(e);
-		return retList;
+		return entityMap.get(type);
 	}
+
 	
-	/**
-	 * Returns first instance of specified entity type
-	 * @param type -- entity type (E.g "monster")
-	 * @return Entity
-	 */
 	public Entity getEntity(String type) {
-		for(Entity e: this.entities)
-			if(e.getType() == type)
-				return e;
-		
-		return null;
+		 return entityMap.get(type).get(0);
 	}
-	
 	/**
 	 * Draws all entities in the manager
 	 * @param batch -- SpriteBatch object
 	 */
 	public void draw(SpriteBatch batch) {
-		for(Entity entity: entities)
+		for(Entity entity: getAllEntities())
 			entity.draw(batch);
 	}
 	
@@ -253,7 +253,8 @@ public class EntityManager {
 	 * @param type -- entity type (E.g "monster")
 	 */
 	public void draw(SpriteBatch batch, String type) {
-		for(Entity entity: entities)
+		List<Entity> entityList = this.entityMap.get(type);
+		for(Entity entity: entityList)
 			if(entity.getType() == type)
 				entity.draw(batch);
 	}
@@ -265,7 +266,8 @@ public class EntityManager {
 	 * @param range -- range of detection (E.g 3.0f)
 	 */
 	public void draw(SpriteBatch batch, Vector2 targetPosition, float range) {
-		for(Entity entity: entities) {
+		
+		for(Entity entity: getAllEntities()) {
 			Vector2 currEntPos = entity.getVector2();
 			if(currEntPos.dst(targetPosition) <= range)
 				entity.draw(batch);
@@ -276,11 +278,57 @@ public class EntityManager {
 	 * Calls all update functionality of all subclasses
 	 */
 	public void update() {
-		for(Entity entity: entities)
+		List<Entity> entityList = getAllEntities();
+		for(Entity entity: entityList)
 		{
 			entity.update();
-			entity.getCollider().update();
-			
+		}
+	}
+	
+	public void dispose() {
+		disposeAllEntities();
+		this.entityMap.clear();
+	}
+	
+	public void dispose(String type) {
+		disposeEntities(type);
+		this.entityMap.remove(type);
+	}
+	
+	public void dispose(String type, Entity entity) {
+		disposeEntities(type, entity);
+		this.entityMap.get(type).remove(entity);
+	}
+	
+	private List<Entity> getAllEntities(){
+		List<Entity> combinedList = entityMap.values().stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+		
+		return combinedList;
+	}
+	
+	private void disposeAllEntities() {
+		List<Entity> entityList = getAllEntities();
+		for(Entity entity: entityList) {
+			if(entity instanceof Character)
+				((Character)entity).dispose();
+		}
+	}
+	
+	private void disposeEntities(String type) {
+		List<Entity> entityList = this.entityMap.get(type);
+		for(Entity entity: entityList) {
+				if(entity instanceof Character)
+					((Character)entity).dispose();
+		}
+	}
+	
+	private void disposeEntities(String type, Entity entity) {
+		List<Entity> entityList = this.entityMap.get(type);
+		for(Entity e: entityList) {
+				if(e instanceof Character && e == entity)
+					((Character)e).dispose();
 		}
 	}
 }

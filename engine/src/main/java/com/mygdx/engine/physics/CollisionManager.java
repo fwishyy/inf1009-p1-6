@@ -11,7 +11,7 @@ import com.mygdx.engine.entity.*;
 
 public class CollisionManager extends Manager {
 	
-	List<Collider> colliderList;
+	HashMap<Entity, Collider> colliderMap;
 	
     public CollisionManager() {
         addCollisionListener(new EventListener<CollisionEvent>() {
@@ -21,63 +21,62 @@ public class CollisionManager extends Manager {
             }
         });
         
-        colliderList = new ArrayList<Collider>();
+        colliderMap = new HashMap<>();
     }
     
     private void resolveCollision(CollisionEvent e) {
         //TODO: resolve collisions here
 //    	System.out.println("A: " + e.getEntityA().getType() + " B: " + e.getEntityB().getType());
-    	e.getEntityA().collide(e.getEntityB().getCollider());
-    	e.getEntityB().collide(e.getEntityA().getCollider());
+    	Collider colA = this.colliderMap.get(e.getEntityA());
+    	Collider colB = this.colliderMap.get(e.getEntityB());
+    	e.getEntityA().collide(colB);
+    	e.getEntityB().collide(colA);
     	
     }
     
-    public void addCollider(Collider col) {
-    	colliderList.add(col);
-    }
-    
     public void addCollider(Entity entity) {
-    	colliderList.add(entity.getCollider());
-    }
-    
-    public void removeCollider(Collider col) {
-    	for(int i=0; i < colliderList.size(); i++) {
-    		if(col == colliderList.get(i))
-    			colliderList.remove(i);
-    	}
+    	Collider col = new Collider(entity);
+    	col.setEntity(entity);
+    	this.colliderMap.put(entity, col);
     }
     
     public void removeCollider(Entity entity) {
-    	for(int i=0; i < colliderList.size(); i++) {
-    		if(entity.getCollider() == colliderList.get(i))
-    			colliderList.remove(i);
-    	}
+    	this.colliderMap.remove(entity);
     }
     
-    public void updateCollider(Collider _old, Collider _new) {
-    	for(int i=0; i < colliderList.size(); i++) {
-    		if(_old == colliderList.get(i))
-    			colliderList.set(i, _new);
-    	}
-    }
-    
-    public void updateCollider(Entity _old, Entity _new) {
-    	for(int i=0; i < colliderList.size(); i++) {
-    		if(_old.getCollider() == colliderList.get(i))
-    			colliderList.set(i, _new.getCollider());
-    	}
+    public void replaceCollider(Entity entity, Collider collider) {
+    	colliderMap.replace(entity, collider);
     }
     
     public void update() {
+    	
+    	List<Collider> colliderList = new ArrayList<>(colliderMap.values());
+    	
+    	for(Collider col: colliderList)
+    		col.update();
+    	
+    	checkCollisions(colliderList);
+    }
+    
+    public void dispose() {
+    	for(Collider col: colliderMap.values())
+    		col.dispose();
+    	colliderMap.clear();
+    }
+    
+    private void checkCollisions(List<Collider> colliderList) {
     	for(Collider curr: colliderList) {
     		for(Collider other: colliderList) {
     			if(curr == other)
     				continue;
-    			if(curr.isCollide(other.getEntity())){
-//    				System.out.println(curr.getEntity().getType() + ", " + other.getEntity().getType());
-    				curr.onCollide(other.getEntity());
-    			}
+    			// if either colliders are not collidable, no collision event should happen
+    			if(curr.getIsCollidable() == false || other.getIsCollidable() == false)
+    				continue;
+    			if(curr.isCollide(other))
+    				if(CollisionEvent.checkRedundant(curr.getEntity(), other.getEntity()) == false)
+        				curr.onCollide(other);
     		}
     	}
     }
+
 }

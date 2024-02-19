@@ -65,5 +65,12 @@ public abstract class Character extends Entity implements IDamageable, IMoveable
 //		System.out.println(this.getEntity().getType() + ": " + this.getX() + "," + this.getY());
 	}
 	
+	@Override
+	protected void dispose() {
+		this.sprite.getTexture().dispose();
+		this.sprite = null;
+		super.dispose();
+	}
+	
 	
 }
