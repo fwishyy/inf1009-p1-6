@@ -19,7 +19,7 @@ public class BehaviourManager {
      */
     public BehaviourManager(EntityManager entityManager) {
         this.entityManager = entityManager;
-        // initialize the mapping of entities to behaviours
+        // initialise the mapping of entities to behaviours
         behaviours = new HashMap<>();
     }
 
