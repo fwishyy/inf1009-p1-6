@@ -44,5 +44,6 @@ public class SeekBehaviour implements Behaviour {
         
         // update the entity's position to the newly calculated position
         entity.setVector2(newPosition);
+        System.out.println("Seek behaviour updated");
     }
 }

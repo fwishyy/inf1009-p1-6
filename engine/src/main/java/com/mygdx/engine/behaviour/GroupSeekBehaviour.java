@@ -35,6 +35,7 @@ public class GroupSeekBehaviour implements Behaviour {
         if (!members.contains(newMember)) {
         	// add the new member to the group
             members.add(newMember); 
+            System.out.println("Member added");
         }
     }
 
@@ -46,6 +47,7 @@ public class GroupSeekBehaviour implements Behaviour {
     public void removeMember(Entity memberToRemove) {
         // remove the member from the group if it exists
         members.remove(memberToRemove);
+        System.out.println("Member removed");
     }
     
     
@@ -71,6 +73,7 @@ public class GroupSeekBehaviour implements Behaviour {
             Vector2 newPosition = member.getVector2().add(desiredVelocity.scl(deltaTime));
             // set the new position for the entity
             member.setVector2(newPosition);
+            System.out.println("Group behaviour updated");
         }
     }
 }

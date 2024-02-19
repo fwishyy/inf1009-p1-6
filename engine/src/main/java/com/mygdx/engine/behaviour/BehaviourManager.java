@@ -32,6 +32,7 @@ public class BehaviourManager {
     public void addBehaviour(Entity entity, Behaviour behaviour) {
         // put the entity and its corresponding behaviour into the map
         behaviours.put(entity, behaviour);
+        System.out.println("Behaviour added");
         //print statement action
     }
     
@@ -43,6 +44,7 @@ public class BehaviourManager {
     public void removeBehaviour(Entity entity) {
         // remove the behaviour from the map using the entity as the key
         behaviours.remove(entity);
+        System.out.println("Behaviour removed");
     }
 
     /**
@@ -55,6 +57,7 @@ public class BehaviourManager {
     public void setBehaviour(Entity entity, Behaviour newBehaviour) {
         // put the new behaviour into the map, replacing any existing behaviour
         behaviours.put(entity, newBehaviour);
+        System.out.println("Behaviour changed");
     }
 
     /**
@@ -74,6 +77,7 @@ public class BehaviourManager {
         	Behaviour behaviour = behaviours.get(entity); 
             if(behaviour != null) {
                 behaviour.update(entity,deltaTime);
+                System.out.println("Behaviour updated");
             }
         }
     }
