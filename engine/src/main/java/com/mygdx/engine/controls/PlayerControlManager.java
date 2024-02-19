@@ -94,6 +94,9 @@ public class PlayerControlManager extends Manager {
                 GameAction action = keybindings.get(keyCode);
                 if (action instanceof GameAction) {
                     System.out.println("FIRING GAMEACTION HERE");
+                    if(action.isFiredOnce()) {
+                        entry.setValue(false);
+                    }
                 }
             }
         }

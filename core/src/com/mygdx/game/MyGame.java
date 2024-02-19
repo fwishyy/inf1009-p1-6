@@ -32,10 +32,10 @@ public class MyGame extends Game {
 
     public void configure() {
         // Add necessary GameActions
-        playerControlManager.addAction("MOVE_UP", new DirectionalMoveAction(Direction.UP));
-        playerControlManager.addAction("MOVE_LEFT", new DirectionalMoveAction(Direction.LEFT));
-        playerControlManager.addAction("MOVE_RIGHT", new DirectionalMoveAction(Direction.RIGHT));
-        playerControlManager.addAction("MOVE_DOWN", new DirectionalMoveAction(Direction.DOWN));
+        playerControlManager.addAction("MOVE_UP", new DirectionalMoveAction(Direction.UP, true));
+        playerControlManager.addAction("MOVE_LEFT", new DirectionalMoveAction(Direction.LEFT, false));
+        playerControlManager.addAction("MOVE_RIGHT", new DirectionalMoveAction(Direction.RIGHT, false));
+        playerControlManager.addAction("MOVE_DOWN", new DirectionalMoveAction(Direction.DOWN, false));
 
         playerControlManager.loadKeybindingsFromJson("keybinds.json");
     }

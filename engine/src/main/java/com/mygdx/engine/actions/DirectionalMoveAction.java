@@ -11,15 +11,17 @@ public class DirectionalMoveAction extends GameAction {
     private final Entity entity;
     private final Direction direction;
 
-    public DirectionalMoveAction(Direction direction) {
+    public DirectionalMoveAction(Direction direction, boolean fireOnce) {
         this.entity = null;
         this.direction = direction;
+        this.fireOnce = fireOnce;
     }
 
     // Generic move command
-    public DirectionalMoveAction(Entity entity, Direction direction) {
+    public DirectionalMoveAction(Entity entity, Direction direction, boolean fireOnce) {
         this.entity = entity;
         this.direction = direction;
+        this.fireOnce = fireOnce;
     }
 
     public Direction getDirection() {
