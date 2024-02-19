@@ -32,6 +32,29 @@ public class BehaviourManager {
     public void addBehaviour(Entity entity, Behaviour behaviour) {
         // put the entity and its corresponding behaviour into the map
         behaviours.put(entity, behaviour);
+        //print statement action
+    }
+    
+    /**
+     * removes the behaviour associated with the specified entity
+     * 
+     * @param entity -- the entity whose behaviour is to be removed
+     */
+    public void removeBehaviour(Entity entity) {
+        // remove the behaviour from the map using the entity as the key
+        behaviours.remove(entity);
+    }
+
+    /**
+     * sets or replaces the behaviour of the specified entity
+     * if the entity already has a behaviour, it will be replaced with the new one
+     * 
+     * @param entity -- the entity whose behaviour is to be set
+     * @param newBehaviour -- the new behaviour to assign to the entity
+     */
+    public void setBehaviour(Entity entity, Behaviour newBehaviour) {
+        // put the new behaviour into the map, replacing any existing behaviour
+        behaviours.put(entity, newBehaviour);
     }
 
     /**
@@ -44,9 +67,13 @@ public class BehaviourManager {
         // iterate over all entities managed by the EntityManager
         for (Entity entity : entityManager.getEntities()) {
             // check if the current entity has an assigned behaviour
-            if (behaviours.containsKey(entity)) {
+            //if (behaviours.get(entity) != null) {
                 // if so, update the entity's behaviour, passing in the entity and the delta time
-                behaviours.get(entity).update(entity, deltaTime);
+               // behaviours.get(entity).update(entity, deltaTime);
+            //}
+        	Behaviour behaviour = behaviours.get(entity); 
+            if(behaviour != null) {
+                behaviour.update(entity,deltaTime);
             }
         }
     }
