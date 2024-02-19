@@ -21,9 +21,12 @@ public class PlayerControlManager extends Manager {
 
     private final Actions actionMap;
 
+    private final LinkedHashMap<Integer, Boolean> heldKeys;
+
     public PlayerControlManager() {
         keybindings = new LinkedHashMap<>();
         actionMap = new Actions();
+        heldKeys = new LinkedHashMap<>();
         addKeyListener(new EventListener<KeyEvent>() {
             @Override
             public void onSignal(Signal<KeyEvent> signal, KeyEvent e) {
@@ -56,6 +59,10 @@ public class PlayerControlManager extends Manager {
 
             keybindings.put(keyCode, action);
         }
+
+        for (Map.Entry<Integer, GameAction> entry : keybindings.entrySet()) {
+            heldKeys.put(entry.getKey(), false);
+        }
     }
 
     public void addAction(String label, GameAction action) {
@@ -72,12 +79,23 @@ public class PlayerControlManager extends Manager {
      * @param e KeyEvent to resolve and dispatch
      */
     private void handleKeyEvent(KeyEvent e) {
-        GameAction action = keybindings.get(e.getKeyCode());
-        // TODO: integrate getting player entity here
+        heldKeys.put(e.getKeyCode(), e.isPressed());
+    }
 
-        if (action instanceof DirectionalMoveAction) {
-            DirectionalMoveAction directionalMoveAction = (DirectionalMoveAction) action;
-            // TODO: assign entity to directionalMoveAction and execute
+    // Currently this updates frame by frame
+    public void update() {
+        int keyCode;
+        boolean isHeld;
+        for (Map.Entry<Integer, Boolean> entry : heldKeys.entrySet()) {
+            keyCode = entry.getKey();
+            isHeld = entry.getValue();
+
+            if (isHeld) {
+                GameAction action = keybindings.get(keyCode);
+                if (action instanceof GameAction) {
+                    System.out.println("FIRING GAMEACTION HERE");
+                }
+            }
         }
     }
 }

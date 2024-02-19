@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 
+// TODO: add dragged events maybe
 public class InputManager extends InputAdapter {
     // InputMultiplexer is used to handle multiple input processors
     private final InputMultiplexer multiplexer;
@@ -53,7 +54,7 @@ public class InputManager extends InputAdapter {
             // Check if special keys are being pressed
             return false;
         } else {
-            KeyEvent.addKeyEvent(new KeyEvent(keyCode, true));
+            KeyEvent.addKeyEvent(new KeyEvent(keyCode, false));
             return true;
         }
     }

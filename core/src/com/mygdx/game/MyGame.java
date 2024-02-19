@@ -23,6 +23,7 @@ public class MyGame extends Game {
     public void render() {
         sceneManager.getCurrentScene().render(Gdx.graphics.getDeltaTime());
         inputManager.processAllEvents();
+        playerControlManager.update();
     }
 
     @Override
