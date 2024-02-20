@@ -1,5 +1,7 @@
 package com.mygdx.engine.actions;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.IMoveable;
 import com.mygdx.engine.entity.IMoveable.Direction;
@@ -29,6 +31,16 @@ public class DirectionalMoveAction extends GameAction {
     }
 
     protected boolean act() {
+        switch(direction) {
+            case LEFT:
+                entity.setX(entity.getX() - 200 * Gdx.graphics.getDeltaTime());
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+                super.setX(this.getX() + 200 * Gdx.graphics.getDeltaTime());
+            if (Gdx.input.isKeyPressed(Input.Keys.UP))
+                super.setY(this.getY() + 200 * Gdx.graphics.getDeltaTime());
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+                super.setY(this.getY() - 200 * Gdx.graphics.getDeltaTime());
+        }
         return true;
     }
 }
