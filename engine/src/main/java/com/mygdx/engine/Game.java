@@ -2,6 +2,7 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.ApplicationListener;
 
+import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
@@ -18,6 +19,7 @@ public class Game implements ApplicationListener {
     protected InputManager inputManager;
     protected PlayerControlManager playerControlManager;
     protected CollisionManager collisionManager;
+    protected AudioManager audioManager;
 
     @Override
     public void create() {
@@ -29,6 +31,7 @@ public class Game implements ApplicationListener {
         this.sceneManager = container.getSceneManager();
         this.inputManager = container.getInputManager();
         this.playerControlManager = container.getPlayerControlManager();
+        this.audioManager = container.getAudioManager();
     }
 
     @Override

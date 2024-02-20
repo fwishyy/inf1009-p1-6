@@ -327,10 +327,7 @@ public class EntityManager extends Manager {
     private void handleEntityDisposed(EntityDisposedEvent e) {
         Entity disposedEntity = e.getEntity();
         for (List<Entity> entityList : entityMap.values()) {
-            if (entityList.contains(disposedEntity)) {
-                entityList.remove(disposedEntity);
-                System.out.println("REMOVE");
-            }
+            entityList.remove(disposedEntity);
         }
     }
 }

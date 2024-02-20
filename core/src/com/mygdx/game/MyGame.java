@@ -9,22 +9,16 @@ import com.mygdx.game.scenes.MainMenuScene;
 
 public class MyGame extends Game {
 
-    AudioManager audioManager;
-
-    @Override
-    public MyGame(GameContainer container) {
-        super(container);
-        // TODO Auto-generated constructor stub
-    }
-
     @Override
     public void create() {
         super.create();
-        configure();
         MainMenuScene mainMenuScene = new MainMenuScene();
         GameScene gameScene = new GameScene(container);
         sceneManager.addScene(gameScene);
         sceneManager.setScene(gameScene);
+        audioManager.addSound("water_drop", "audio/fx/water_drop.wav");
+        audioManager.addMusic("bgm", "audio/music/Hell-Night.mp3");
+        audioManager.play("bgm");
     }
 
     @Override
@@ -36,15 +30,5 @@ public class MyGame extends Game {
 
     @Override
     public void dispose() {
-    }
-
-    public void configure() {
-        // Add necessary GameActions
-        playerControlManager.addAction("MOVE_UP", new DirectionalMoveAction(Direction.UP, true));
-        playerControlManager.addAction("MOVE_LEFT", new DirectionalMoveAction(Direction.LEFT, false));
-        playerControlManager.addAction("MOVE_RIGHT", new DirectionalMoveAction(Direction.RIGHT, false));
-        playerControlManager.addAction("MOVE_DOWN", new DirectionalMoveAction(Direction.DOWN, false));
-
-        playerControlManager.loadKeybindingsFromJson("keybinds.json");
     }
 }

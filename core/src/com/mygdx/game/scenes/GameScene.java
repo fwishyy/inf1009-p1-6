@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.engine.controls.ActionMap;
+import com.mygdx.engine.controls.KeyCodes;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.scenes.Scene;
@@ -39,9 +41,15 @@ public class GameScene extends Scene {
         em.createEntity(1, Player.class, "badlogic.jpg", 300, 300, "player2");
         p1 = (Player) em.getEntity("player1");
         p2 = (Player) em.getEntity("player2");
-        pm.registerNewPlayer(p1);
         cm.addCollider(p1);
         cm.addCollider(p2);
+
+        ActionMap playerControls = new ActionMap();
+        playerControls.addNewBinding(KeyCodes.W, new DirectionalMoveAction(IMoveable.Direction.UP));
+        playerControls.addNewBinding(KeyCodes.A, new DirectionalMoveAction(IMoveable.Direction.LEFT));
+        playerControls.addNewBinding(KeyCodes.S, new DirectionalMoveAction(IMoveable.Direction.DOWN));
+        playerControls.addNewBinding(KeyCodes.D, new DirectionalMoveAction(IMoveable.Direction.RIGHT));
+        pm.setActionMap(p1, playerControls);
     }
 
     @Override

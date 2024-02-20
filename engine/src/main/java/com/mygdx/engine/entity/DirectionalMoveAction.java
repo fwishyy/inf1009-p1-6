@@ -12,17 +12,8 @@ import com.mygdx.engine.entity.IMoveable.Direction;
 public class DirectionalMoveAction extends GameAction {
     private final Direction direction;
 
-    public DirectionalMoveAction(Direction direction, boolean fireOnce) {
-        this.entity = null;
+    public DirectionalMoveAction(Direction direction) {
         this.direction = direction;
-        this.fireOnce = fireOnce;
-    }
-
-    // Generic move command
-    public DirectionalMoveAction(Entity entity, Direction direction, boolean fireOnce) {
-        this.entity = entity;
-        this.direction = direction;
-        this.fireOnce = fireOnce;
     }
 
     public Direction getDirection() {
@@ -30,6 +21,10 @@ public class DirectionalMoveAction extends GameAction {
     }
 
     public boolean act() {
+        return true;
+    }
+
+    public boolean act(Entity entity) {
         switch (direction) {
             case LEFT:
                 entity.setX(entity.getX() - 200 * Gdx.graphics.getDeltaTime());

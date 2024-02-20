@@ -18,70 +18,18 @@ import java.util.Map;
 
 public class PlayerControlManager extends Manager {
 
-    private final LinkedHashMap<Integer, GameAction> keybindings;
-
-    private final Actions actionMap;
-
+    private final LinkedHashMap<Entity, ActionMap> entityActions;
     private final LinkedHashMap<Integer, Boolean> heldKeys;
-    private final ArrayList<Entity> players;
 
     public PlayerControlManager() {
-        keybindings = new LinkedHashMap<>();
-        actionMap = new Actions();
         heldKeys = new LinkedHashMap<>();
-        players = new ArrayList<Entity>();
+        entityActions = new LinkedHashMap<>();
         addKeyListener(new EventListener<KeyEvent>() {
             @Override
             public void onSignal(Signal<KeyEvent> signal, KeyEvent e) {
                 handleKeyEvent(e);
             }
         });
-    }
-
-    public void loadKeybindingsFromJson(String path) {
-        FileHandle fileHandle = Gdx.files.internal(path);
-        String jsonString = fileHandle.readString();
-
-        JsonReader jsonReader = new JsonReader();
-        JsonValue jsonRoot = jsonReader.parse(jsonString);
-        JsonValue controlsArray = jsonRoot.get("controls");
-
-        for (JsonValue control : controlsArray) {
-            String actionLabel = control.getString("action");
-            String key = control.getString("key");
-            int keyCode;
-            if (key.contains("MOUSE")) {
-                int mouseIndex = key.indexOf("MOUSE");
-                int button = Integer.parseInt(key.substring(mouseIndex + "MOUSE".length()));
-                keyCode = 1000 + button;
-            } else {
-                keyCode = Input.Keys.valueOf(key);
-            }
-
-            GameAction action = actionMap.getAction(actionLabel);
-
-            keybindings.put(keyCode, action);
-        }
-
-        for (Map.Entry<Integer, GameAction> entry : keybindings.entrySet()) {
-            heldKeys.put(entry.getKey(), false);
-        }
-    }
-
-    public void addAction(String label, GameAction action) {
-        actionMap.addAction(label, action);
-    }
-
-    public void removeAction(String label) {
-        actionMap.removeAction(label);
-    }
-
-    public void registerNewPlayer(Entity player) {
-        players.add(player);
-    }
-
-    public void deregisterPlayer(Entity player) {
-        players.remove(player);
     }
 
     /**
@@ -93,25 +41,29 @@ public class PlayerControlManager extends Manager {
         heldKeys.put(e.getKeyCode(), e.isPressed());
     }
 
+    public void setActionMap(Entity entity, ActionMap actionMap) {
+        // Create a new specific action map for this entity and assign it to a dispatch list
+        entityActions.put(entity, actionMap);
+
+        for (Map.Entry<Integer, GameAction> entry : actionMap.getAllBindings().entrySet()) {
+            heldKeys.put(entry.getKey(), false);
+        }
+    }
+
     // Currently this updates frame by frame
+    // TODO: Maybe fix the very lazy dispatching
     public void update() {
         int keyCode;
-        boolean isHeld;
-        Entity player = players.get(0);
-        // Split into processing
-        for (Map.Entry<Integer, Boolean> entry : heldKeys.entrySet()) {
-            keyCode = entry.getKey();
-            isHeld = entry.getValue();
+        GameAction action;
+        Entity entity;
+        for (Map.Entry<Entity, ActionMap> entityEntry : entityActions.entrySet()) {
+            entity = entityEntry.getKey();
+            for (Map.Entry<Integer, GameAction> actionMapEntry : entityEntry.getValue().getAllBindings().entrySet()) {
+                keyCode = actionMapEntry.getKey();
+                action = actionMapEntry.getValue();
 
-            if (isHeld) {
-                GameAction action = keybindings.get(keyCode);
-                if (action instanceof GameAction) {
-                    System.out.println("FIRING GAMEACTION HERE");
-                    action.setEntity(player);
-                    action.act();
-                    if (action.isFiredOnce()) {
-                        entry.setValue(false);
-                    }
+                if (heldKeys.get(keyCode)) {
+                    action.act(entity);
                 }
             }
         }
