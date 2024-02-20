@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.utils.Listener;
 
@@ -16,6 +17,7 @@ public class Scene extends ScreenAdapter {
     protected Viewport viewport;
     protected SpriteBatch batch;
     protected Stage stage;
+    protected GameContainer container;
 
     // TODO: implement show, hide, pause, resume methods (for now testing the rendering and handling of buttons)
     public Scene() {
@@ -23,6 +25,11 @@ public class Scene extends ScreenAdapter {
         viewport = new ScreenViewport();
         batch = new SpriteBatch();
         stage = new Stage();
+    }
+
+    public Scene(GameContainer container) {
+        this();
+        this.container = container;
     }
 
     @Override

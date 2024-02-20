@@ -2,9 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.Game;
-import com.mygdx.engine.actions.DirectionalMoveAction;
-import com.mygdx.engine.controls.Actions;
-import com.mygdx.engine.entity.IMoveable;
+import com.mygdx.engine.entity.DirectionalMoveAction;
 import com.mygdx.engine.entity.IMoveable.Direction;
 import com.mygdx.game.scenes.GameScene;
 import com.mygdx.game.scenes.MainMenuScene;
@@ -16,7 +14,7 @@ public class MyGame extends Game {
         super.create();
         configure();
         MainMenuScene mainMenuScene = new MainMenuScene();
-        GameScene gameScene = new GameScene();
+        GameScene gameScene = new GameScene(container);
         sceneManager.addScene(gameScene);
         sceneManager.setScene(gameScene);
     }

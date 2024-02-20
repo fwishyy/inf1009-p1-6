@@ -1,17 +1,18 @@
 package com.mygdx.engine.controls;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.mygdx.engine.actions.DirectionalMoveAction;
 import com.mygdx.engine.actions.GameAction;
 import com.mygdx.engine.core.Manager;
+import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.input.KeyEvent;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.engine.utils.Signal;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,11 +23,13 @@ public class PlayerControlManager extends Manager {
     private final Actions actionMap;
 
     private final LinkedHashMap<Integer, Boolean> heldKeys;
+    private final ArrayList<Entity> players;
 
     public PlayerControlManager() {
         keybindings = new LinkedHashMap<>();
         actionMap = new Actions();
         heldKeys = new LinkedHashMap<>();
+        players = new ArrayList<Entity>();
         addKeyListener(new EventListener<KeyEvent>() {
             @Override
             public void onSignal(Signal<KeyEvent> signal, KeyEvent e) {
@@ -73,6 +76,14 @@ public class PlayerControlManager extends Manager {
         actionMap.removeAction(label);
     }
 
+    public void registerNewPlayer(Entity player) {
+        players.add(player);
+    }
+
+    public void deregisterPlayer(Entity player) {
+        players.remove(player);
+    }
+
     /**
      * Keybindings are resolved here and translated into GameActions that are fired to the respective entities
      *
@@ -86,6 +97,8 @@ public class PlayerControlManager extends Manager {
     public void update() {
         int keyCode;
         boolean isHeld;
+        Entity player = players.get(0);
+        // Split into processing
         for (Map.Entry<Integer, Boolean> entry : heldKeys.entrySet()) {
             keyCode = entry.getKey();
             isHeld = entry.getValue();
@@ -94,7 +107,9 @@ public class PlayerControlManager extends Manager {
                 GameAction action = keybindings.get(keyCode);
                 if (action instanceof GameAction) {
                     System.out.println("FIRING GAMEACTION HERE");
-                    if(action.isFiredOnce()) {
+                    action.setEntity(player);
+                    action.act();
+                    if (action.isFiredOnce()) {
                         entry.setValue(false);
                     }
                 }
