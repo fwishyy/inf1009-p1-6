@@ -10,24 +10,30 @@ import com.mygdx.engine.utils.GameContainer;
 import com.mygdx.game.scenes.MainMenuScene;
 
 public class MyGame extends Game {
+	
+	AudioManager audioManager;
 
-    @Override
+    public MyGame(GameContainer container) {
+		super(container);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
     public void create() {
         super.create();
         MainMenuScene mainMenuScene = new MainMenuScene();
-        AudioManager audioManager = new AudioManager();
+        audioManager = new AudioManager(true);
         sceneManager.addScene(mainMenuScene);
         sceneManager.setScene(mainMenuScene);
         
-        //audioManager.loadAudioFile("hell-night", "audio/music/Hell-Night.mp3", 1, true, false);
-        //audioManager.startAudio("hell-night");
-        //audioManager.loadAudioFile("swing-fx", "audio/fx/swing-fx.mp3", 1, false, true);
-        //audioManager.startAudio("swing-fx");
+        audioManager.addSound("water_drop", "audio/fx/water_drop.wav");
+        audioManager.addMusic("bgm", "audio/music/rainy_day.mp3");
     }
 
     @Override
     public void render() {
         sceneManager.getCurrentScene().render(Gdx.graphics.getDeltaTime());
+        
     }
 
     @Override
