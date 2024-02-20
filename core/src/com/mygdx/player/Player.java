@@ -2,31 +2,19 @@ package com.mygdx.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Character;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
 
-public class Player extends Character{
+public class Player extends Entity {
 	
-	public Player(String texture, float x, float y, float speed, String type) {
-		super(texture, x, y, speed, type);
+	public Player(String texture, float x, float y, String type) {
+		super(texture, x, y, type);
 	}
 	
-	@Override 
-	public void onDeath() {
-		
-	}
-	
-	public void move() {
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-			super.setX(this.getX() - this.getSpeed() * Gdx.graphics.getDeltaTime());
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-			super.setX(this.getX() + this.getSpeed() * Gdx.graphics.getDeltaTime());
-		if(Gdx.input.isKeyPressed(Input.Keys.UP))
-			super.setY(this.getY() + this.getSpeed() * Gdx.graphics.getDeltaTime());
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-			super.setY(this.getY() - this.getSpeed() * Gdx.graphics.getDeltaTime());
+	@Override
+	protected void update() {
+		// TODO Auto-generated method stub
+		move();
 	}
 	
 	@Override
@@ -34,5 +22,16 @@ public class Player extends Character{
 		if(other.getEntity().getType() == "player2") {
 			this.dispose();
 		}
+	}
+	
+	private void move() {
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+			super.setX(this.getX() - 200 * Gdx.graphics.getDeltaTime());
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+			super.setX(this.getX() + 200 * Gdx.graphics.getDeltaTime());
+		if(Gdx.input.isKeyPressed(Input.Keys.UP))
+			super.setY(this.getY() + 200 * Gdx.graphics.getDeltaTime());
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+			super.setY(this.getY() - 200 * Gdx.graphics.getDeltaTime());
 	}
 }

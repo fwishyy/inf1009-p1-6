@@ -24,8 +24,8 @@ public class GameScene extends Scene {
         super.show();
         batch = new SpriteBatch();
         em = new EntityManager();
-        em.createEntity(1, Player.class, "badlogic.jpg", 0, 0, 200, "player1");
-        em.createEntity(1, Player.class, "badlogic.jpg", 300, 300, 200, "player2");
+        em.createEntity(1, Player.class, "badlogic.jpg", 0, 0, "player1");
+        em.createEntity(1, Player.class, "badlogic.jpg", 300, 300, "player2");
         p1 = (Player) em.getEntity("player1");
         p2 = (Player) em.getEntity("player2");
         cm = new CollisionManager();
@@ -40,7 +40,6 @@ public class GameScene extends Scene {
         em.update();
         em.draw(batch);
         cm.update();
-        p1.move();
         batch.end();
     }
 }

@@ -39,42 +39,14 @@ public class EntityManager extends Manager {
      * @param texture     -- path to texture. (E.g "badlogic.png")
      * @param x           -- x coordinate of obj (E.g 1.0f)
      * @param y           -- y coordinate of obj (E.g 1.0f)
-     * @param speed       -- speed of obj (E.g 1.0f)
      * @param type        -- type of obj (E.g "monster")
      */
-    public <T extends Entity> void createEntity(int entityCount, Class<T> c, String texture, float x, float y, float speed, String type) {
+    public <T extends Entity> void createEntity(int entityCount, Class<T> c, String texture, float x, float y, String type) {
         for (int i = 0; i < entityCount; i++) {
             try {
                 // Constructor arguments expected in the concrete class
-                Constructor<T> constructor = c.getDeclaredConstructor(String.class, float.class, float.class, float.class, String.class);
-                Entity en = constructor.newInstance(texture, x, y, speed, type);
-                addEntity(en);
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                     IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                System.out.println("EntityManager.java: Error occurred when creating new entity.");
-            }
-        }
-    }
-
-    /**
-     * Creates a new entity on concrete class created via reflection. Concrete class must be able to handle the arguments given for the constructor
-     *
-     * @param <T>         -- type must be a subclass of Entity
-     * @param entityCount -- the number of new entities to create (E.g 5)
-     * @param c           -- the concrete class that inherits from Entity Class to be created and added to the manager (E.g Player.class)
-     * @param x           -- x coordinate of obj (E.g 1.0f)
-     * @param y           -- y coordinate of obj (E.g 1.0f)
-     * @param speed       -- speed of obj (E.g 1.0f)
-     * @param type        -- type of obj (E.g "monster")
-     */
-    public <T extends Entity> void createEntity(int entityCount, Class<T> c, float x, float y, float speed, String type) {
-        for (int i = 0; i < entityCount; i++) {
-            try {
-                // Constructor arguments expected in the concrete class
-                Constructor<T> constructor = c.getDeclaredConstructor(float.class, float.class, float.class, String.class);
-                Entity en = constructor.newInstance(x, y, speed, type);
+                Constructor<T> constructor = c.getDeclaredConstructor(String.class, float.class, float.class, String.class);
+                Entity en = constructor.newInstance(texture, x, y, type);
                 addEntity(en);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
                      IllegalArgumentException | InvocationTargetException e) {
@@ -119,32 +91,6 @@ public class EntityManager extends Manager {
      * @param c           -- the concrete class that inherits from Entity Class to be created and added to the manager (E.g Player.class)
      * @param x           -- x coordinate of obj (E.g 1.0f)
      * @param y           -- y coordinate of obj (E.g 1.0f)
-     * @param speed       -- speed of obj (E.g 1.0f)
-     */
-    public <T extends Entity> void createEntity(int entityCount, Class<T> c, float x, float y, float speed) {
-        for (int i = 0; i < entityCount; i++) {
-            try {
-                // Constructor arguments expected in the concrete class
-                Constructor<T> constructor = c.getDeclaredConstructor(float.class, float.class, float.class);
-                Entity en = constructor.newInstance(x, y, speed);
-                addEntity(en);
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                     IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                System.out.println("EntityManager.java: Error occurred when creating new entity.");
-            }
-        }
-    }
-
-    /**
-     * Creates a new entity on concrete class created via reflection. Concrete class must be able to handle the arguments given for the constructor
-     *
-     * @param <T>         -- type must be a subclass of Entity
-     * @param entityCount -- the number of new entities to create (E.g 5)
-     * @param c           -- the concrete class that inherits from Entity Class to be created and added to the manager (E.g Player.class)
-     * @param x           -- x coordinate of obj (E.g 1.0f)
-     * @param y           -- y coordinate of obj (E.g 1.0f)
      */
     public <T extends Entity> void createEntity(int entityCount, Class<T> c, float x, float y) {
         for (int i = 0; i < entityCount; i++) {
@@ -161,7 +107,31 @@ public class EntityManager extends Manager {
             }
         }
     }
-
+    
+    /**
+     * Creates a new entity on concrete class created via reflection. Concrete class must be able to handle the arguments given for the constructor
+     *
+     * @param <T>         -- type must be a subclass of Entity
+     * @param entityCount -- the number of new entities to create (E.g 5)
+     * @param c           -- the concrete class that inherits from Entity Class to be created and added to the manager (E.g Player.class)
+     * @param texture     -- path to texture. (E.g "badlogic.png")
+     */
+    public <T extends Entity> void createEntity(int entityCount, Class<T> c, String texture) {
+        for (int i = 0; i < entityCount; i++) {
+            try {
+                // Constructor arguments expected in the concrete class
+                Constructor<T> constructor = c.getDeclaredConstructor(String.class);
+                Entity en = constructor.newInstance(texture);
+                addEntity(en);
+            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
+                     IllegalArgumentException | InvocationTargetException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.out.println("EntityManager.java: Error occurred when creating new entity.");
+            }
+        }
+    }
+    
     /**
      * Adds an entity object into the manager
      *
