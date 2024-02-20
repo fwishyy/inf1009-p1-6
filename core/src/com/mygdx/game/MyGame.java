@@ -6,6 +6,7 @@ import com.mygdx.engine.actions.DirectionalMoveAction;
 import com.mygdx.engine.controls.Actions;
 import com.mygdx.engine.entity.IMoveable;
 import com.mygdx.engine.entity.IMoveable.Direction;
+import com.mygdx.game.scenes.GameScene;
 import com.mygdx.game.scenes.MainMenuScene;
 
 public class MyGame extends Game {
@@ -15,8 +16,9 @@ public class MyGame extends Game {
         super.create();
         configure();
         MainMenuScene mainMenuScene = new MainMenuScene();
-        sceneManager.addScene(mainMenuScene);
-        sceneManager.setScene(mainMenuScene);
+        GameScene gameScene = new GameScene();
+        sceneManager.addScene(gameScene);
+        sceneManager.setScene(gameScene);
     }
 
     @Override

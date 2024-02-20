@@ -8,6 +8,7 @@ public class Signal<T> {
     public Signal() {
         listeners = new SnapshotArray<>();
     }
+
     public void add(Listener<T> listener) {
         listeners.add(listener);
     }
