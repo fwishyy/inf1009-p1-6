@@ -9,6 +9,14 @@ import com.mygdx.game.scenes.MainMenuScene;
 
 public class MyGame extends Game {
 
+    AudioManager audioManager;
+
+    @Override
+    public MyGame(GameContainer container) {
+        super(container);
+        // TODO Auto-generated constructor stub
+    }
+
     @Override
     public void create() {
         super.create();
