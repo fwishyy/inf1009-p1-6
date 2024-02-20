@@ -42,6 +42,9 @@ public class GameScene extends Scene {
         cm.update();
         p1.move();
         batch.end();
-    	
+    }
+
+    public void cleanup() {
+        em.dispose();
     }
 }

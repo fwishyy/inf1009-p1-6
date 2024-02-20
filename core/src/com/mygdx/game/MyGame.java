@@ -15,11 +15,10 @@ public class MyGame extends Game {
 //        MainMenuScene mainMenuScene = new MainMenuScene();
 //        sceneManager.addScene(mainMenuScene);
 //        sceneManager.setScene(mainMenuScene);
-        
+
         GameScene gameScene = new GameScene();
         sceneManager.addScene(gameScene);
         sceneManager.setScene(gameScene);
-        
     }
 
     @Override

@@ -32,7 +32,7 @@ public class Player extends Character{
 	@Override
 	public void collide(Collider other) {
 		if(other.getEntity().getType() == "player2") {
-			this.setVector2(new Vector2(0,0));
+			this.dispose();
 		}
 	}
 }
