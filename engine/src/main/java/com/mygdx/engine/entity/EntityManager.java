@@ -303,11 +303,13 @@ public class EntityManager extends Manager {
      * Calls all update functionality of all subclasses
      */
     public void update() {
+        // resolve disposed events first so we don't have floating references
+        EntityDisposedEvent.processDisposedEvents();
+
         List<Entity> entityList = getAllEntities();
         for (Entity entity : entityList) {
             entity.update();
         }
-        EntityDisposedEvent.processDisposedEvents();
     }
 
     public void dispose() {
@@ -357,6 +359,7 @@ public class EntityManager extends Manager {
         for (List<Entity> entityList : entityMap.values()) {
             if (entityList.contains(disposedEntity)) {
                 entityList.remove(disposedEntity);
+                System.out.println("REMOVE");
             }
         }
     }

@@ -23,7 +23,4 @@ public abstract class Manager {
     protected void addEntityDisposedListener(Listener<EntityDisposedEvent> listener) {
         EntityDisposedEvent.addDisposedListener(listener);
     }
-
-    protected void addListener(Listener<?> listener) {
-    }
 }
