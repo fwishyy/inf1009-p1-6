@@ -3,7 +3,9 @@ package com.mygdx.game.scenes;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.backgroundsprite.BGSprite;
@@ -24,7 +26,6 @@ public class GameScene extends Scene {
 	//ENGINE
     private GameContainer container;
     private EntityManager em;
-    private SpriteBatch batch;
     private CollisionManager cm;
     private PlayerControlManager pm;
     private BehaviourManager bm;
@@ -37,6 +38,9 @@ public class GameScene extends Scene {
     private BGSprite crystal;
     private BGSprite deadArm;
     private SeekBehaviour seek;
+    private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
+
 
 
     public GameScene(GameContainer container) {
@@ -47,6 +51,7 @@ public class GameScene extends Scene {
     public void show() {
         super.show();
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
 
         em = container.getEntityManager();
         cm = container.getCollisionManager();
@@ -91,7 +96,9 @@ public class GameScene extends Scene {
         lich = (Player) em.getEntity("lich");
         
         // add colliders to entities that need collision logic
-        cm.addCollider(p1);
+        cm.addCollider(p1, 50, 50);
+        cm.setCentered(p1);
+        
         cm.addCollider(p2);
         cm.addCollider(lich);
         for(Entity entity: em.getEntities("birdSkull")) {
@@ -124,5 +131,7 @@ public class GameScene extends Scene {
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
         batch.end();
+        // draw collider for debugging purposes
+        cm.drawCollider(shapeRenderer, Color.RED);
     }
 }

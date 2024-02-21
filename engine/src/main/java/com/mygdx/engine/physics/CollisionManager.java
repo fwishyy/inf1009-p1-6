@@ -1,5 +1,8 @@
 package com.mygdx.engine.physics;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
@@ -48,6 +51,12 @@ public class CollisionManager extends Manager {
         col.setEntity(entity);
         this.colliderMap.put(entity, col);
     }
+    
+    public void addCollider(Entity entity, float width, float height) {
+    	Collider col = new Collider(entity, width, height);
+    	col.setEntity(entity);
+    	this.colliderMap.put(entity, col);
+    }
 
     public void removeCollider(Entity entity) {
         this.colliderMap.remove(entity);
@@ -65,6 +74,31 @@ public class CollisionManager extends Manager {
             col.update();
 
         checkCollisions(colliderList);
+    }
+    
+    public void drawCollider(ShapeRenderer shapeRenderer, Color color) {
+    	List<Collider> colliderList = new ArrayList<>(colliderMap.values());
+    	
+    	for (Collider col : colliderList)
+    		col.drawCollider(shapeRenderer, color);
+    }
+    
+    public void setCentered() {
+    	for(Entity entity: colliderMap.keySet()) {
+    		float centerX = entity.getSprite().getX() + entity.getSprite().getWidth() / 2f;
+    		float centerY = entity.getSprite().getX() + entity.getSprite().getHeight() / 2f;
+    		float colWidth = colliderMap.get(entity).getWidth();
+    		float colHeight = colliderMap.get(entity).getHeight();
+    		colliderMap.get(entity).setOffset(new Vector2(centerX - colWidth/2f, colHeight - colHeight/2f));
+    	}
+    }
+    
+    public void setCentered(Entity entity) {
+    	float centerX = entity.getSprite().getX() + entity.getSprite().getWidth() / 2f;
+		float centerY = entity.getSprite().getX() + entity.getSprite().getHeight() / 2f;
+		float colWidth = colliderMap.get(entity).getWidth();
+		float colHeight = colliderMap.get(entity).getHeight();
+    	colliderMap.get(entity).setOffset(new Vector2(centerX - colWidth/2f, colHeight - colHeight/2f));
     }
 
     public void dispose() {
