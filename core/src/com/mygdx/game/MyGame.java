@@ -14,7 +14,7 @@ public class MyGame extends Game {
         mainMenuScene = new MainMenuScene();
         gameScene = new GameScene(container);
         
-//        sceneManager.addScene(mainMenuScene);
+//      sceneManager.addScene(mainMenuScene);
         sceneManager.addScene(gameScene);
         sceneManager.setScene(gameScene);
         

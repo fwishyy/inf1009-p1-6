@@ -46,7 +46,7 @@ public class CollisionEvent {
             if (A == e.getEntityA() && B == e.getEntityB())
                 continue;
             if (A == e.getEntityB() && B == e.getEntityA()) {
-                System.out.println("Redundancy detected");
+//                System.out.println("Redundancy detected");
                 return true;
             }
 

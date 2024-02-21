@@ -14,14 +14,12 @@ public class Collider {
     protected float y;
     private boolean isCollidable;
     private Entity entity;
-    private boolean isCentered;
     private Vector2 offset;
 
     public Collider(Entity entity) {
         this.entity = entity;
         rect = new Rectangle(this.entity.getX(), this.entity.getY(), this.entity.getWidth(), this.entity.getHeight());
         this.isCollidable = true;
-        this.isCentered = false;
         offset = new Vector2();
     }
 
@@ -29,7 +27,6 @@ public class Collider {
     	this.entity = entity;
         rect = new Rectangle(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
         this.isCollidable = isCollidable;
-        this.isCentered = false;
         offset = new Vector2();
     }
     
@@ -37,7 +34,6 @@ public class Collider {
     	this.entity = entity;
     	rect = new Rectangle(entity.getX(), entity.getY(), width, height);
     	this.isCollidable = true;
-    	this.isCentered = false;
     	offset = new Vector2();
     }
 
@@ -50,7 +46,7 @@ public class Collider {
         Rectangle _other = other.getRect();
 
         if (Intersector.overlaps(_curr, _other)) {
-            System.out.println("Collision detected");
+//            System.out.println("Collision detected");
             return true;
         }
         return false;

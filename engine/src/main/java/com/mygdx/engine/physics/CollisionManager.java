@@ -83,28 +83,47 @@ public class CollisionManager extends Manager {
     		col.drawCollider(shapeRenderer, color);
     }
     
-    public void setCentered() {
+    public void setOffset(Vector2 v2) {
     	for(Entity entity: colliderMap.keySet()) {
-    		float centerX = entity.getSprite().getX() + entity.getSprite().getWidth() / 2f;
-    		float centerY = entity.getSprite().getX() + entity.getSprite().getHeight() / 2f;
-    		float colWidth = colliderMap.get(entity).getWidth();
-    		float colHeight = colliderMap.get(entity).getHeight();
-    		colliderMap.get(entity).setOffset(new Vector2(centerX - colWidth/2f, colHeight - colHeight/2f));
+    		colliderMap.get(entity).setOffset(v2);
     	}
     }
     
-    public void setCentered(Entity entity) {
-    	float centerX = entity.getSprite().getX() + entity.getSprite().getWidth() / 2f;
-		float centerY = entity.getSprite().getX() + entity.getSprite().getHeight() / 2f;
-		float colWidth = colliderMap.get(entity).getWidth();
-		float colHeight = colliderMap.get(entity).getHeight();
-    	colliderMap.get(entity).setOffset(new Vector2(centerX - colWidth/2f, colHeight - colHeight/2f));
+    public void setOffset(Vector2 v2, Entity entity) {
+    	colliderMap.get(entity).setOffset(v2);
+    }
+    
+    public Collider getCollider(Entity entity) {
+    	return colliderMap.get(entity);
+    }
+    
+    public ArrayList<Collider> getColliders() {
+    	ArrayList<Collider> colliderList = new ArrayList<>(colliderMap.values());
+    	for (Collider curr : colliderList) {
+    			colliderList.add(curr);
+    	}
+    	return colliderList;
+    }
+    
+    public ArrayList<Collider> getColliders(String type) {
+    	ArrayList<Collider> colliderList = new ArrayList<>(colliderMap.values());
+    	for (Collider curr : colliderList) {
+    		if(curr.getEntity().getType() == type) {
+    			colliderList.add(curr);
+    		}
+    	}
+    	return colliderList;
     }
 
     public void dispose() {
         for (Collider col : colliderMap.values())
             col.dispose();
         colliderMap.clear();
+    }
+    
+    public void dispose(Entity entity) {
+    	colliderMap.get(entity).dispose();
+    	colliderMap.remove(entity);
     }
 
     private void handleEntityDisposed(EntityDisposedEvent e) {

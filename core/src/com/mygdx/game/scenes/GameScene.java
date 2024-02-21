@@ -3,11 +3,14 @@ package com.mygdx.game.scenes;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.actions.Attack;
+import com.mygdx.actions.RunAction;
 import com.mygdx.backgroundsprite.BGSprite;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
@@ -18,6 +21,7 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
+import com.mygdx.player.AnimatedGirl;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
 
@@ -35,11 +39,16 @@ public class GameScene extends Scene {
     private Player p2;
     private Player lich;
     private Player birdSkull;
+    private AnimatedGirl girl;
     private BGSprite crystal;
-    private BGSprite deadArm;
+    private BGSprite skull;
+    private BGSprite field;
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    private RunAction runAction;
+    private Attack attackAction;
+    Player newPlayer;
 
 
 
@@ -60,19 +69,22 @@ public class GameScene extends Scene {
         
         Random random = new Random();
         
+        field = new BGSprite("bg/bg.png", -Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2, "field");
+        em.addEntity(field);
+        
         // Manual creation
         for(int i = 0; i < 5; i++) {
         	float x = random.nextInt(Gdx.graphics.getWidth() - 50);
             float y = random.nextInt(Gdx.graphics.getHeight() - 50);
-            deadArm = new BGSprite("bg/PNG/Objects_separately/Dead_arm_shadow3_1.png", x, y, "arm");
-        	em.addEntity(deadArm);
+            skull = new BGSprite("bg/PNG/Animation5.png", x, y, "skull", 3, 6, 0.1f);
+        	em.addEntity(skull);
         }
         
         // Dynamic creation
         em.createEntity(5, BGSprite.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
         em.createEntity(1, Player.class, "bg/PNG/Objects_separately/Lich_shadow_scaledDown.png", 300, 300, "lich");
         em.createEntity(4, Player.class, "bg/PNG/Objects_separately/Bones_shadow1_17.png", 200, 200, "birdSkull");
-        em.createEntity(1, Player.class, "sprite/Converted_Vampire/Hurt.png", 0, 0, "player1");
+        em.createEntity(1, Player.class, "sprite/Converted_Vampire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
         em.createEntity(1, Player.class, "sprite/Countess_Vampire/Attack_3.png", 0, 400, "player2");
         
         
@@ -92,12 +104,19 @@ public class GameScene extends Scene {
         
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
+        p1.setIsAnimation(false);
         p2 = (Player) em.getEntity("player2");
         lich = (Player) em.getEntity("lich");
         
         // add colliders to entities that need collision logic
-        cm.addCollider(p1, 50, 50);
-        cm.setCentered(p1);
+        // in this case, remember that the current player using a spritesheet, so we have to calculate frame size of the 
+        float width = p1.getWidth() / p1.getFrameCountColumn();
+        float height = p1.getHeight() / p1.getFrameCountRow();
+        cm.addCollider(p1, width/2, height/2);
+        // attempt at centering
+        cm.setOffset(new Vector2(width/2 - cm.getCollider(p1).getWidth()/2, height/2 - cm.getCollider(p1).getHeight()/2), p1);
+        
+
         
         cm.addCollider(p2);
         cm.addCollider(lich);
@@ -120,6 +139,16 @@ public class GameScene extends Scene {
         	bm.addBehaviour(entity, seek);
         }
         
+        // animated sprite
+        em.createEntity(1, AnimatedGirl.class, "sprite/Vampire_Girl/Walk.png", 350, 350, "girl", 1, 6, 0.2f);
+        girl = (AnimatedGirl)em.getEntity("girl");
+        
+        
+        runAction = new RunAction();
+        attackAction = new Attack();
+        
+       newPlayer = new Player("sprite/Converted_Vampire/Attack_1.png", p1.getX(), p1.getY(), "player1", 1, 5, 0.1f);
+//       em.replaceEntity(newPlayer, p1);
     }
 
     @Override
@@ -133,5 +162,9 @@ public class GameScene extends Scene {
         batch.end();
         // draw collider for debugging purposes
         cm.drawCollider(shapeRenderer, Color.RED);
+        
+        
+        runAction.setIsRun(Gdx.input.isKeyPressed(Keys.SPACE));
+        runAction.act(p1);
     }
 }

@@ -9,6 +9,10 @@ public class Player extends Entity {
 
 	private boolean isDead = false;
 	
+	public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
+		super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
+	}
+	
     public Player(String texture, float x, float y, String type) {
         super(texture, x, y, type);
     }
