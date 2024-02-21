@@ -6,8 +6,8 @@ import com.mygdx.engine.actions.MoveByInputAction;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.input.KeyEvent;
+import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.engine.utils.Signal;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,8 +23,9 @@ public class PlayerControlManager extends Manager {
         entityActions = new LinkedHashMap<>();
         addKeyListener(new EventListener<KeyEvent>() {
             @Override
-            public void onSignal(Signal<KeyEvent> signal, KeyEvent e) {
-                handleKeyEvent(e);
+            public void onSignal(Event e) {
+                if (e instanceof KeyEvent)
+                    handleKeyEvent((KeyEvent) e);
             }
         });
     }

@@ -1,7 +1,6 @@
 package com.mygdx.engine.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -294,7 +293,7 @@ public abstract class Entity {
     }
     
     public void dispose() {
-        EntityDisposedEvent.addDisposedEvent(new EntityDisposedEvent(this));
+        EntityDisposedEvent.addEvent(new EntityDisposedEvent(this));
         this.sprite.getTexture().dispose();
         if(this.isAnimation) {
         	for(int row = 0; row < frames.length; row++) {

@@ -38,7 +38,7 @@ public class Collider {
     }
 
     public void onCollide(Collider other) {
-        CollisionEvent.addCollisionEvent(new CollisionEvent(this.entity, other.getEntity()));
+        CollisionEvent.addEvent(new CollisionEvent(this.entity, other.getEntity()));
     }
 
     public boolean isCollide(Collider other) {

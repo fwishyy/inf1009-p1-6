@@ -1,18 +1,17 @@
 package com.mygdx.engine.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
+import com.mygdx.engine.utils.Event;
+import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.engine.utils.Signal;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,15 +22,17 @@ public class EntityManager extends Manager {
 
     public EntityManager() {
         this.entityMap = new LinkedHashMap<>();
+        this.entityMap = new LinkedHashMap<>();
         addEntityDisposedListener(new EventListener<EntityDisposedEvent>() {
             @Override
-            public void onSignal(Signal<EntityDisposedEvent> signal, EntityDisposedEvent e) {
-                handleEntityDisposed(e);
+            public void onSignal(Event e) {
+                handleEntityDisposed((EntityDisposedEvent) e);
             }
         });
     }
 
     public EntityManager(List<Entity> entityList, LinkedHashMap<String, List<Entity>> entityMap) {
+        this();
         this.entityMap = entityMap;
     }
 
@@ -61,17 +62,18 @@ public class EntityManager extends Manager {
             }
         }
     }
-    
+
     /**
      * Creates a new entity on concrete class created via reflection. Concrete class must be able to handle the arguments given for the constructor
-     * @param <T> 			-- type must be a subclass of Entity
-     * @param entityCount	-- the number of new entities to create (E.g 5)
-     * @param c				-- the concrete class that inherits from Entity Class to be created and added to the manager (E.g Player.class)
-     * @param texture		-- path to texture. (E.g "badlogic.png")
-     * @param x				-- x coordinate of obj (E.g 1.0f)
-     * @param y				-- y coordinate of obj (E.g 1.0f)
-     * @param type			-- type of obj (E.g "monster")
-     * @param frameCount	-- number of frames present in the picture 
+     *
+     * @param <T>           -- type must be a subclass of Entity
+     * @param entityCount   -- the number of new entities to create (E.g 5)
+     * @param c             -- the concrete class that inherits from Entity Class to be created and added to the manager (E.g Player.class)
+     * @param texture       -- path to texture. (E.g "badlogic.png")
+     * @param x             -- x coordinate of obj (E.g 1.0f)
+     * @param y             -- y coordinate of obj (E.g 1.0f)
+     * @param type          -- type of obj (E.g "monster")
+     * @param frameCount    -- number of frames present in the picture
      * @param frameDuration -- Duration between each frame (in seconds)
      */
     public <T extends Entity> void createEntity(int entityCount, Class<T> c, String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
@@ -187,7 +189,7 @@ public class EntityManager extends Manager {
         if (newEntity.getType() != oldEntity.getType())
             throw new IllegalArgumentException("new entity and old entity types must be the same");
 
-        
+
         disposeEntities(oldEntity.getType());
         this.entityMap.remove(oldEntity.getType());
         addEntity(newEntity);
@@ -274,11 +276,11 @@ public class EntityManager extends Manager {
      */
     public void draw(SpriteBatch batch) {
         for (Entity entity : getAllEntities()) {
-        	System.out.println("drawing: " + entity.getType());
-        	if(!playAnimation(entity, batch))
-        		entity.draw(batch);
+            System.out.println("drawing: " + entity.getType());
+            if (!playAnimation(entity, batch))
+                entity.draw(batch);
         }
-            
+
     }
 
     /**
@@ -291,8 +293,8 @@ public class EntityManager extends Manager {
         List<Entity> entityList = this.entityMap.get(type);
         for (Entity entity : entityList)
             if (entity.getType() == type)
-            	if(!playAnimation(entity, batch))
-            		entity.draw(batch);
+                if (!playAnimation(entity, batch))
+                    entity.draw(batch);
     }
 
     /**
@@ -306,9 +308,9 @@ public class EntityManager extends Manager {
 
         for (Entity entity : getAllEntities()) {
             Vector2 currEntPos = entity.getVector2();
-            if (currEntPos.dst(targetPosition) <= range) 
-            	if(!playAnimation(entity, batch))
-            		entity.draw(batch);
+            if (currEntPos.dst(targetPosition) <= range)
+                if (!playAnimation(entity, batch))
+                    entity.draw(batch);
         }
     }
 
@@ -317,11 +319,17 @@ public class EntityManager extends Manager {
      */
     public void update() {
         // resolve disposed events first so we don't have floating references
-        EntityDisposedEvent.processDisposedEvents();
-
+        EventBus.processEvents(EntityDisposedEvent.class);
         List<Entity> entityList = getAllEntities();
         for (Entity entity : entityList) {
             entity.update();
+        }
+    }
+
+    private void handleEntityDisposed(EntityDisposedEvent e) {
+        Entity disposedEntity = e.getEntity();
+        for (List<Entity> entityList : entityMap.values()) {
+            entityList.remove(disposedEntity);
         }
     }
 
@@ -367,41 +375,34 @@ public class EntityManager extends Manager {
         }
     }
 
-    private void handleEntityDisposed(EntityDisposedEvent e) {
-        Entity disposedEntity = e.getEntity();
-        for (List<Entity> entityList : entityMap.values()) {
-            entityList.remove(disposedEntity);
-        }
-    }
-    
     private boolean playAnimation(Entity entity, SpriteBatch batch) {
-        
-    	if(!entity.getIsAnimation())
-    		return false;
-    	
-    	boolean lock = false;
-    	int cols = entity.getFrameCountColumn();
-    	int rows = entity.getFrameCountRow();
-    	int width = (int)entity.getWidth();
-    	int height = (int)entity.getHeight();
-    	
-    	// split texture into frames
-    	int frameWidth = width / cols;
-    	int frameHeight = height / rows;	
-    	
-    	int totalFrames = cols * rows;
-    	
-    	// update statetime
-    	entity.setStateTime(entity.getStateTime() + Gdx.graphics.getDeltaTime());
-    	
-    	// Get the current frame based on the state time
-    	int currentFrame = (int) (entity.getStateTime() / entity.getFrameDuration()) % (cols * rows);
+
+        if (!entity.getIsAnimation())
+            return false;
+
+        boolean lock = false;
+        int cols = entity.getFrameCountColumn();
+        int rows = entity.getFrameCountRow();
+        int width = (int) entity.getWidth();
+        int height = (int) entity.getHeight();
+
+        // split texture into frames
+        int frameWidth = width / cols;
+        int frameHeight = height / rows;
+
+        int totalFrames = cols * rows;
+
+        // update statetime
+        entity.setStateTime(entity.getStateTime() + Gdx.graphics.getDeltaTime());
+
+        // Get the current frame based on the state time
+        int currentFrame = (int) (entity.getStateTime() / entity.getFrameDuration()) % (cols * rows);
 
         TextureRegion currentFrameRegion = entity.getFrames()[currentFrame / cols][currentFrame % cols];
         // Draw every frame
         batch.draw(currentFrameRegion, entity.getX(), entity.getY(), frameWidth, frameHeight);
-        
-        
+
+
         return true;
     }
 }

@@ -7,6 +7,7 @@ import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.SceneManager;
 

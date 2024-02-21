@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.engine.Game;
 import com.mygdx.game.scenes.GameScene;
 import com.mygdx.game.scenes.MainMenuScene;
@@ -30,6 +32,8 @@ public class MyGame extends Game {
         sceneManager.getCurrentScene().render(Gdx.graphics.getDeltaTime());
         inputManager.processAllEvents();
         playerControlManager.update();
+        collisionManager.update();
+        collisionManager.drawCollider(new ShapeRenderer(), Color.RED);
     }
 
     @Override
