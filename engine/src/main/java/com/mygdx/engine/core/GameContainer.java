@@ -3,6 +3,7 @@ package com.mygdx.engine.core;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.Game;
 import com.mygdx.engine.audio.AudioManager;
+import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
@@ -19,6 +20,7 @@ public class GameContainer {
     private final PlayerControlManager playerControlManager;
     private final CollisionManager collisionManager;
     private final AudioManager audioManager;
+    private final BehaviourManager behaviourManager;
 
     // Instantiate classes here so we can plug and play whenever we need
     public GameContainer(Game game) {
@@ -29,6 +31,7 @@ public class GameContainer {
         inputManager = new InputManager(Gdx.input);
         playerControlManager = new PlayerControlManager();
         audioManager = new AudioManager();
+        behaviourManager = new BehaviourManager(entityManager);
     }
 
     public Game getParent() {
@@ -59,5 +62,9 @@ public class GameContainer {
     public AudioManager getAudioManager() {
 
         return audioManager;
+    }
+    
+    public BehaviourManager getBehaviourManager() {
+    	return behaviourManager;
     }
 }

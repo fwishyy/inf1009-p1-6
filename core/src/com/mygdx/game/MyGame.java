@@ -6,17 +6,23 @@ import com.mygdx.game.scenes.GameScene;
 import com.mygdx.game.scenes.MainMenuScene;
 
 public class MyGame extends Game {
-
+	MainMenuScene mainMenuScene;
+    GameScene gameScene;
     @Override
     public void create() {
         super.create();
-        MainMenuScene mainMenuScene = new MainMenuScene();
-        GameScene gameScene = new GameScene(container);
+        mainMenuScene = new MainMenuScene();
+        gameScene = new GameScene(container);
+        
+//        sceneManager.addScene(mainMenuScene);
         sceneManager.addScene(gameScene);
         sceneManager.setScene(gameScene);
-        audioManager.addSound("water_drop", "audio/fx/water_drop.wav");
-        audioManager.addMusic("bgm", "audio/music/Hell-Night.mp3");
-        audioManager.play("bgm");
+        
+        
+        
+//        audioManager.addSound("water_drop", "audio/fx/water_drop.wav");
+//        audioManager.addMusic("bgm", "audio/music/Hell-Night.mp3");
+//        audioManager.play("bgm");
     }
 
     @Override

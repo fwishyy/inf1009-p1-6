@@ -10,15 +10,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EntityManager extends Manager {
 
-    private HashMap<String, List<Entity>> entityMap;
+    private LinkedHashMap<String, List<Entity>> entityMap;
 
     public EntityManager() {
-        this.entityMap = new HashMap<>();
+        this.entityMap = new LinkedHashMap<>();
         addEntityDisposedListener(new EventListener<EntityDisposedEvent>() {
             @Override
             public void onSignal(Signal<EntityDisposedEvent> signal, EntityDisposedEvent e) {
@@ -27,7 +28,7 @@ public class EntityManager extends Manager {
         });
     }
 
-    public EntityManager(List<Entity> entityList, HashMap<String, List<Entity>> entityMap) {
+    public EntityManager(List<Entity> entityList, LinkedHashMap<String, List<Entity>> entityMap) {
         this.entityMap = entityMap;
     }
 

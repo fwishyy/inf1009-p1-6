@@ -2,6 +2,7 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.mygdx.engine.audio.AudioManager;
+import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityManager;
@@ -19,7 +20,7 @@ public class Game implements ApplicationListener {
     protected PlayerControlManager playerControlManager;
     protected CollisionManager collisionManager;
     protected AudioManager audioManager;
-
+    protected BehaviourManager behaviourManager;
     @Override
     public void create() {
         // we create game dependencies here because input relies on LibGDX to be initialised
@@ -31,6 +32,7 @@ public class Game implements ApplicationListener {
         this.inputManager = container.getInputManager();
         this.playerControlManager = container.getPlayerControlManager();
         this.audioManager = container.getAudioManager();
+        this.behaviourManager = container.getBehaviourManager();
     }
 
     @Override
