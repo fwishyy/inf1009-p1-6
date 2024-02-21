@@ -45,11 +45,11 @@ public class GameScene extends Scene {
         cm.addCollider(p2);
 
         ActionMap playerControls = new ActionMap();
-        playerControls.addNewBinding(KeyCodes.W, new DirectionalMoveAction(IMoveable.Direction.UP));
-        playerControls.addNewBinding(KeyCodes.A, new DirectionalMoveAction(IMoveable.Direction.LEFT));
-        playerControls.addNewBinding(KeyCodes.S, new DirectionalMoveAction(IMoveable.Direction.DOWN));
-        playerControls.addNewBinding(KeyCodes.D, new DirectionalMoveAction(IMoveable.Direction.RIGHT));
+        playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
+        ActionMap playerControls2 = new ActionMap();
+        playerControls2.add2DMovementBindings(KeyCodes.UP, KeyCodes.LEFT, KeyCodes.DOWN, KeyCodes.RIGHT);
         pm.setActionMap(p1, playerControls);
+        pm.setActionMap(p2, playerControls2);
     }
 
     @Override

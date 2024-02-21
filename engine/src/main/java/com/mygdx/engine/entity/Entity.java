@@ -73,23 +73,23 @@ public abstract class Entity {
         return texture;
     }
 
-    protected float getX() {
+    public float getX() {
         return this.vector2.x;
     }
 
-    protected float getY() {
+    public float getY() {
         return this.vector2.y;
     }
 
-    protected Vector2 getVector2() {
+    public Vector2 getVector2() {
         return this.vector2;
     }
 
-    protected float getWidth() {
+    public float getWidth() {
         return this.width;
     }
 
-    protected float getHeight() {
+    public float getHeight() {
         return this.height;
     }
 
@@ -101,7 +101,7 @@ public abstract class Entity {
         return this.sprite;
     }
 
-    protected void setTexture(String texture) {
+    public void setTexture(String texture) {
         this.texture = null;
         this.texture = new Texture(Gdx.files.internal(texture));
         setWidth(this.texture.getWidth());
@@ -110,12 +110,12 @@ public abstract class Entity {
         this.sprite = new Sprite(this.texture, (int) this.width, (int) this.height);
     }
 
-    protected void setX(float x) {
+    public void setX(float x) {
         this.vector2.x = x;
         this.sprite.setX(x);
     }
 
-    protected void setY(float y) {
+    public void setY(float y) {
         this.vector2.y = y;
         this.sprite.setY(y);
     }
@@ -125,32 +125,32 @@ public abstract class Entity {
         this.sprite.setPosition(vector2.x, vector2.y);
     }
 
-    protected void setPosition(float x, float y) {
+    public void setPosition(float x, float y) {
         this.vector2 = null; // Release previous object
         this.vector2 = new Vector2(x, y);
     }
 
-    protected void setWidth(float width) {
+    public void setWidth(float width) {
         this.width = width;
         this.sprite.setSize(width, this.height);
     }
 
-    protected void setHeight(float height) {
+    public void setHeight(float height) {
         this.height = height;
         this.sprite.setSize(this.width, height);
     }
 
-    protected void setSize(float width, float height) {
+    public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
         this.sprite.setSize(width, height);
     }
 
-    protected void setType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    protected void dispose() {
+    public void dispose() {
         EntityDisposedEvent.addDisposedEvent(new EntityDisposedEvent(this));
         sprite.getTexture().dispose();
         this.texture.dispose();
