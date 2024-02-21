@@ -8,12 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
 
+    protected Sprite sprite;
     private Texture texture;
     private Vector2 vector2;
     private float width;
     private float height;
     private String type;
-    protected Sprite sprite;
 
     protected Entity() {
         this.texture = null;
@@ -73,12 +73,31 @@ public abstract class Entity {
         return texture;
     }
 
+    public void setTexture(String texture) {
+        this.texture = null;
+        this.texture = new Texture(Gdx.files.internal(texture));
+        setWidth(this.texture.getWidth());
+        setHeight(this.texture.getHeight());
+        this.sprite = null;
+        this.sprite = new Sprite(this.texture, (int) this.width, (int) this.height);
+    }
+
     public float getX() {
         return this.vector2.x;
     }
 
+    public void setX(float x) {
+        this.vector2.x = x;
+        this.sprite.setX(x);
+    }
+
     public float getY() {
         return this.vector2.y;
+    }
+
+    public void setY(float y) {
+        this.vector2.y = y;
+        this.sprite.setY(y);
     }
 
     public Vector2 getVector2() {
@@ -89,35 +108,30 @@ public abstract class Entity {
         return this.width;
     }
 
+    public void setWidth(float width) {
+        this.width = width;
+        this.sprite.setSize(width, this.height);
+    }
+
     public float getHeight() {
         return this.height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+        this.sprite.setSize(this.width, height);
     }
 
     public String getType() {
         return this.type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Sprite getSprite() {
         return this.sprite;
-    }
-
-    public void setTexture(String texture) {
-        this.texture = null;
-        this.texture = new Texture(Gdx.files.internal(texture));
-        setWidth(this.texture.getWidth());
-        setHeight(this.texture.getHeight());
-        this.sprite = null;
-        this.sprite = new Sprite(this.texture, (int) this.width, (int) this.height);
-    }
-
-    public void setX(float x) {
-        this.vector2.x = x;
-        this.sprite.setX(x);
-    }
-
-    public void setY(float y) {
-        this.vector2.y = y;
-        this.sprite.setY(y);
     }
 
     public void setPosition(Vector2 vector2) {
@@ -130,24 +144,10 @@ public abstract class Entity {
         this.vector2 = new Vector2(x, y);
     }
 
-    public void setWidth(float width) {
-        this.width = width;
-        this.sprite.setSize(width, this.height);
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-        this.sprite.setSize(this.width, height);
-    }
-
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
         this.sprite.setSize(width, height);
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public void dispose() {

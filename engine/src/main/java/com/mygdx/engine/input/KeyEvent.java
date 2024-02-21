@@ -1,23 +1,21 @@
 package com.mygdx.engine.input;
 
-import java.util.ArrayList;
-
 import com.mygdx.engine.utils.Listener;
 import com.mygdx.engine.utils.Signal;
 
+import java.util.ArrayList;
+
 public class KeyEvent {
+    // Signal Related Stuff
+    private final static Signal<KeyEvent> keyEventSignal = new Signal<>();
+    private final static ArrayList<KeyEvent> keyEvents = new ArrayList<>();
     private final int keyCode;
     private final boolean pressed;
-
     // Default Constructor
     public KeyEvent(int keyCode, boolean pressed) {
         this.keyCode = keyCode;
         this.pressed = pressed;
     }
-
-    // Signal Related Stuff
-    private final static Signal<KeyEvent> keyEventSignal = new Signal<>();
-    private final static ArrayList<KeyEvent> keyEvents = new ArrayList<>();
 
     public static void addKeyListener(Listener<KeyEvent> listener) {
         keyEventSignal.add(listener);

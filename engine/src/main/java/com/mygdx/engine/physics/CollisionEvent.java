@@ -1,28 +1,26 @@
 package com.mygdx.engine.physics;
 
-import java.util.ArrayList;
-
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.utils.Listener;
 import com.mygdx.engine.utils.Signal;
 
+import java.util.ArrayList;
+
 public class CollisionEvent {
-    private Entity entityA;
-    private Entity entityB;
-
-    // Default Constructor
-    public CollisionEvent(Entity entityA, Entity entityB) {
-    	this.entityA = entityA;
-    	this.entityB = entityB;
-    	
-    }
-
     // Signal Related Stuff
     private final static Signal<CollisionEvent> collisionEventSignal = new Signal<>();
     private final static ArrayList<CollisionEvent> collisionEvents = new ArrayList<>();
+    private Entity entityA;
+    private Entity entityB;
+    // Default Constructor
+    public CollisionEvent(Entity entityA, Entity entityB) {
+        this.entityA = entityA;
+        this.entityB = entityB;
+
+    }
 
     public static void addCollisionListener(Listener<CollisionEvent> listener) {
-    		collisionEventSignal.add(listener);
+        collisionEventSignal.add(listener);
     }
 
     public static void removeCollisionListener(Listener<CollisionEvent> listener) {
@@ -30,7 +28,7 @@ public class CollisionEvent {
     }
 
     public static synchronized void addCollisionEvent(CollisionEvent event) {
-    	collisionEvents.add(event);
+        collisionEvents.add(event);
         collisionEventSignal.dispatch(event);
     }
 
@@ -42,6 +40,20 @@ public class CollisionEvent {
         collisionEvents.clear();
     }
 
+    public static boolean checkRedundant(Entity A, Entity B) {
+
+        for (CollisionEvent e : collisionEvents) {
+            if (A == e.getEntityA() && B == e.getEntityB())
+                continue;
+            if (A == e.getEntityB() && B == e.getEntityA()) {
+                System.out.println("Redundancy detected");
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     // Getters
     public Entity getEntityA() {
         return this.entityA;
@@ -49,19 +61,5 @@ public class CollisionEvent {
 
     public Entity getEntityB() {
         return this.entityB;
-    }
-    
-    public static boolean checkRedundant(Entity A, Entity B) {
-    	
-    	for(CollisionEvent e: collisionEvents) {
-    		if(A == e.getEntityA() && B == e.getEntityB())
-    			continue;
-    		if(A == e.getEntityB() && B == e.getEntityA()) {
-    			System.out.println("Redundancy detected");
-    			return true;
-    		}
-    			
-    	}
-    	return false;
     }
 }

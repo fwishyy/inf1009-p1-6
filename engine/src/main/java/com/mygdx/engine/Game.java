@@ -1,14 +1,13 @@
 package com.mygdx.engine;
 
 import com.badlogic.gdx.ApplicationListener;
-
 import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.controls.PlayerControlManager;
+import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.SceneManager;
-import com.mygdx.engine.core.GameContainer;
 
 // generic instance of a game
 public class Game implements ApplicationListener {

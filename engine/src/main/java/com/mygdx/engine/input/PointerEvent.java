@@ -6,10 +6,9 @@ import com.mygdx.engine.utils.Signal;
 import java.util.ArrayList;
 
 public class PointerEvent {
-    public enum Type {
-        DOWN, UP, HOVER
-    }
-
+    // Static Members
+    private final static Signal<PointerEvent> pointerSignal = new Signal<>();
+    private static ArrayList<PointerEvent> pointerEvents = new ArrayList<>();
     private final float screenX;
     private final float screenY;
     private final Type type;
@@ -23,15 +22,6 @@ public class PointerEvent {
         this.button = button;
         this.handled = false;
     }
-
-    protected void handle() {
-        this.handled = true;
-    }
-
-    // Static Members
-    private final static Signal<PointerEvent> pointerSignal = new Signal<>();
-
-    private static ArrayList<PointerEvent> pointerEvents = new ArrayList<>();
 
     public static void addPointerListener(Listener<PointerEvent> listener) {
         pointerSignal.add(listener);
@@ -54,6 +44,10 @@ public class PointerEvent {
         pointerEvents.clear();
     }
 
+    protected void handle() {
+        this.handled = true;
+    }
+
     public float getScreenX() {
         return this.screenX;
     }
@@ -64,5 +58,9 @@ public class PointerEvent {
 
     public Type getType() {
         return this.type;
+    }
+
+    public enum Type {
+        DOWN, UP, HOVER
     }
 }

@@ -9,14 +9,14 @@ import com.mygdx.engine.entity.Entity;
  */
 
 public interface Behaviour {
-	
-	/**
+
+    /**
      * Update the state of the given entity based on the behaviour's logic.
-     * 
-     * @param entity The entity whose state is to be updated.
+     *
+     * @param entity    The entity whose state is to be updated.
      * @param deltaTime The time in seconds since the last update. This is used to ensure
      *                  that the behaviour's logic is frame-rate independent.
      */
-	
+
     void update(Entity entity, float deltaTime);
 }

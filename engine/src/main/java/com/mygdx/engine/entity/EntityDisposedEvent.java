@@ -6,16 +6,14 @@ import com.mygdx.engine.utils.Signal;
 import java.util.ArrayList;
 
 public class EntityDisposedEvent {
+    // Signal Related Stuff
+    private final static Signal<EntityDisposedEvent> disposedSignal = new Signal<>();
+    private final static ArrayList<EntityDisposedEvent> disposedEvents = new ArrayList<>();
     private Entity entity;
-
     // Default Constructor
     public EntityDisposedEvent(Entity entity) {
         this.entity = entity;
     }
-
-    // Signal Related Stuff
-    private final static Signal<EntityDisposedEvent> disposedSignal = new Signal<>();
-    private final static ArrayList<EntityDisposedEvent> disposedEvents = new ArrayList<>();
 
     public static void addDisposedListener(Listener<EntityDisposedEvent> listener) {
         disposedSignal.add(listener);

@@ -1,6 +1,5 @@
 package com.mygdx.engine.controls;
 
-import com.badlogic.gdx.Input;
 import com.mygdx.engine.actions.GameAction;
 import com.mygdx.engine.actions.MoveByInputAction;
 

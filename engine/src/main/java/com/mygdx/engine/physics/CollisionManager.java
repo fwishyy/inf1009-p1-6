@@ -1,13 +1,15 @@
 package com.mygdx.engine.physics;
 
-import java.util.*;
-
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
+import com.mygdx.engine.entity.Collider;
+import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityDisposedEvent;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.engine.utils.Signal;
-import com.mygdx.engine.entity.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CollisionManager extends Manager {
 

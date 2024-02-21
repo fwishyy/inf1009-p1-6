@@ -1,16 +1,17 @@
 package com.mygdx.engine.entity;
 
-import java.util.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.stream.Collectors;
-import java.util.HashMap;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.engine.utils.Signal;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityManager extends Manager {
 
@@ -107,7 +108,7 @@ public class EntityManager extends Manager {
             }
         }
     }
-    
+
     /**
      * Creates a new entity on concrete class created via reflection. Concrete class must be able to handle the arguments given for the constructor
      *
@@ -131,7 +132,7 @@ public class EntityManager extends Manager {
             }
         }
     }
-    
+
     /**
      * Adds an entity object into the manager
      *

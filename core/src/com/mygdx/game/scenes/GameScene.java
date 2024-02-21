@@ -1,18 +1,15 @@
 package com.mygdx.game.scenes;
 
-import java.util.List;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.core.GameContainer;
+import com.mygdx.engine.entity.EntityManager;
+import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.player.Player;
-
-import com.mygdx.engine.entity.*;
-import com.mygdx.engine.physics.CollisionManager;
 
 public class GameScene extends Scene {
 

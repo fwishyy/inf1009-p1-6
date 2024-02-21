@@ -1,9 +1,9 @@
 package com.mygdx.engine.core;
 
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.mygdx.engine.entity.EntityDisposedEvent;
 import com.mygdx.engine.input.KeyEvent;
 import com.mygdx.engine.input.PointerEvent;
-import com.mygdx.engine.entity.EntityDisposedEvent;
 import com.mygdx.engine.physics.CollisionEvent;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.engine.utils.Listener;
@@ -25,6 +25,7 @@ public abstract class Manager {
         listeners.add(listener);
         KeyEvent.addKeyListener(listener);
     }
+
     protected void addCollisionListener(Listener<CollisionEvent> listener) {
         CollisionEvent.addCollisionListener(listener);
     }

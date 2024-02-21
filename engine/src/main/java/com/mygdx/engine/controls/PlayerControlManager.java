@@ -1,11 +1,6 @@
 package com.mygdx.engine.controls;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.engine.actions.GameAction;
 import com.mygdx.engine.actions.MoveByInputAction;
 import com.mygdx.engine.core.Manager;
@@ -14,7 +9,6 @@ import com.mygdx.engine.input.KeyEvent;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.engine.utils.Signal;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
