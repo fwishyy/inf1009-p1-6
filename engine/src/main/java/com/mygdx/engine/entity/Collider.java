@@ -1,5 +1,7 @@
 package com.mygdx.engine.entity;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,7 +25,7 @@ public class Collider {
     }
 
     public void onCollide(Collider other) {
-        CollisionEvent.addCollisionEvent(new CollisionEvent(this.entity, other.getEntity()));
+        CollisionEvent.addEvent(new CollisionEvent(this.entity, other.getEntity()));
     }
 
     public boolean isCollide(Collider other) {
@@ -102,5 +104,12 @@ public class Collider {
     public void dispose() {
         this.entity = null;
         this.rect = null;
+    }
+
+    public void drawCollider(ShapeRenderer shapeRenderer, Color color) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(this.rect.getX(), this.rect.getY(), this.rect.getWidth(), this.rect.getHeight()); // x, y, width, height
+        shapeRenderer.end();
     }
 }

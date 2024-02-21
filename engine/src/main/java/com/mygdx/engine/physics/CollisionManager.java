@@ -1,11 +1,14 @@
 package com.mygdx.engine.physics;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityDisposedEvent;
+import com.mygdx.engine.utils.Event;
+import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.engine.utils.Signal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,31 +19,29 @@ public class CollisionManager extends Manager {
     HashMap<Entity, Collider> colliderMap;
 
     public CollisionManager() {
-        addCollisionListener(new EventListener<CollisionEvent>() {
-            @Override
-            public void onSignal(Signal<CollisionEvent> signal, CollisionEvent e) {
-                resolveCollision(e);
-            }
-        });
+
+        colliderMap = new HashMap<>();
 
         addEntityDisposedListener(new EventListener<EntityDisposedEvent>() {
             @Override
-            public void onSignal(Signal<EntityDisposedEvent> signal, EntityDisposedEvent e) {
-                handleEntityDisposed(e);
+            public void onSignal(Event e) {
+                handleEntityDisposed((EntityDisposedEvent) e);
             }
         });
-
-        colliderMap = new HashMap<>();
+        addCollisionListener(new EventListener<CollisionEvent>() {
+            @Override
+            public void onSignal(Event e) {
+                if (e instanceof CollisionEvent)
+                    resolveCollision((CollisionEvent) e);
+            }
+        });
     }
 
     private void resolveCollision(CollisionEvent e) {
-        //TODO: resolve collisions here
-//    	System.out.println("A: " + e.getEntityA().getType() + " B: " + e.getEntityB().getType());
         Collider colA = this.colliderMap.get(e.getEntityA());
         Collider colB = this.colliderMap.get(e.getEntityB());
         e.getEntityA().collide(colB);
         e.getEntityB().collide(colA);
-
     }
 
     public void addCollider(Entity entity) {
@@ -65,19 +66,22 @@ public class CollisionManager extends Manager {
             col.update();
 
         checkCollisions(colliderList);
+        EventBus.processEvents(CollisionEvent.class);
+    }
+
+    private void handleEntityDisposed(EntityDisposedEvent e) {
+        Entity entity = e.getEntity();
+        Collider collider = colliderMap.get(entity);
+        if(collider != null){
+            collider.dispose();
+            colliderMap.remove(entity);
+        }
     }
 
     public void dispose() {
         for (Collider col : colliderMap.values())
             col.dispose();
         colliderMap.clear();
-    }
-
-    private void handleEntityDisposed(EntityDisposedEvent e) {
-        Entity entity = e.getEntity();
-        Collider collider = colliderMap.get(entity);
-        collider.dispose();
-        colliderMap.remove(entity);
     }
 
     private void checkCollisions(List<Collider> colliderList) {
@@ -89,9 +93,15 @@ public class CollisionManager extends Manager {
                 if (curr.getIsCollidable() == false || other.getIsCollidable() == false)
                     continue;
                 if (curr.isCollide(other))
-                    if (CollisionEvent.checkRedundant(curr.getEntity(), other.getEntity()) == false)
-                        curr.onCollide(other);
+                    curr.onCollide(other);
             }
         }
+    }
+
+    public void drawCollider(ShapeRenderer shapeRenderer, Color color) {
+        List<Collider> colliderList = new ArrayList<>(colliderMap.values());
+
+        for (Collider col : colliderList)
+            col.drawCollider(shapeRenderer, color);
     }
 }

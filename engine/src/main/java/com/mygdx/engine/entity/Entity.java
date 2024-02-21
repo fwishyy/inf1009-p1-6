@@ -151,8 +151,8 @@ public abstract class Entity {
     }
 
     public void dispose() {
-        EntityDisposedEvent.addDisposedEvent(new EntityDisposedEvent(this));
         sprite.getTexture().dispose();
         this.texture.dispose();
+        EntityDisposedEvent.addEvent(new EntityDisposedEvent(this));
     }
 }

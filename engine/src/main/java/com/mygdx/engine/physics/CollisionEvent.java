@@ -1,60 +1,37 @@
 package com.mygdx.engine.physics;
 
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.utils.Listener;
-import com.mygdx.engine.utils.Signal;
+import com.mygdx.engine.utils.Event;
+import com.mygdx.engine.utils.EventBus;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class CollisionEvent {
-    // Signal Related Stuff
-    private final static Signal<CollisionEvent> collisionEventSignal = new Signal<>();
-    private final static ArrayList<CollisionEvent> collisionEvents = new ArrayList<>();
-    private Entity entityA;
-    private Entity entityB;
-    // Default Constructor
+public class CollisionEvent extends Event {
+
+    private final Entity entityA;
+    private final Entity entityB;
+
     public CollisionEvent(Entity entityA, Entity entityB) {
         this.entityA = entityA;
         this.entityB = entityB;
-
     }
 
-    public static void addCollisionListener(Listener<CollisionEvent> listener) {
-        collisionEventSignal.add(listener);
-    }
-
-    public static void removeCollisionListener(Listener<CollisionEvent> listener) {
-        collisionEventSignal.remove(listener);
-    }
-
-    public static synchronized void addCollisionEvent(CollisionEvent event) {
-        collisionEvents.add(event);
-        collisionEventSignal.dispatch(event);
-    }
-
-    public static synchronized void processCollisionEvents() {
-        for (CollisionEvent k : collisionEvents) {
-            collisionEventSignal.dispatch(k);
-        }
-        // Clear the list
-        collisionEvents.clear();
-    }
-
-    public static boolean checkRedundant(Entity A, Entity B) {
-
-        for (CollisionEvent e : collisionEvents) {
-            if (A == e.getEntityA() && B == e.getEntityB())
-                continue;
-            if (A == e.getEntityB() && B == e.getEntityA()) {
-                System.out.println("Redundancy detected");
-                return true;
+    public static void addEvent(CollisionEvent newCollisionEvent) {
+        List<Event> collisionEvents = EventBus.getEventByType(CollisionEvent.class);
+        Entity A = newCollisionEvent.getEntityA();
+        Entity B = newCollisionEvent.getEntityB();
+        if (collisionEvents != null) {
+            for (Event e : collisionEvents) {
+                CollisionEvent collisionEvent = (CollisionEvent) e;
+                if ((A == collisionEvent.getEntityA() && B == collisionEvent.getEntityB()) || (A == collisionEvent.getEntityB()) && B == collisionEvent.getEntityA()) {
+                    return;
+                }
             }
-
         }
-        return false;
+
+        EventBus.addEvent(newCollisionEvent);
     }
 
-    // Getters
     public Entity getEntityA() {
         return this.entityA;
     }

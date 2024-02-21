@@ -7,8 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.engine.core.GameContainer;
-import com.mygdx.engine.input.PointerEvent;
-import com.mygdx.engine.utils.Listener;
 
 // Generic Scene class
 public class Scene extends ScreenAdapter {
@@ -39,11 +37,5 @@ public class Scene extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-    }
-
-    public void addPointerListener() {
-        if (this instanceof Listener) {
-            PointerEvent.addPointerListener((Listener<PointerEvent>) this);
-        }
     }
 }

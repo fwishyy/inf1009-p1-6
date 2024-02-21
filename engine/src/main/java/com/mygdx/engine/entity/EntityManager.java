@@ -3,13 +3,13 @@ package com.mygdx.engine.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
+import com.mygdx.engine.utils.Event;
+import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.engine.utils.Signal;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,15 +20,17 @@ public class EntityManager extends Manager {
 
     public EntityManager() {
         this.entityMap = new LinkedHashMap<>();
+        this.entityMap = new LinkedHashMap<>();
         addEntityDisposedListener(new EventListener<EntityDisposedEvent>() {
             @Override
-            public void onSignal(Signal<EntityDisposedEvent> signal, EntityDisposedEvent e) {
-                handleEntityDisposed(e);
+            public void onSignal(Event e) {
+                handleEntityDisposed((EntityDisposedEvent) e);
             }
         });
     }
 
     public EntityManager(List<Entity> entityList, LinkedHashMap<String, List<Entity>> entityMap) {
+        this();
         this.entityMap = entityMap;
     }
 
@@ -276,11 +278,17 @@ public class EntityManager extends Manager {
      */
     public void update() {
         // resolve disposed events first so we don't have floating references
-        EntityDisposedEvent.processDisposedEvents();
-
+        EventBus.processEvents(EntityDisposedEvent.class);
         List<Entity> entityList = getAllEntities();
         for (Entity entity : entityList) {
             entity.update();
+        }
+    }
+
+    private void handleEntityDisposed(EntityDisposedEvent e) {
+        Entity disposedEntity = e.getEntity();
+        for (List<Entity> entityList : entityMap.values()) {
+            entityList.remove(disposedEntity);
         }
     }
 
@@ -323,13 +331,6 @@ public class EntityManager extends Manager {
         List<Entity> entityList = this.entityMap.get(type);
         for (Entity e : entityList) {
             e.dispose();
-        }
-    }
-
-    private void handleEntityDisposed(EntityDisposedEvent e) {
-        Entity disposedEntity = e.getEntity();
-        for (List<Entity> entityList : entityMap.values()) {
-            entityList.remove(disposedEntity);
         }
     }
 }
