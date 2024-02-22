@@ -76,7 +76,7 @@ public class EntityManager extends Manager {
      * @param frameCount    -- number of frames present in the picture
      * @param frameDuration -- Duration between each frame (in seconds)
      */
-    public <T extends Entity> void createEntity(int entityCount, Class<T> c, String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
+    public <T extends AnimatedEntity> void createEntity(int entityCount, Class<T> c, String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         for (int i = 0; i < entityCount; i++) {
             try {
                 // Constructor arguments expected in the concrete class
@@ -264,7 +264,14 @@ public class EntityManager extends Manager {
         return entityMap.get(type);
     }
 
-
+    /**
+     * Entity with a unique tag will be stored as the first element in the list.
+     * Optionally, this also allows user to retrieve the first 
+     * stored instance of that entity if there is more than 1.
+     * 
+     * @param type -- entity type (E.g "monster")
+     * @return Entity
+     */
     public Entity getEntity(String type) {
         return entityMap.get(type).get(0);
     }
@@ -277,7 +284,7 @@ public class EntityManager extends Manager {
     public void draw(SpriteBatch batch) {
         for (Entity entity : getAllEntities()) {
             System.out.println("drawing: " + entity.getType());
-            if (!playAnimation(entity, batch))
+//            if (!playAnimation(entity, batch))
                 entity.draw(batch);
         }
 
@@ -293,7 +300,7 @@ public class EntityManager extends Manager {
         List<Entity> entityList = this.entityMap.get(type);
         for (Entity entity : entityList)
             if (entity.getType() == type)
-                if (!playAnimation(entity, batch))
+//                if (!playAnimation(entity, batch))
                     entity.draw(batch);
     }
 
@@ -309,7 +316,7 @@ public class EntityManager extends Manager {
         for (Entity entity : getAllEntities()) {
             Vector2 currEntPos = entity.getVector2();
             if (currEntPos.dst(targetPosition) <= range)
-                if (!playAnimation(entity, batch))
+//                if (!playAnimation(entity, batch))
                     entity.draw(batch);
         }
     }
@@ -375,34 +382,5 @@ public class EntityManager extends Manager {
         }
     }
 
-    private boolean playAnimation(Entity entity, SpriteBatch batch) {
-
-        if (!entity.getIsAnimation())
-            return false;
-
-        boolean lock = false;
-        int cols = entity.getFrameCountColumn();
-        int rows = entity.getFrameCountRow();
-        int width = (int) entity.getWidth();
-        int height = (int) entity.getHeight();
-
-        // split texture into frames
-        int frameWidth = width / cols;
-        int frameHeight = height / rows;
-
-        int totalFrames = cols * rows;
-
-        // update statetime
-        entity.setStateTime(entity.getStateTime() + Gdx.graphics.getDeltaTime());
-
-        // Get the current frame based on the state time
-        int currentFrame = (int) (entity.getStateTime() / entity.getFrameDuration()) % (cols * rows);
-
-        TextureRegion currentFrameRegion = entity.getFrames()[currentFrame / cols][currentFrame % cols];
-        // Draw every frame
-        batch.draw(currentFrameRegion, entity.getX(), entity.getY(), frameWidth, frameHeight);
-
-
-        return true;
-    }
+    
 }
