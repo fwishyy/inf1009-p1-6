@@ -3,8 +3,10 @@ package com.mygdx.game.scenes;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.scenes.Scene;
+import com.mygdx.engine.scenes.SceneManager;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
@@ -15,6 +17,12 @@ public class LoseScene extends Scene {
     private Texture bgTexture;
     private TextureRegionDrawable bgTextureDrawable;
     private EventListener<PointerEvent> pointerEventListener;
+    private SceneManager sceneManager;
+
+    public LoseScene(GameContainer container) {
+        super(container);
+        sceneManager = container.getSceneManager();
+    }
 
     @Override
     public void show() {
@@ -41,7 +49,7 @@ public class LoseScene extends Scene {
         PointerEvent.Type type = e.getType();
 
         if (type == PointerEvent.Type.UP) {
-            // TODO: add restart here
+            sceneManager.setScene(new MainMenuScene(container));
         }
     }
 

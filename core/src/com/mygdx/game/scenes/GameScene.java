@@ -197,7 +197,7 @@ public class GameScene extends Scene {
 
     private void onLose() {
         System.out.println("LOSE");
-        sm.setScene(new LoseScene());
+        sm.setScene(new LoseScene(container));
 
         runAction.setIsRun(Gdx.input.isKeyPressed(Keys.SPACE));
         runAction.act(p1);
