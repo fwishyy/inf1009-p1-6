@@ -18,6 +18,7 @@ public class SceneManager extends Manager {
 
         if (currentScene != null) {
             currentScene.dispose();
+            scenes.remove(currentScene);
         }
         currentScene = scene;
         currentScene.show();

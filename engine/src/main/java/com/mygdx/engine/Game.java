@@ -21,6 +21,7 @@ public class Game implements ApplicationListener {
     protected CollisionManager collisionManager;
     protected AudioManager audioManager;
     protected BehaviourManager behaviourManager;
+
     @Override
     public void create() {
         // we create game dependencies here because input relies on LibGDX to be initialised

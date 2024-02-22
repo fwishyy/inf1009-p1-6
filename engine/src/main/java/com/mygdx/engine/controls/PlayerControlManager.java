@@ -86,4 +86,9 @@ public class PlayerControlManager extends Manager {
             }
         }
     }
+
+    public void dispose() {
+        heldKeys.clear();
+        entityActions.clear();
+    }
 }

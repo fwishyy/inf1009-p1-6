@@ -9,13 +9,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.engine.core.GameContainer;
 
 // Generic Scene class
-public class Scene extends ScreenAdapter {
+public abstract class Scene extends ScreenAdapter {
 
     protected OrthographicCamera camera;
     protected Viewport viewport;
     protected SpriteBatch batch;
     protected Stage stage;
     protected GameContainer container;
+    private State state;
+    private SceneManager sceneManager;
 
     // TODO: implement show, hide, pause, resume methods (for now testing the rendering and handling of buttons)
     public Scene() {
@@ -28,6 +30,7 @@ public class Scene extends ScreenAdapter {
     public Scene(GameContainer container) {
         this();
         this.container = container;
+        sceneManager = container.getSceneManager();
     }
 
     @Override
@@ -37,5 +40,13 @@ public class Scene extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
+    }
+
+    public enum State {
+        LOADING, RUNNING, PAUSED, UNLOADING
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }

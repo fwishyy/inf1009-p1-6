@@ -2,6 +2,7 @@ package com.mygdx.player;
 
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.events.WinEvent;
 
 public class AnimatedGirl extends Entity{
 	public AnimatedGirl(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
@@ -10,7 +11,8 @@ public class AnimatedGirl extends Entity{
 
 	@Override
 	public void collide(Collider other) {
-		// TODO Auto-generated method stub
-		
+		if (other.getEntity().getType().equals("player1")) {
+			this.dispose();
+		}
 	}
 }

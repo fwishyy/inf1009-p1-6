@@ -7,7 +7,6 @@ import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
-import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.SceneManager;
 
@@ -15,13 +14,13 @@ import com.mygdx.engine.scenes.SceneManager;
 // TODO: maybe turn this into a dependency injector
 public class GameContainer {
     private final Game parent;
-    private final EntityManager entityManager;
-    private final SceneManager sceneManager;
-    private final InputManager inputManager;
-    private final PlayerControlManager playerControlManager;
-    private final CollisionManager collisionManager;
-    private final AudioManager audioManager;
-    private final BehaviourManager behaviourManager;
+    private EntityManager entityManager;
+    private SceneManager sceneManager;
+    private InputManager inputManager;
+    private PlayerControlManager playerControlManager;
+    private CollisionManager collisionManager;
+    private AudioManager audioManager;
+    private BehaviourManager behaviourManager;
 
     // Instantiate classes here so we can plug and play whenever we need
     public GameContainer(Game game) {
@@ -64,8 +63,36 @@ public class GameContainer {
 
         return audioManager;
     }
-    
+
     public BehaviourManager getBehaviourManager() {
-    	return behaviourManager;
+        return behaviourManager;
+    }
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public void setInputManager(InputManager inputManager) {
+        this.inputManager = inputManager;
+    }
+
+    public void setPlayerControlManager(PlayerControlManager playerControlManager) {
+        this.playerControlManager = playerControlManager;
+    }
+
+    public void setAudioManager(AudioManager audioManager) {
+        this.audioManager = audioManager;
+    }
+
+    public void setCollisionManager(CollisionManager collisionManager) {
+        this.collisionManager = collisionManager;
+    }
+
+    public void setBehaviourManager(BehaviourManager behaviourManager) {
+        this.behaviourManager = behaviourManager;
     }
 }
