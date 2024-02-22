@@ -38,17 +38,13 @@ public class GameScene extends Scene {
     private Player p1;
     private Player p2;
     private Player lich;
-    private Player birdSkull;
     private AnimatedGirl girl;
-    private BGSprite crystal;
     private BGSprite skull;
     private BGSprite field;
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private RunAction runAction;
-    private Attack attackAction;
-    Player newPlayer;
 
 
 
@@ -145,10 +141,6 @@ public class GameScene extends Scene {
         
         
         runAction = new RunAction();
-        attackAction = new Attack();
-        
-       newPlayer = new Player("sprite/Converted_Vampire/Attack_1.png", p1.getX(), p1.getY(), "player1", 1, 5, 0.1f);
-//       em.replaceEntity(newPlayer, p1);
     }
 
     @Override
@@ -163,8 +155,23 @@ public class GameScene extends Scene {
         // draw collider for debugging purposes
         cm.drawCollider(shapeRenderer, Color.RED);
         
-        
         runAction.setIsRun(Gdx.input.isKeyPressed(Keys.SPACE));
         runAction.act(p1);
+    }
+    
+    public void dispose() {
+    	cm.dispose();
+    	em.dispose();
+    	batch.dispose();
+    	
+    	runAction = null;
+    	shapeRenderer = null;
+    	seek = null;
+    	field = null;
+    	skull = null;
+    	girl = null;
+    	lich = null;
+    	p2 = null;
+    	p1 = null;
     }
 }
