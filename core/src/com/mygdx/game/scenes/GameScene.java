@@ -47,9 +47,7 @@ public class GameScene extends Scene {
     private Player p1;
     private Player p2;
     private Player lich;
-    private Player birdSkull;
     private AnimatedGirl girl;
-    private BGSprite crystal;
     private BGSprite skull;
     private BGSprite field;
     private SeekBehaviour seek;
@@ -57,7 +55,6 @@ public class GameScene extends Scene {
     private ShapeRenderer shapeRenderer;
     private RunAction runAction;
     private Attack attackAction;
-    Player newPlayer;
 
     EventListener<WinEvent> winEventListener;
     EventListener<LoseEvent> loseEventListener;
@@ -170,9 +167,7 @@ public class GameScene extends Scene {
 
         runAction = new RunAction();
         attackAction = new Attack();
-
-        newPlayer = new Player("sprite/Converted_Vampire/Attack_1.png", p1.getX(), p1.getY(), "player1", 1, 5, 0.1f);
-//       em.replaceEntity(newPlayer, p1);
+        Player newPlayer = new Player("sprite/Converted_Vampire/Attack_1.png", p1.getX(), p1.getY(), "player1", 1, 5, 0.1f);
     }
 
     @Override
@@ -187,20 +182,12 @@ public class GameScene extends Scene {
         pm.update();
         // draw collider for debugging purposes
         cm.drawCollider(shapeRenderer, Color.RED);
+
         EventBus.processEvents(WinEvent.class);
         EventBus.processEvents(LoseEvent.class);
 
-
         runAction.setIsRun(Gdx.input.isKeyPressed(Keys.SPACE));
         runAction.act(p1);
-    }
-
-    @Override
-    public void dispose() {
-        em.dispose();
-        pm.dispose();
-        EventBus.removeListener(winEventListener);
-        EventBus.removeListener(loseEventListener);
     }
 
     private void onWin() {
@@ -211,5 +198,18 @@ public class GameScene extends Scene {
     private void onLose() {
         System.out.println("LOSE");
         sm.setScene(new LoseScene());
+
+        runAction.setIsRun(Gdx.input.isKeyPressed(Keys.SPACE));
+        runAction.act(p1);
+    }
+
+    @Override
+    public void dispose() {
+    	cm.dispose();
+    	em.dispose();
+    	batch.dispose();
+
+        EventBus.removeListener(winEventListener);
+        EventBus.removeListener(loseEventListener);
     }
 }
