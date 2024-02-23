@@ -28,6 +28,10 @@ public class SceneManager extends Manager {
         scenes.push(scene);
     }
 
+    public void popScene(Scene scene) {
+        scenes.pop();
+    }
+
     public Scene getCurrentScene() {
         return currentScene;
     }

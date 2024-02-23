@@ -15,7 +15,7 @@ public abstract class Entity {
     protected float width;
     protected float height;
     protected String type;
-    
+
 
     protected Entity() {
         this.texture = null;
@@ -34,7 +34,7 @@ public abstract class Entity {
         this.type = type;
         this.sprite = new Sprite(this.texture);
     }
-    
+
     protected Entity(float x, float y, String type) {
         this.texture = null;
         this.vector2 = new Vector2(x, y);
@@ -54,7 +54,7 @@ public abstract class Entity {
     }
 
     protected Entity(String texture) {
-    	this.texture = new TextureRegion(new Texture(Gdx.files.internal(texture)));
+        this.texture = new TextureRegion(new Texture(Gdx.files.internal(texture)));
         this.vector2 = new Vector2();
         this.width = this.texture.getRegionWidth();
         this.height = this.texture.getRegionHeight();
@@ -151,7 +151,7 @@ public abstract class Entity {
         this.height = height;
         this.sprite.setSize(width, height);
     }
-    
+
     public void dispose() {
         EntityDisposedEvent.addEvent(new EntityDisposedEvent(this));
         this.sprite.getTexture().dispose();

@@ -50,11 +50,11 @@ public class CollisionManager extends Manager {
         col.setEntity(entity);
         this.colliderMap.put(entity, col);
     }
-    
+
     public void addCollider(Entity entity, float width, float height) {
-    	Collider col = new Collider(entity, width, height);
-    	col.setEntity(entity);
-    	this.colliderMap.put(entity, col);
+        Collider col = new Collider(entity, width, height);
+        col.setEntity(entity);
+        this.colliderMap.put(entity, col);
     }
 
     public void removeCollider(Entity entity) {
@@ -79,49 +79,49 @@ public class CollisionManager extends Manager {
     private void handleEntityDisposed(EntityDisposedEvent e) {
         Entity entity = e.getEntity();
         Collider collider = colliderMap.get(entity);
-        if(collider != null){
+        if (collider != null) {
             collider.dispose();
             colliderMap.remove(entity);
         }
     }
-    
+
     public void drawCollider(ShapeRenderer shapeRenderer, Color color) {
-    	List<Collider> colliderList = new ArrayList<>(colliderMap.values());
-    	
-    	for (Collider col : colliderList)
-    		col.drawCollider(shapeRenderer, color);
+        List<Collider> colliderList = new ArrayList<>(colliderMap.values());
+
+        for (Collider col : colliderList)
+            col.drawCollider(shapeRenderer, color);
     }
-    
+
     public void setOffset(Vector2 v2) {
-    	for(Entity entity: colliderMap.keySet()) {
-    		colliderMap.get(entity).setOffset(v2);
-    	}
+        for (Entity entity : colliderMap.keySet()) {
+            colliderMap.get(entity).setOffset(v2);
+        }
     }
-    
+
     public void setOffset(Vector2 v2, Entity entity) {
-    	colliderMap.get(entity).setOffset(v2);
+        colliderMap.get(entity).setOffset(v2);
     }
-    
+
     public Collider getCollider(Entity entity) {
-    	return colliderMap.get(entity);
+        return colliderMap.get(entity);
     }
-    
+
     public ArrayList<Collider> getColliders() {
-    	ArrayList<Collider> colliderList = new ArrayList<>(colliderMap.values());
-    	for (Collider curr : colliderList) {
-    			colliderList.add(curr);
-    	}
-    	return colliderList;
+        ArrayList<Collider> colliderList = new ArrayList<>(colliderMap.values());
+        for (Collider curr : colliderList) {
+            colliderList.add(curr);
+        }
+        return colliderList;
     }
-    
+
     public ArrayList<Collider> getColliders(String type) {
-    	ArrayList<Collider> colliderList = new ArrayList<>(colliderMap.values());
-    	for (Collider curr : colliderList) {
-    		if(curr.getEntity().getType() == type) {
-    			colliderList.add(curr);
-    		}
-    	}
-    	return colliderList;
+        ArrayList<Collider> colliderList = new ArrayList<>(colliderMap.values());
+        for (Collider curr : colliderList) {
+            if (curr.getEntity().getType() == type) {
+                colliderList.add(curr);
+            }
+        }
+        return colliderList;
     }
 
     public void dispose() {
@@ -129,10 +129,10 @@ public class CollisionManager extends Manager {
             col.dispose();
         colliderMap.clear();
     }
-    
+
     public void dispose(Entity entity) {
-    	colliderMap.get(entity).dispose();
-    	colliderMap.remove(entity);
+        colliderMap.get(entity).dispose();
+        colliderMap.remove(entity);
     }
 
     private void checkCollisions(List<Collider> colliderList) {

@@ -15,6 +15,7 @@ public class CollisionEvent extends Event {
         this.entityA = entityA;
         this.entityB = entityB;
     }
+
     public static void addEvent(CollisionEvent newCollisionEvent) {
         List<Event> collisionEvents = EventBus.getEventByType(CollisionEvent.class);
         Entity A = newCollisionEvent.getEntityA();

@@ -24,17 +24,17 @@ public class Collider {
     }
 
     public Collider(Entity entity, boolean isCollidable) {
-    	this.entity = entity;
+        this.entity = entity;
         rect = new Rectangle(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
         this.isCollidable = isCollidable;
         offset = new Vector2();
     }
-    
+
     public Collider(Entity entity, float width, float height) {
-    	this.entity = entity;
-    	rect = new Rectangle(entity.getX(), entity.getY(), width, height);
-    	this.isCollidable = true;
-    	offset = new Vector2();
+        this.entity = entity;
+        rect = new Rectangle(entity.getX(), entity.getY(), width, height);
+        this.isCollidable = true;
+        offset = new Vector2();
     }
 
     public void onCollide(Collider other) {
@@ -107,17 +107,17 @@ public class Collider {
     public void setPosition(Vector2 v2) {
         this.rect.setPosition(v2);
     }
-    
+
     public Vector2 getOffset() {
-    	return this.offset;
+        return this.offset;
     }
-    
+
     public void setOffset(Vector2 offset) {
-    	this.offset = offset;
+        this.offset = offset;
     }
-    
+
     public void drawCollider(ShapeRenderer shapeRenderer, Color color) {
-    	shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(color);
         shapeRenderer.rect(this.rect.getX(), this.rect.getY(), this.rect.getWidth(), this.rect.getHeight()); // x, y, width, height
         shapeRenderer.end();

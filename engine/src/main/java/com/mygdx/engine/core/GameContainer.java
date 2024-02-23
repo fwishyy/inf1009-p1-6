@@ -42,16 +42,32 @@ public class GameContainer {
         return entityManager;
     }
 
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     public CollisionManager getCollisionManager() {
         return collisionManager;
+    }
+
+    public void setCollisionManager(CollisionManager collisionManager) {
+        this.collisionManager = collisionManager;
     }
 
     public SceneManager getSceneManager() {
         return sceneManager;
     }
 
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     public InputManager getInputManager() {
         return inputManager;
+    }
+
+    public void setInputManager(InputManager inputManager) {
+        this.inputManager = inputManager;
     }
 
     public PlayerControlManager getPlayerControlManager() {
@@ -59,37 +75,21 @@ public class GameContainer {
         return playerControlManager;
     }
 
+    public void setPlayerControlManager(PlayerControlManager playerControlManager) {
+        this.playerControlManager = playerControlManager;
+    }
+
     public AudioManager getAudioManager() {
 
         return audioManager;
-    }
-
-    public BehaviourManager getBehaviourManager() {
-        return behaviourManager;
-    }
-
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    public void setInputManager(InputManager inputManager) {
-        this.inputManager = inputManager;
-    }
-
-    public void setPlayerControlManager(PlayerControlManager playerControlManager) {
-        this.playerControlManager = playerControlManager;
     }
 
     public void setAudioManager(AudioManager audioManager) {
         this.audioManager = audioManager;
     }
 
-    public void setCollisionManager(CollisionManager collisionManager) {
-        this.collisionManager = collisionManager;
+    public BehaviourManager getBehaviourManager() {
+        return behaviourManager;
     }
 
     public void setBehaviourManager(BehaviourManager behaviourManager) {

@@ -7,8 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class TransitionScene extends Scene {
     private Table table;
+
     @Override
-    public void show () {
+    public void show() {
         // Create a table to hold the label
         table = new Table();
         table.setFillParent(true);
@@ -37,7 +38,7 @@ public class TransitionScene extends Scene {
     }
 
     @Override
-    public void render (float deltaTime) {
+    public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -46,12 +47,12 @@ public class TransitionScene extends Scene {
     }
 
     @Override
-    public void resize (int width, int height) {
+    public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         stage.dispose();
     }
 }

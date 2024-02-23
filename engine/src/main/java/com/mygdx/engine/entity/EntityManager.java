@@ -1,8 +1,6 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.utils.Event;
@@ -266,9 +264,9 @@ public class EntityManager extends Manager {
 
     /**
      * Entity with a unique tag will be stored as the first element in the list.
-     * Optionally, this also allows user to retrieve the first 
+     * Optionally, this also allows user to retrieve the first
      * stored instance of that entity if there is more than 1.
-     * 
+     *
      * @param type -- entity type (E.g "monster")
      * @return Entity
      */
@@ -285,7 +283,7 @@ public class EntityManager extends Manager {
         for (Entity entity : getAllEntities()) {
             System.out.println("drawing: " + entity.getType());
 //            if (!playAnimation(entity, batch))
-                entity.draw(batch);
+            entity.draw(batch);
         }
 
     }
@@ -301,7 +299,7 @@ public class EntityManager extends Manager {
         for (Entity entity : entityList)
             if (entity.getType() == type)
 //                if (!playAnimation(entity, batch))
-                    entity.draw(batch);
+                entity.draw(batch);
     }
 
     /**
@@ -317,7 +315,7 @@ public class EntityManager extends Manager {
             Vector2 currEntPos = entity.getVector2();
             if (currEntPos.dst(targetPosition) <= range)
 //                if (!playAnimation(entity, batch))
-                    entity.draw(batch);
+                entity.draw(batch);
         }
     }
 
@@ -382,5 +380,5 @@ public class EntityManager extends Manager {
         }
     }
 
-    
+
 }

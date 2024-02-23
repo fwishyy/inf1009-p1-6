@@ -7,10 +7,10 @@ import com.mygdx.events.WinEvent;
 
 
 public class Player extends AnimatedEntity {
-	
-	public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
-		super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
-	}
+
+    public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
+        super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
+    }
 
 
     @Override
@@ -23,5 +23,5 @@ public class Player extends AnimatedEntity {
             WinEvent.addEvent(new WinEvent());
             this.dispose();
         }
-    }	
+    }
 }

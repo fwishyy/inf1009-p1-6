@@ -42,11 +42,11 @@ public abstract class Scene extends ScreenAdapter {
         viewport.update(width, height);
     }
 
-    public enum State {
-        LOADING, RUNNING, PAUSED, UNLOADING
-    }
-
     public void setState(State state) {
         this.state = state;
+    }
+
+    public enum State {
+        LOADING, RUNNING, PAUSED, UNLOADING
     }
 }

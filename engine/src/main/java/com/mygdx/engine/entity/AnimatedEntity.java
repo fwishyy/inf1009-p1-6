@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class AnimatedEntity extends Entity {
-	
-	// animation settings
-	private Texture tex;
+
+    // animation settings
+    private Texture tex;
     private boolean isAnimation;
     private int frameCountColumn; // Number of frames in a column
     private int frameCountRow; // Number of frames in a row
@@ -18,30 +18,30 @@ public abstract class AnimatedEntity extends Entity {
     private float frameDuration; // Duration between each frame (in seconds)
     private TextureRegion[][] frames; // to hold sliced frames
     private int currentFrame;
-	
-	protected AnimatedEntity(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
-		this.tex = new Texture(Gdx.files.internal(texture));
-    	this.texture = new TextureRegion();
-    	this.vector2 = new Vector2(x, y);
-    	this.type = type;
-    	this.frameCountRow = frameCountRow;
+
+    protected AnimatedEntity(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
+        this.tex = new Texture(Gdx.files.internal(texture));
+        this.texture = new TextureRegion();
+        this.vector2 = new Vector2(x, y);
+        this.type = type;
+        this.frameCountRow = frameCountRow;
         this.frameCountColumn = frameCountColumn;
         this.frameDuration = frameDuration;
-        
+
         this.width = tex.getWidth() / frameCountColumn;
         this.height = tex.getHeight() / frameCountRow;
-        
+
         this.isAnimation = true;
         this.stateTime = 0;
         this.frames = new TextureRegion[this.frameCountRow][this.frameCountColumn];
         this.currentFrame = 0;
         prepAnimation();
-        
-        
+
+
     }
-	
-	@Override
-	public void draw(SpriteBatch batch) {
+
+    @Override
+    public void draw(SpriteBatch batch) {
 
         int cols = this.getFrameCountColumn();
         int rows = this.getFrameCountRow();
@@ -63,90 +63,89 @@ public abstract class AnimatedEntity extends Entity {
         batch.draw(currentFrameRegion, this.getX(), this.getY(), width, height);
 
     }
-	
-	private void prepAnimation() {
-    	
+
+    private void prepAnimation() {
+
 //    	System.out.println("frame len: " + this.frames[0].length);
-    	int cols = this.frameCountColumn;
-    	int rows = this.frameCountRow;
-    	int width = (int)this.width;
-    	int height = (int)this.height;
-    	
-    	// split texture into frames
+        int cols = this.frameCountColumn;
+        int rows = this.frameCountRow;
+        int width = (int) this.width;
+        int height = (int) this.height;
+
+        // split texture into frames
 //    	System.out.println(frameWidth + " " + frameHeight);
         this.frames = TextureRegion.split(this.tex, width, height);
-        
+
         Texture firstFrame = frames[0][0].getTexture();
-		this.texture = new TextureRegion(firstFrame, (int)this.vector2.x, (int)this.vector2.y, width, height);
+        this.texture = new TextureRegion(firstFrame, (int) this.vector2.x, (int) this.vector2.y, width, height);
         this.sprite = new Sprite(this.texture);
-        
+
     }
-	
-	public boolean getIsAnimation() {
-    	return this.isAnimation;
+
+    public boolean getIsAnimation() {
+        return this.isAnimation;
     }
-    
+
     public void setIsAnimation(boolean isAnimation) {
-    	this.isAnimation = isAnimation;
+        this.isAnimation = isAnimation;
     }
-    
+
     public int getFrameCountColumn() {
-    	return this.frameCountColumn;
+        return this.frameCountColumn;
     }
-    
+
     public void setFrameCountColumn(int frameCount) {
-    	this.frameCountColumn = frameCount;
+        this.frameCountColumn = frameCount;
     }
-    
+
     public int getFrameCountRow() {
-    	return this.frameCountRow;
+        return this.frameCountRow;
     }
-    
+
     public void setFrameCountRow(int frameCount) {
-    	this.frameCountRow = frameCount;
+        this.frameCountRow = frameCount;
     }
-    
+
     public float getStateTime() {
-    	return this.stateTime;
+        return this.stateTime;
     }
-    
+
     public void setStateTime(float stateTime) {
-    	this.stateTime = stateTime;
+        this.stateTime = stateTime;
     }
-    
+
     public float getFrameDuration() {
-    	return this.frameDuration;
+        return this.frameDuration;
     }
-    
+
     public void setFrameDuration(float frameDuration) {
-    	this.frameDuration = frameDuration;
+        this.frameDuration = frameDuration;
     }
-    
+
     public TextureRegion[][] getFrames() {
-    	return this.frames;
+        return this.frames;
     }
-    
+
     public void setFrames(TextureRegion[][] frames) {
-    	this.frames = frames;
+        this.frames = frames;
     }
-    
+
     public int getCurrentFrame() {
-    	return this.currentFrame;
+        return this.currentFrame;
     }
-    
+
     public void setCurrentFrame(int currentFrame) {
-    	this.currentFrame = currentFrame;
+        this.currentFrame = currentFrame;
     }
-    
-    
-    
+
+
     @Override
     public void dispose() {
-    	for(int row = 0; row < frames.length; row++) {
-        	for(int col = 0; col < frames[row].length; col++)
-        		frames[row][col].getTexture().dispose();
-        	}
-    	super.dispose();
+        for (int row = 0; row < frames.length; row++) {
+            for (int col = 0; col < frames[row].length; col++)
+                frames[row][col].getTexture().dispose();
+        }
+        super.dispose();
     }
 }
 
