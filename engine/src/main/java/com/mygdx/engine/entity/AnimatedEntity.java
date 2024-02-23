@@ -10,14 +10,14 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class AnimatedEntity extends Entity {
 
     // animation settings
-    private Texture tex;
-    private boolean isAnimation;
-    private int frameCountColumn; // Number of frames in a column
-    private int frameCountRow; // Number of frames in a row
-    private float stateTime; // time elapsed since the last frame update
-    private float frameDuration; // Duration between each frame (in seconds)
-    private TextureRegion[][] frames; // to hold sliced frames
-    private int currentFrame;
+    protected Texture tex;
+    protected boolean isAnimation;
+    protected int frameCountColumn; // Number of frames in a column
+    protected int frameCountRow; // Number of frames in a row
+    protected float stateTime; // time elapsed since the last frame update
+    protected float frameDuration; // Duration between each frame (in seconds)
+    protected TextureRegion[][] frames; // to hold sliced frames
+    protected int currentFrame;
 
     protected AnimatedEntity(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         this.tex = new Texture(Gdx.files.internal(texture));
