@@ -102,7 +102,7 @@ public abstract class AnimatedEntity extends Entity {
     	return this.frameCountRow;
     }
     
-    public void setFrameCount(int frameCount) {
+    public void setFrameCountRow(int frameCount) {
     	this.frameCountRow = frameCount;
     }
     
