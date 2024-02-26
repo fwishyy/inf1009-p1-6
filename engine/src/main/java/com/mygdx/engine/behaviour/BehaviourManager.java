@@ -1,12 +1,13 @@
 package com.mygdx.engine.behaviour;
 
+import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BehaviourManager {
+public class BehaviourManager extends Manager {
     private EntityManager entityManager;
     // a mapping from entities to their assigned behaviours
     // this allows each entity to have a specific behaviour

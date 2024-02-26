@@ -1,6 +1,7 @@
 package com.mygdx.engine.audio;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.mygdx.engine.core.Manager;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,7 +45,7 @@ import java.util.TimerTask;
  * audiomanager.loop("waterdrop") // Play using loop command which will ensure isLoop is true
  */
 
-public class AudioManager {
+public class AudioManager extends Manager {
 
     /* audiolist keeps track of all audio files that have been played
      * This prevents having to create a new instance of sound/music every time its played

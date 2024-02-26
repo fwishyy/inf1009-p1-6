@@ -36,20 +36,20 @@ public class ActionMap {
         return actions.get(label);
     }
 
-    public void addNewBinding(Integer keyCode, String label) {
+    public void addNewBinding(int keyCode, String label) {
         GameAction action = getAction(label);
         if (action != null) {
             checkAndAddBinding(keyCode, action);
         }
     }
 
-    public void addNewBinding(Integer keyCode, GameAction action) {
+    public void addNewBinding(int keyCode, GameAction action) {
         if (action != null) {
             checkAndAddBinding(keyCode, action);
         }
     }
 
-    private void checkAndAddBinding(Integer keyCode, GameAction action) {
+    private void checkAndAddBinding(int keyCode, GameAction action) {
         if (keybinds.containsKey(action)) {
             keybinds.get(action).add(keyCode);
         } else {
