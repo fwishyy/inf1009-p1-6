@@ -174,7 +174,7 @@ public class EntityManager extends Manager {
     public void addEntity(Entity entity) {
         this.entityMap.putIfAbsent(entity.getType(), new ArrayList<>());
         this.entityMap.get(entity.getType()).add(entity);
-        System.out.println("added " + entity.getType());
+//        System.out.println("added " + entity.getType());
     }
 
     /**
@@ -281,7 +281,7 @@ public class EntityManager extends Manager {
      */
     public void draw(SpriteBatch batch) {
         for (Entity entity : getAllEntities()) {
-            System.out.println("drawing: " + entity.getType());
+//            System.out.println("drawing: " + entity.getType());
 //            if (!playAnimation(entity, batch))
             entity.draw(batch);
         }
