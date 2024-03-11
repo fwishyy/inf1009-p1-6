@@ -24,22 +24,9 @@ public class MoveAction extends GameAction {
         this.targetPos.y = y;
     }
 
+    @Override
     public boolean act(Entity entity) {
         entity.setPosition(targetPos);
-
-        return true;
-    }
-
-    public boolean act(Entity entity, Vector2 targetPos) {
-        setTargetPos(targetPos);
-        act(entity);
-
-        return true;
-    }
-
-    public boolean act(Entity entity, float x, float y) {
-        setTargetPos(x, y);
-        act(entity);
 
         return true;
     }
