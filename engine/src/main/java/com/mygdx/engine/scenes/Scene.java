@@ -21,7 +21,6 @@ public abstract class Scene extends ScreenAdapter {
 
     // TODO: implement show, hide, pause, resume methods (for now testing the rendering and handling of buttons)
     public Scene() {
-        camera = new OrthographicCamera();
         viewport = new ScreenViewport();
         batch = new SpriteBatch();
         stage = new Stage();

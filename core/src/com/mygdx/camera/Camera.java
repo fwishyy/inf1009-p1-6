@@ -11,8 +11,8 @@ public class Camera {
 	private float offsetX = 0; 
 	private float offsetY = 0;
 	
-	public Camera(OrthographicCamera camera) {
-		this.camera = camera;
+	public Camera() {
+		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(false);
 	}
 	

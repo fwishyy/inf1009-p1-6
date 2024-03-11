@@ -25,6 +25,7 @@ import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
+import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
 
@@ -53,6 +54,9 @@ public class GameScene extends Scene {
     
     //Camera
     private Camera camera;
+    
+    //Spawn
+    private SpawnSystem enemySpawn;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -85,58 +89,15 @@ public class GameScene extends Scene {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
-        Random random = new Random();
-
         field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
         em.addEntity(field);
-
-        // Dynamic Creation Showcase
-//        em.createEntity(5, bgField.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
-//        em.createEntity(1, bgField.class, "bg/PNG/Objects_separately/Lich_shadow_scaledDown.png", 300, 300, "lich");
-//        em.createEntity(4, BGSprite.class, "monsters/Goblin/Attack3.png", 200, 200, "goblin", 1, 12, 0.1f);
+        
+        //Create entities to spawn here
         em.createEntity(1, Player.class, "sprite/Converted_Vampire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-        // Manual Creation Showcase
-//        field = new bgField("bg/bg.png", -screenWidth / 2, -screenHeight / 2, "field");
-//        em.addEntity(field);
-//        skull = new BGSprite("bg/PNG/Animation5.png", 0, 0, "skull", 3, 6, 0.1f);
-//        em.addEntity(skull);
-//        skull = new BGSprite("bg/PNG/Animation5.png", 0, screenHeight - 125, "skull", 3, 6, 0.1f);
-//        em.addEntity(skull);
-//        skull = new BGSprite("bg/PNG/Animation5.png", screenWidth - 100, screenHeight - 125, "skull", 3, 6, 0.1f);
-//        em.addEntity(skull);
-//        skull = new BGSprite("bg/PNG/Animation5.png", screenWidth - 100, 0, "skull", 3, 6, 0.1f);
-//        em.addEntity(skull);
-//        skull = new BGSprite("bg/PNG/Animation5.png", screenWidth / 2 - 50, screenHeight / 2 - 50, "skull", 3, 6, 0.1f);
-//        em.addEntity(skull);
-
-        // Batch Filtering Showcase
-        // Identify Entities to randomly set their position
-//        for (Entity entity : em.getEntities("crystal")) {
-//            float x = random.nextInt(Gdx.graphics.getWidth() - 50);
-//            float y = random.nextInt(Gdx.graphics.getHeight() - 50);
-//            entity.setPosition(new Vector2(x, y));
-//        }
-
-//        for (Entity entity : em.getEntities("goblin")) {
-//            float x = random.nextInt(Gdx.graphics.getWidth() - 50);
-//            float y = random.nextInt(Gdx.graphics.getHeight() - 50);
-//            entity.setPosition(new Vector2(x, y));
-//            cm.addCollider(entity, entity.getWidth() / 2, entity.getHeight() / 2);
-//            cm.setOffset(
-//                    new Vector2(cm.getCollider(entity).getWidth() / 2, cm.getCollider(entity).getHeight() / 2),
-//                    entity);
-//        }
 
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
-//        p1.setIsAnimation(false);
-
-//        lich = (bgField) em.getEntity("lich");
-//        cm.addCollider(lich);
-
         // add colliders to entities that need collision logic
         // in this case, remember that the current player using a spritesheet, so we have to calculate frame size of the 
         cm.addCollider(p1, p1.getWidth() / 2, p1.getHeight() / 2);
@@ -151,10 +112,10 @@ public class GameScene extends Scene {
         playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
         pm.setActionMap(p1, playerControls);
         
-        camera = new Camera(super.camera);
+        camera = new Camera();
         camera.setOffset(p1.getWidth()/2, p1.getHeight()/2);
         
-        
+        enemySpawn = new SpawnSystem(em, 4);
         
         // simple seeking behaviour towards unique entity player1 with a speed of 50
 //        seek = new SeekBehaviour(em.getEntity("player1"), 50);
@@ -169,6 +130,7 @@ public class GameScene extends Scene {
     @Override
     public void render(float deltaTime) {
         ScreenUtils.clear(1, 0.5f, 0.5f, 1);
+        
         batch.begin();
         em.update();
         em.draw(batch);
@@ -176,6 +138,7 @@ public class GameScene extends Scene {
         bm.update(Gdx.graphics.getDeltaTime());
         batch.end();
         pm.update();
+        
         // draw collider for debugging purposes
         cm.drawCollider(shapeRenderer, Color.RED);
 
@@ -186,6 +149,10 @@ public class GameScene extends Scene {
         camera.cameraUpdate(deltaTime, p1.getVector2());
         camera.batchUpdate(batch);
         camera.shapeUpdate(shapeRenderer);
+        
+        // spawn system
+        enemySpawn.update(deltaTime);
+        
     }
 
     private void onWin() {

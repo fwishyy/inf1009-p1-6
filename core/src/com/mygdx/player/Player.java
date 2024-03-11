@@ -15,13 +15,13 @@ public class Player extends AnimatedEntity {
 
     @Override
     public void collide(Collider other) {
-        if (other.getEntity().getType().equals("player1")) {
-            LoseEvent.addEvent(new LoseEvent());
-            this.dispose();
-        }
-        if (other.getEntity().getType().equals("player2")) {
-            WinEvent.addEvent(new WinEvent());
-            this.dispose();
-        }
+//        if (other.getEntity().getType().equals("player1")) {
+//            LoseEvent.addEvent(new LoseEvent());
+//            this.dispose();
+//        }
+//        if (other.getEntity().getType().equals("player2")) {
+//            WinEvent.addEvent(new WinEvent());
+//            this.dispose();
+//        }
     }
 }
