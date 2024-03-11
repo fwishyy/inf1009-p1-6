@@ -73,7 +73,6 @@ public abstract class Entity implements Actionable {
 
     public void addAction(GameAction action) {
         actions.add(action);
-        System.out.println(actions.size());
     }
 
     public void update() {
