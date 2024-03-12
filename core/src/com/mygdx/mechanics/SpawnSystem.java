@@ -5,11 +5,12 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.backgroundsprite.BGSprite;
+import com.mygdx.backgroundsprite.Enemy;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
@@ -40,7 +41,7 @@ public class SpawnSystem {
 		Vector2 centerPos = em.getEntity("player1").getVector2();
 		spawnArea.setCenter(centerPos);
 		
-		// spawn logic -- spawn new goblin every interval seconds
+		// enemy spawn logic -- spawn new goblin every interval seconds
 		if(!stop) {
 			if(timer >= interval) {
 				Vector2 spawnPosition = getSpawnPosition();
@@ -48,6 +49,7 @@ public class SpawnSystem {
 				timer -= interval;
 			}
 		}
+		
 	}
 	
 	public void stop() {
@@ -70,8 +72,9 @@ public class SpawnSystem {
     }
 	
 	private void spawn(Vector2 position) {
-		// create entity at the position
-		em.createEntity(1, BGSprite.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+		// create entities at the position
+		em.createEntity(1, Enemy.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+		
 	}
 	
 	private Vector2 getSpawnPosition() {
@@ -102,4 +105,6 @@ public class SpawnSystem {
 //		System.out.println("pos: " + x + " , " + y);
 		return new Vector2(x,y);
 	}
+	
+	
 }

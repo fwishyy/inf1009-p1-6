@@ -23,6 +23,7 @@ public class Camera {
 		
 		this.camera.position.set(newPosX, newPosY, 1);
 		this.camera.update();
+//		System.out.println("Camera Position: " + this.camera.position);
 	}
 	
 	public void setOffset(float x, float y) {
@@ -41,6 +42,10 @@ public class Camera {
 	
 	public void shapeUpdate(ShapeRenderer shape) {
 		shape.setProjectionMatrix(this.camera.combined);
+	}
+	
+	public OrthographicCamera getCamera() {
+		return this.camera;
 	}
 	
 	public void dispose() {

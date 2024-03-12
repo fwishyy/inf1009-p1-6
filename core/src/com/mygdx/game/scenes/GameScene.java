@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.backgroundsprite.BGSprite;
-import com.mygdx.backgroundsprite.bgField;
+import com.mygdx.backgroundsprite.Enemy;
 import com.mygdx.camera.Camera;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
@@ -25,6 +24,7 @@ import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
+import com.mygdx.mechanics.InfiniteBackGround;
 import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
@@ -45,9 +45,6 @@ public class GameScene extends Scene {
     private SceneManager sm;
     //CONCRETE GAME LAYER FOR DEMO PURPOSES
     private Player p1;
-    private bgField lich;
-    private bgField field;
-    private BGSprite skull;
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
@@ -57,6 +54,7 @@ public class GameScene extends Scene {
     
     //Spawn
     private SpawnSystem enemySpawn;
+    private InfiniteBackGround bg;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -88,14 +86,9 @@ public class GameScene extends Scene {
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-
-        field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
-        em.addEntity(field);
         
         //Create entities to spawn here
         em.createEntity(1, Player.class, "sprite/Converted_Vampire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
-
-
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
         // add colliders to entities that need collision logic
@@ -112,9 +105,11 @@ public class GameScene extends Scene {
         playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
         pm.setActionMap(p1, playerControls);
         
+        // create new camera and center it
         camera = new Camera();
         camera.setOffset(p1.getWidth()/2, p1.getHeight()/2);
         
+        // create spawn system and set interval to spawn 1 enemy/4s
         enemySpawn = new SpawnSystem(em, 4);
         
         // simple seeking behaviour towards unique entity player1 with a speed of 50
@@ -123,8 +118,8 @@ public class GameScene extends Scene {
 //        for (Entity entity : em.getEntities("goblin")) {
 //            bm.addBehaviour(entity, seek);
 //        }
-
-
+        
+        bg = new InfiniteBackGround(camera.getCamera(), "bg/bg.png");
     }
 
     @Override
@@ -132,6 +127,7 @@ public class GameScene extends Scene {
         ScreenUtils.clear(1, 0.5f, 0.5f, 1);
         
         batch.begin();
+        bg.update(batch);
         em.update();
         em.draw(batch);
         cm.update();
@@ -178,9 +174,6 @@ public class GameScene extends Scene {
         camera = null;
         shapeRenderer = null;
         seek = null;
-        field = null;
-        skull = null;
-        lich = null;
         p1 = null;
     }
 }
