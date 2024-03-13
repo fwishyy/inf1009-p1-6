@@ -1,5 +1,6 @@
 package com.mygdx.mechanics;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -11,13 +12,21 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.backgroundsprite.Enemy;
+import com.mygdx.engine.behaviour.BehaviourManager;
+import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
+import com.mygdx.engine.utils.Event;
+import com.mygdx.engine.utils.EventListener;
+import com.mygdx.events.WinEvent;
+import com.mygdx.player.SeekBehaviour;
 
 public class SpawnSystem {
 	
 	private EntityManager em = null;
+	private CollisionManager cm = null;
+	private BehaviourManager bm = null;
 	private float screenHeight = Gdx.graphics.getHeight();
 	private float screenWidth = Gdx.graphics.getWidth();
 	private Rectangle spawnArea = null;
@@ -26,8 +35,12 @@ public class SpawnSystem {
 	private float timer = 0f;
 	private float interval = 4f;
 	
-	public SpawnSystem(EntityManager em, float interval) {
-		this.em = em;
+	private List<String> monsterTypes = new ArrayList<>();
+	
+	public SpawnSystem(GameContainer container, float interval) {
+		this.em = container.getEntityManager();
+		this.cm = container.getCollisionManager();
+		this.bm = container.getBehaviourManager();
 		this.interval = interval;
 		// set spawn area, basically an oversized rectangle bigger than current screen
 		this.spawnArea = new Rectangle(-100, -100, screenWidth + 200, screenHeight + 200);
@@ -64,6 +77,10 @@ public class SpawnSystem {
 		this.interval = interval;
 	}
 	
+	public List<String> getMonsterTypes(){
+		return monsterTypes;
+	}
+	
 	public void debug(ShapeRenderer shapeRenderer, Color color) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(color);
@@ -72,9 +89,16 @@ public class SpawnSystem {
     }
 	
 	private void spawn(Vector2 position) {
+		// TODO find better way to abstract this
 		// create entities at the position
-		em.createEntity(1, Enemy.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+//		em.createEntity(1, Enemy.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+		Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+		em.addEntity(goblin);
 		
+		cm.addCollider(goblin);
+		
+		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
+		bm.addBehaviour(goblin, seek);
 	}
 	
 	private Vector2 getSpawnPosition() {

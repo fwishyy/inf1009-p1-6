@@ -22,6 +22,8 @@ public class SeekBehaviour implements Behaviour {
         dir.y = currEntityPos.y - target.getVector2().y;
         dir = dir.nor();
         entity.getVector2().sub(dir.x * this.speed * deltaTime, dir.y * this.speed * deltaTime);
+        
+        System.out.println(entity + " " + entity.getVector2());
     }
 
 //	public void setTarget(Vector2 targetPos) {
