@@ -79,7 +79,7 @@ public class PlayerControlManager extends Manager {
                             inputAction.setKeyState(keyState);
                             entity.addAction(inputAction);
                         } else {
-                            action.act(entity);
+                            entity.addAction(action);
                         }
                         break;
                     }

@@ -281,8 +281,6 @@ public class EntityManager extends Manager {
      */
     public void draw(SpriteBatch batch) {
         for (Entity entity : getAllEntities()) {
-            System.out.println("drawing: " + entity.getType());
-//            if (!playAnimation(entity, batch))
             entity.draw(batch);
         }
 

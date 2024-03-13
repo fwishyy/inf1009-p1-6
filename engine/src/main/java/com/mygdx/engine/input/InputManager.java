@@ -67,13 +67,13 @@ public class InputManager extends InputAdapter {
     // There's also no way to distinguish between clicking buttons and clicking (to shoot), we add a custom mouse offset to define it in our keybindings
     public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
         PointerEvent.addEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.DOWN, button));
-        //KeyEvent.addKeyEvent(new KeyEvent(button + mouseButtonOffset, true));
+        KeyEvent.addEvent(new KeyEvent(button + mouseButtonOffset, true));
         return true;
     }
 
     public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
         PointerEvent.addEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.UP, button));
-        //KeyEvent.addKeyEvent(new KeyEvent(button + mouseButtonOffset, false));
+        KeyEvent.addEvent(new KeyEvent(button + mouseButtonOffset, false));
         return true;
     }
 

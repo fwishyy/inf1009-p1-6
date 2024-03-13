@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.actions.AttackAction;
 import com.mygdx.backgroundsprite.BGSprite;
 import com.mygdx.backgroundsprite.bgField;
 import com.mygdx.engine.behaviour.BehaviourManager;
@@ -16,6 +17,7 @@ import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
@@ -33,6 +35,7 @@ public class GameScene extends Scene {
 
     EventListener<WinEvent> winEventListener;
     EventListener<LoseEvent> loseEventListener;
+    EventListener<PointerEvent> pointerEventListener;
     //ENGINE
     private GameContainer container;
     private EntityManager em;
@@ -74,9 +77,16 @@ public class GameScene extends Scene {
                 onLose();
             }
         };
+        pointerEventListener = new EventListener<PointerEvent>() {
+            public void onSignal(Event e) {
+                PointerEvent pointerEvent = (PointerEvent) e;
+                handlePointerEvent(pointerEvent);
+            }
+        };
 
         WinEvent.addListener(WinEvent.class, winEventListener);
         LoseEvent.addListener(LoseEvent.class, loseEventListener);
+        PointerEvent.addListener(PointerEvent.class, pointerEventListener);
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -145,6 +155,7 @@ public class GameScene extends Scene {
         // player control mapping 
         ActionMap playerControls = new ActionMap();
         playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
+        playerControls.addNewBinding(KeyCodes.MOUSE1, new AttackAction());
         pm.setActionMap(p1, playerControls);
 
         // simple seeking behaviour towards unique entity player1 with a speed of 50
@@ -174,6 +185,15 @@ public class GameScene extends Scene {
         EventBus.processEvents(LoseEvent.class);
     }
 
+    public void handlePointerEvent(PointerEvent e) {
+        // TODO: make sure that this is updated for the prototype camera
+        // update where player is facing here
+        if (e.getType() == PointerEvent.Type.HOVER) {
+            Vector2 target = new Vector2(e.getScreenX(), e.getScreenY());
+            p1.setTarget(target);
+        }
+    }
+
     private void onWin() {
         System.out.println("WIN");
         sm.setScene(new MainMenuScene(container));
@@ -192,6 +212,7 @@ public class GameScene extends Scene {
 
         EventBus.removeListener(winEventListener);
         EventBus.removeListener(loseEventListener);
+        EventBus.removeListener(pointerEventListener);
 
         shapeRenderer = null;
         seek = null;
