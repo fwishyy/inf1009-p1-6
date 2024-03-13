@@ -2,6 +2,7 @@ package com.mygdx.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.engine.entity.Collider;
@@ -19,17 +20,23 @@ public class HealthBar extends Entity {
     private float currentHp;
     private float barWidth;
     private float barHeight;
+    private BitmapFont font;
     private ShapeRenderer shapeRenderer;
 
-    public HealthBar(float barWidth, float barHeight) {
+    public HealthBar() {
         this.maxHp = 100; // base Max HP set to 100
         this.currentHp = 100; // starting current HP also set to 100
-        this.barWidth = barWidth; // initialise bar width
-        this.barHeight = barHeight; // initalise bar height
+        this.barWidth = 200; // initialise bar width
+        this.barHeight = 25; // initalise bar height
         this.shapeRenderer = new ShapeRenderer();
         
-        // set initial position of bar to top right corner of screen
-        setPosition(Gdx.graphics.getWidth() - barWidth, Gdx.graphics.getHeight() - barHeight);
+        this.font = new BitmapFont(); // libgdx default arial font
+        this.font.setColor(Color.WHITE); // set font color to white
+        this.font.getData().setScale(1); // set scale of font if needed
+        
+        // set initial position of bar to top left corner of screen
+        setPosition(10, Gdx.graphics.getHeight() - barHeight - 10);
+
     }
 
     @Override
@@ -44,7 +51,6 @@ public class HealthBar extends Entity {
 
         // calculate width of current health
         float healthWidth = barWidth * (currentHp / maxHp);
-
         // draw current health
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(getX(), getY(), healthWidth, barHeight);
@@ -55,7 +61,7 @@ public class HealthBar extends Entity {
     }
 
     // when player picks up increase max HP potion, it will increase by 5%
-    // to implement collisionevent for this
+    // to be included in potion collisionevent
     public void increaseMaxHp() {
         maxHp += maxHp * (5.0f / 100.0f);
     }
@@ -89,8 +95,8 @@ public class HealthBar extends Entity {
         }
     }
 
-    // for when player picks up health potion, need to implement collisionevent
-    // function to return int heal to be input to increaseHp
+    // for when player picks up health potion
+    // to be included in potion collisionevent
     public void increaseHp(int heal) {
         currentHp += heal;
         if (currentHp > maxHp) {

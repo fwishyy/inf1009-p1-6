@@ -24,6 +24,7 @@ import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
+import com.mygdx.player.HealthBar;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
 
@@ -42,12 +43,13 @@ public class GameScene extends Scene {
     private BehaviourManager bm;
     private SceneManager sm;
     //CONCRETE GAME LAYER FOR DEMO PURPOSES
+    private HealthBar hbar;
     private Player p1;
     private bgField lich;
     private bgField field;
     private BGSprite skull;
     private SeekBehaviour seek;
-    private SpriteBatch batch;
+    private SpriteBatch batch;       
     private ShapeRenderer shapeRenderer;
 
     public GameScene(GameContainer container) {
@@ -85,6 +87,9 @@ public class GameScene extends Scene {
 
         field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
         em.addEntity(field);
+        
+        hbar = new HealthBar();
+        em.addEntity(hbar);
 
         // Dynamic Creation Showcase
         em.createEntity(5, bgField.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
