@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.backgroundsprite.BGSprite;
+import com.mygdx.backgroundsprite.Pickup;
 import com.mygdx.backgroundsprite.bgField;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
@@ -48,6 +49,8 @@ public class GameScene extends Scene {
     private bgField lich;
     private bgField field;
     private BGSprite skull;
+    private Pickup healthPotion;
+    private Pickup maxHealthPotion;
     private SeekBehaviour seek;
     private SpriteBatch batch;       
     private ShapeRenderer shapeRenderer;
@@ -87,13 +90,16 @@ public class GameScene extends Scene {
 
         field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
         em.addEntity(field);
+        
+        healthPotion = new Pickup("sprite/max-hp-potion.png", 30, 180, "maxHealthPotion");
+        em.addEntity(healthPotion);
 
         // Dynamic Creation Showcase
         em.createEntity(5, bgField.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
         em.createEntity(1, bgField.class, "bg/PNG/Objects_separately/Lich_shadow_scaledDown.png", 300, 300, "lich");
         em.createEntity(4, BGSprite.class, "monsters/Goblin/Attack3.png", 200, 200, "goblin", 1, 12, 0.1f);
         em.createEntity(1, Player.class, "sprite/Converted_Vampire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
-
+        
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
         // Manual Creation Showcase
@@ -165,6 +171,15 @@ public class GameScene extends Scene {
         batch.begin();
         em.update();
         em.draw(batch);
+        for (Entity entity : em.getEntities()) {
+            if (entity instanceof BGSprite) {
+                BGSprite bgSprite = (BGSprite) entity;
+                if (bgSprite.isDead()) {
+                    bgSprite.potionDrop(); // Ensure you pass the EntityManager instance
+                }
+            }
+        }
+        
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
         batch.end();

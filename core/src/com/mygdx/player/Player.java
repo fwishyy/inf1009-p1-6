@@ -18,7 +18,7 @@ public class Player extends AnimatedEntity {
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
         this.maxHp = 100;
-        this.currentHp = 100;
+        this.currentHp = 50;
         
         Vector2 healthBarPosition = new Vector2(
                 x + (this.getWidth() / 2) - (50 / 2),
