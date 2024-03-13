@@ -22,10 +22,10 @@ public class HealthBar extends Entity {
     private ShapeRenderer shapeRenderer;
 
     public HealthBar(float barWidth, float barHeight) {
-        this.maxHp = 100; // base Max HP
-        this.currentHp = 100; // starting current HP
-        this.barWidth = barWidth;
-        this.barHeight = barHeight;
+        this.maxHp = 100; // base Max HP set to 100
+        this.currentHp = 100; // starting current HP also set to 100
+        this.barWidth = barWidth; // initialise bar width
+        this.barHeight = barHeight; // initalise bar height
         this.shapeRenderer = new ShapeRenderer();
         
         // set initial position of bar to top right corner of screen
@@ -37,20 +37,20 @@ public class HealthBar extends Entity {
         // end the SpriteBatch to use ShapeRenderer
         batch.end();
         
-        // Draw the background of the health bar
+        // draw background of health bar
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(getX(), getY(), barWidth, barHeight);
 
-        // Calculate the width of the current health
+        // calculate width of current health
         float healthWidth = barWidth * (currentHp / maxHp);
 
-        // Draw the current health
+        // draw current health
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(getX(), getY(), healthWidth, barHeight);
         shapeRenderer.end();
 
-        // Start the SpriteBatch again for other entities
+        // start SpriteBatch again for other entities
         batch.begin();
     }
 
