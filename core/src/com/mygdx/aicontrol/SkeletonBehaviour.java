@@ -1,5 +1,6 @@
-package com.mygdx.engine.behaviour;
+package com.mygdx.aicontrol;
 
+import com.mygdx.engine.behaviour.Behaviour;
 import com.mygdx.engine.entity.Entity;
 import com.badlogic.gdx.math.Vector2;
 
