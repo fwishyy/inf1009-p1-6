@@ -1,17 +1,20 @@
 package com.mygdx.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.mygdx.engine.entity.Collider;
-import com.mygdx.engine.entity.Entity;
+import com.badlogic.gdx.math.Vector2;
 
-public class HealthBar extends Entity {
+
+public class HealthBar {
 	
-	/* maxHp: maximum health points of player
-	 * currentHp: current health points of player
+	/* owner: the entity that the health bar belongs to
+	 * xOffset: horizontal offset from entity position
+	 * yOffset: vertical offset from entity position
+	 * maxHp: maximum health points of entity
+	 * currentHp: current health points of entity
 	 * barWidth: width of health bar (fixed)
 	 * barHeight: height of health bar (fixed)
 	 */
@@ -20,99 +23,61 @@ public class HealthBar extends Entity {
     private float currentHp;
     private float barWidth;
     private float barHeight;
+    private Vector2 positionOffset; // position relative to owner entity
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
 
-    public HealthBar() {
-        this.maxHp = 100; // base Max HP set to 100
-        this.currentHp = 100; // starting current HP also set to 100
-        this.barWidth = 200; // initialise bar width
-        this.barHeight = 25; // initalise bar height
+    public HealthBar(Vector2 positionOffset){
+        this.barWidth = 50; // initialise bar width
+        this.barHeight = (float) 6.25; // initalise bar height
         this.shapeRenderer = new ShapeRenderer();
+        this.positionOffset = positionOffset;
         
         this.font = new BitmapFont(); // libgdx default arial font
         this.font.setColor(Color.WHITE); // set font color to white
-        this.font.getData().setScale(1); // set scale of font if needed
         
-        // set initial position of bar to top left corner of screen
-        setPosition(10, Gdx.graphics.getHeight() - barHeight - 10);
-
+    }
+    
+    // update health
+    public void update(float maxHp, float currentHp) {
+        this.maxHp = maxHp;
+        this.currentHp = currentHp;
     }
 
-    @Override
-    protected void draw(SpriteBatch batch) {
-        // end the SpriteBatch to use ShapeRenderer
+    // draw method
+    public void draw(SpriteBatch batch, float ownerX, float ownerY) {
+        float x = ownerX + positionOffset.x;
+        float y = ownerY - barHeight - positionOffset.y;
+
         batch.end();
-        
-        // draw background of health bar
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(getX(), getY(), barWidth, barHeight);
+        shapeRenderer.rect(x, y, barWidth, barHeight);
 
-        // calculate width of current health
         float healthWidth = barWidth * (currentHp / maxHp);
-        // draw current health
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(getX(), getY(), healthWidth, barHeight);
+        shapeRenderer.rect(x, y, healthWidth, barHeight);
         shapeRenderer.end();
 
-        // start SpriteBatch again for other entities
-        batch.begin();
+        batch.begin(); 
+        // GlyphLayout to measure the dimensions of HP value text
+        GlyphLayout layout = new GlyphLayout(); 
+        String text = String.format("%d/%d", (int) currentHp, (int) maxHp);
+        layout.setText(font, text); // sets text of layout and calculates the bounds
+
+        // calculate the x and y position to draw the text at the center of the health bar
+        float textX = x + (barWidth - layout.width) / 2;
+        float textY = y + (barHeight + layout.height) / 2; // add layout.height because the y-coordinate is the bottom of the text
+
+        // draw HP text
+        font.draw(batch, layout, textX, textY);
     }
 
-    // when player picks up increase max HP potion, it will increase by 5%
-    // to be included in potion collisionevent
-    public void increaseMaxHp() {
-        maxHp += maxHp * (5.0f / 100.0f);
+    public void dispose() {
+        font.dispose();
+        shapeRenderer.dispose();
     }
-
-    // when lv 1 mob attacks player, default decrease value is 3
-    // need to implement collisionevent where mob attacks player
-    public void decreaseHp1() {
-        currentHp -= 3;
-        if (currentHp < 0) {
-            currentHp = 0;
-        }
-    }
-    
-    // when lv 2 mob attacks player, default decrease value is 5
-    // need to implement collisionevent where mob attacks player
-    public void decreaseHp2() {
-        currentHp -= 5;
-        if (currentHp < 0) {
-            currentHp = 0;
-        }
-    }
-    
-    // when boss basic attack hits player, default decrease value is 8
-    /* to implement control flow where if collisionevent is boss basic/special skill, then
-       basic attack -8hp, special attack -15hp
-     */
-    public void decreaseHpBoss() {
-        currentHp -= 8;
-        if (currentHp < 0) {
-            currentHp = 0;
-        }
-    }
-
-    // for when player picks up health potion
-    // to be included in potion collisionevent
-    public void increaseHp(int heal) {
-        currentHp += heal;
-        if (currentHp > maxHp) {
-            currentHp = maxHp;
-        }
-    }
-
-	@Override
-	public void collide(Collider other) {
-		// todo - not sure how to use this for healthbar
-		
-	}
-
-	// getter
-	public float getHp() {
-		return this.currentHp;
-	}
-	
+ 
 }
+	

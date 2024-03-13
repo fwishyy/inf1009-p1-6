@@ -87,9 +87,6 @@ public class GameScene extends Scene {
 
         field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
         em.addEntity(field);
-        
-        hbar = new HealthBar();
-        em.addEntity(hbar);
 
         // Dynamic Creation Showcase
         em.createEntity(5, bgField.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
@@ -128,7 +125,7 @@ public class GameScene extends Scene {
             cm.addCollider(entity, entity.getWidth() / 2, entity.getHeight() / 2);
             cm.setOffset(
                     new Vector2(cm.getCollider(entity).getWidth() / 2, cm.getCollider(entity).getHeight() / 2),
-                    entity);
+                    entity);   
         }
 
         // assignment of unique entities
