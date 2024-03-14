@@ -114,7 +114,8 @@ public class GameScene extends Scene {
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
         
         // create spawn system and set interval to spawn 1 enemy/4s
-        enemySpawn = new SpawnSystem(container, 4, bg.getMinPos(), bg.getMaxPos());
+        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
+        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
         
         // simple seeking behaviour towards unique entity player1 with a speed of 50
 //        seek = new SeekBehaviour(em.getEntity("player1"), 50);

@@ -33,7 +33,7 @@ public class BehaviourManager extends Manager {
     public void addBehaviour(Entity entity, Behaviour behaviour) {
         // put the entity and its corresponding behaviour into the map
         behaviours.put(entity, behaviour);
-        System.out.println("Behaviour added");
+//        System.out.println("Behaviour added");
         //print statement action
     }
 

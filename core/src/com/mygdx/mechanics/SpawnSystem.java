@@ -1,12 +1,10 @@
 package com.mygdx.mechanics;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,12 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.backgroundsprite.Enemy;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
-import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
-import com.mygdx.engine.utils.Event;
-import com.mygdx.engine.utils.EventListener;
-import com.mygdx.events.WinEvent;
 import com.mygdx.player.SeekBehaviour;
 
 public class SpawnSystem {
@@ -29,28 +23,34 @@ public class SpawnSystem {
 	private BehaviourManager bm = null;
 	private float screenHeight = Gdx.graphics.getHeight();
 	private float screenWidth = Gdx.graphics.getWidth();
+	private boolean isBoundarySet = false;
 	private Vector2 minPos = null;
 	private Vector2 maxPos = null;
 	private Rectangle spawnArea = null;
 	
+	
 	private boolean stop = false;
 	private float timer = 0f;
-	private float interval = 4f;
+	private float interval = 0f;
+	private float multiplier = 0f; 
+	private int initialEnemies = 0;
+	private int enemyCount = 0;
+	private int wave = 0;
+	private boolean waveEnded = false;
 	
-	private List<String> monsterTypes = new ArrayList<>();
-	
-	public SpawnSystem(GameContainer container, float interval, Vector2 minPos, Vector2 maxPos) {
+	public SpawnSystem(GameContainer container, float interval, float multiplier, int initialEnemies) {
 		this.em = container.getEntityManager();
 		this.cm = container.getCollisionManager();
 		this.bm = container.getBehaviourManager();
 		this.interval = interval;
+		this.multiplier = multiplier;
+		this.initialEnemies = initialEnemies;
 		// set spawn area, basically an oversized rectangle bigger than current screen
 		this.spawnArea = new Rectangle(-100, -100, screenWidth + 200, screenHeight + 200);
-		this.minPos = minPos;
-		this.maxPos = maxPos;
 	}
 	
 	public void update(float deltaTime) {
+		
 		// update timer
 		timer += deltaTime;
 		
@@ -60,13 +60,18 @@ public class SpawnSystem {
 		
 		// enemy spawn logic -- spawn new goblin every interval seconds
 		if(!stop) {
-			if(timer >= interval) {
+			if(timer >= interval && enemyCount < initialEnemies) {
 				Vector2 spawnPosition = getSpawnPosition();
 				spawn(spawnPosition);
 				timer -= interval;
+				System.out.println("Wave: " + wave + " " + "Max Enemies: " + initialEnemies + " " + "Current Enemies: " + enemyCount);
+			}
+			if(enemyCount >= initialEnemies) {
+				stop();
+				waveEnded = true;
+				System.out.println("Wave stopped at: " + wave);
 			}
 		}
-		
 	}
 	
 	public void stop() {
@@ -77,12 +82,38 @@ public class SpawnSystem {
 		this.stop = false;
 	}
 	
+	public void newWave() {
+		this.stop = false;
+		this.initialEnemies *= multiplier;
+		wave++;
+	}
+	
+	public void newWave(int numEnemies) {
+		this.stop = false;
+		this.initialEnemies = numEnemies;
+		wave++;
+	}
+	
+	public boolean getIsWaveEnded() {
+		return this.waveEnded;
+	}
+	
 	public void setInterval(float interval) {
 		this.interval = interval;
 	}
 	
-	public List<String> getMonsterTypes(){
-		return monsterTypes;
+	public void setBoundary(Vector2 minPos, Vector2 maxPos) {
+		this.isBoundarySet = true;
+		this.minPos = minPos;
+		this.maxPos = maxPos;
+	}
+	
+	public void removeBoundary() {
+		this.isBoundarySet = false;
+	}
+	
+	public int getWave() {
+		return this.wave;
 	}
 	
 	public void debug(ShapeRenderer shapeRenderer, Color color) {
@@ -96,13 +127,12 @@ public class SpawnSystem {
 		// TODO find better way to abstract this
 		// create entities at the position
 //		em.createEntity(1, Enemy.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
-		Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
-		em.addEntity(goblin);
-		
-		cm.addCollider(goblin);
-		
-		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
-		bm.addBehaviour(goblin, seek);
+			Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+			em.addEntity(goblin);
+			cm.addCollider(goblin);
+			SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
+			bm.addBehaviour(goblin, seek);
+			enemyCount++;
 	}
 	
 	private Vector2 getSpawnPosition() {
@@ -131,10 +161,14 @@ public class SpawnSystem {
 		}
 //		System.out.println("side: " + side);
 //		System.out.println("pos: " + x + " , " + y);
-		if(withinBoundary(x,y))
-			return new Vector2(x,y);
-		else
-			return getSpawnPosition();
+		if (isBoundarySet) {
+			if(withinBoundary(x,y))
+				return new Vector2(x,y);
+			else
+				return getSpawnPosition();
+		}
+			
+		return new Vector2(x,y);
 	}
 	
 	private boolean withinBoundary(float x, float y) {
