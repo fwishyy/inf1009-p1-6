@@ -12,10 +12,10 @@ public class BackGround {
 	
 	private Texture texture = null;
 	private Vector2 startPos = null;
-	private Vector2 maxPos = null;
+	private  Vector2 maxPos = null;
 	private Vector2 minPos = null;
 
-	HashMap<Integer, Vector2> gridMap;
+	private HashMap<Integer, Vector2> gridMap;
 	
 	public BackGround(String texture) {
 		this.texture = new Texture(Gdx.files.internal(texture));
@@ -26,6 +26,7 @@ public class BackGround {
 		this.minPos = new Vector2(this.startPos.x - this.texture.getWidth(), this.startPos.y - this.texture.getHeight());
 	}
 	
+	//for specifying start position of texture
 	public BackGround(String texture, float x, float y) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 		this.startPos =  new Vector2(x, y);
@@ -53,11 +54,11 @@ public class BackGround {
 		}
 	}
 	
-	public Vector2 maxPos() {
+	public Vector2 getMaxPos() {
 		return this.maxPos;
 	}
 	
-	public Vector2 minPos() {
+	public Vector2 getMinPos() {
 		return this.minPos;
 	}
 	

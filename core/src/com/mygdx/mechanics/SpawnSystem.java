@@ -29,6 +29,8 @@ public class SpawnSystem {
 	private BehaviourManager bm = null;
 	private float screenHeight = Gdx.graphics.getHeight();
 	private float screenWidth = Gdx.graphics.getWidth();
+	private Vector2 minPos = null;
+	private Vector2 maxPos = null;
 	private Rectangle spawnArea = null;
 	
 	private boolean stop = false;
@@ -37,13 +39,15 @@ public class SpawnSystem {
 	
 	private List<String> monsterTypes = new ArrayList<>();
 	
-	public SpawnSystem(GameContainer container, float interval) {
+	public SpawnSystem(GameContainer container, float interval, Vector2 minPos, Vector2 maxPos) {
 		this.em = container.getEntityManager();
 		this.cm = container.getCollisionManager();
 		this.bm = container.getBehaviourManager();
 		this.interval = interval;
 		// set spawn area, basically an oversized rectangle bigger than current screen
 		this.spawnArea = new Rectangle(-100, -100, screenWidth + 200, screenHeight + 200);
+		this.minPos = minPos;
+		this.maxPos = maxPos;
 	}
 	
 	public void update(float deltaTime) {
@@ -127,8 +131,14 @@ public class SpawnSystem {
 		}
 //		System.out.println("side: " + side);
 //		System.out.println("pos: " + x + " , " + y);
-		return new Vector2(x,y);
+		if(withinBoundary(x,y))
+			return new Vector2(x,y);
+		else
+			return getSpawnPosition();
 	}
 	
+	private boolean withinBoundary(float x, float y) {
+		return x > minPos.x && y > minPos.y && x < maxPos.x && y < maxPos.y;
+	}
 	
 }
