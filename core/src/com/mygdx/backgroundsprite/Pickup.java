@@ -10,7 +10,7 @@ public class Pickup extends Entity {
 	private String potionType;
 
     public Pickup(Vector2 position, String potionType) {
-        super(potionType.equals("healthPotion") ? "sprite/health-potion.gif" : "sprite/max-hp-potion.png", position.x, position.y, potionType);
+        super(potionType.equals("healthPotion") ? "sprite/health_potion.png" : "sprite/max_hp_potion.png", position.x, position.y, potionType);
         this.potionType = potionType;
     }
     
@@ -26,8 +26,10 @@ public class Pickup extends Entity {
 
 	@Override
 	public void collide(Collider other) {
-		if (other.getEntity().getType().equals("player1")) {
-            this.dispose();
+		System.out.println("Collision detected with: " + other.getEntity().getType());
+	    if (other.getEntity().getType().equals("player1")) {
+	        System.out.println("Potion collected by the player.");
+	        this.dispose();
         }
 	}
 

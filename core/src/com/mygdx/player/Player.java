@@ -68,6 +68,7 @@ public class Player extends AnimatedEntity {
         if (currentHp < 0) currentHp = 0;
     }
 
+    // when player picks up healing potion, health will +10
     public void heal() {
         currentHp += 10;
         if (currentHp > maxHp) currentHp = maxHp;

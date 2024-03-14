@@ -91,8 +91,14 @@ public class GameScene extends Scene {
         field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
         em.addEntity(field);
         
-        healthPotion = new Pickup("sprite/max-hp-potion.png", 30, 180, "maxHealthPotion");
+        // pickup stuff
+        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
         em.addEntity(healthPotion);
+        cm.addCollider(healthPotion); 
+        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
+        em.addEntity(maxHealthPotion);
+        cm.addCollider(maxHealthPotion);
+
 
         // Dynamic Creation Showcase
         em.createEntity(5, bgField.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
