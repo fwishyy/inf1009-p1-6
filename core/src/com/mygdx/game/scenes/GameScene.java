@@ -24,7 +24,7 @@ import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
-import com.mygdx.mechanics.InfiniteBackGround;
+import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
@@ -54,7 +54,7 @@ public class GameScene extends Scene {
     
     //Spawn
     private SpawnSystem enemySpawn;
-    private InfiniteBackGround bg;
+    private BackGround bg;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -105,9 +105,13 @@ public class GameScene extends Scene {
         playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
         pm.setActionMap(p1, playerControls);
         
+        
+        bg = new BackGround("bg/bg.png");
+        
         // create new camera and center it
         camera = new Camera();
         camera.setOffset(p1.getWidth()/2, p1.getHeight()/2);
+        camera.setBoundary(bg.minPos(), bg.maxPos());
         
         // create spawn system and set interval to spawn 1 enemy/4s
         enemySpawn = new SpawnSystem(container, 4);
@@ -119,7 +123,7 @@ public class GameScene extends Scene {
 //            bm.addBehaviour(entity, seek);
 //        }
         
-        bg = new InfiniteBackGround(camera.getCamera(), "bg/bg.png");
+        
     }
 
     @Override

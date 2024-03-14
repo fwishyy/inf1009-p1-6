@@ -8,25 +8,35 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class InfiniteBackGround {
+public class BackGround {
 	
-	private OrthographicCamera camera = null;
 	private Texture texture = null;
 	private Vector2 startPos = null;
-	private float screenHeight = Gdx.graphics.getHeight();
-	private float screenWidth = Gdx.graphics.getWidth();
+	private Vector2 maxPos = null;
+	private Vector2 minPos = null;
+
 	HashMap<Integer, Vector2> gridMap;
 	
-	public InfiniteBackGround(OrthographicCamera camera, String texture) {
-		this.camera = camera;
+	public BackGround(String texture) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 		this.startPos =  new Vector2(-(this.texture.getWidth() / 2), -(this.texture.getHeight() / 2));
 		this.gridMap = new HashMap<>();
 		createGrid();
+		this.maxPos = new Vector2(this.startPos.x + this.texture.getWidth()*2, this.startPos.y + this.texture.getHeight()*2);
+		this.minPos = new Vector2(this.startPos.x - this.texture.getWidth(), this.startPos.y - this.texture.getHeight());
+	}
+	
+	public BackGround(String texture, float x, float y) {
+		this.texture = new Texture(Gdx.files.internal(texture));
+		this.startPos =  new Vector2(x, y);
+		this.gridMap = new HashMap<>();
+		createGrid();
+		this.maxPos = new Vector2(this.startPos.x + this.texture.getWidth()*2, this.startPos.y + this.texture.getHeight()*2);
+		this.minPos = new Vector2(this.startPos.x - this.texture.getWidth(), this.startPos.y - this.texture.getHeight());
 	}
 	
 	public void update(SpriteBatch batch) {
-		/* Simulate infinite background by drawing the background in a grid of 9
+		/* Background by drawn in a grid of 9
 		 * For your visualisation
 			    1|2|3
 			   --+-+--
@@ -35,21 +45,20 @@ public class InfiniteBackGround {
 		        7|8|9
 		 */
 		
-		int currGrid = getCurrentGrid(); // current grid should always be 5 so we create 
-		//System.out.println(currGrid);
-		if(currGrid != 5) {
-			// create a new grid once camera crosses into a new grid
-			startPos = null;
-			startPos = new Vector2(gridMap.get(currGrid));
-			createGrid();
-		}
-		
 		//Draw Background using coordinates of the grid
 		for(int i = 1; i < 10; i++) {
 			float x = gridMap.get(i).x;
 			float y = gridMap.get(i).y;
 			batch.draw(texture, x, y);
 		}
+	}
+	
+	public Vector2 maxPos() {
+		return this.maxPos;
+	}
+	
+	public Vector2 minPos() {
+		return this.minPos;
 	}
 	
 	private void createGrid() {
@@ -111,23 +120,5 @@ public class InfiniteBackGround {
 		}
 		
 		return ret;
-	}
-	
-	private int getCurrentGrid() {
-		for(int gridNum: gridMap.keySet()) {
-			Vector2 currPos = new Vector2(camera.position.x, camera.position.y);
-			if(isWithinTexture(currPos, gridMap.get(gridNum)))
-				return gridNum;
-		}
-		
-		return 0;
-	}
-	
-	
-	private boolean isWithinTexture(Vector2 curr, Vector2 other) {
-		if(curr.x <= other.x + texture.getWidth() && curr.x >= other.x)
-			if(curr.y <= other.y + texture.getHeight() && curr.y >= other.y)
-				return true;
-		return false;
 	}
 }
