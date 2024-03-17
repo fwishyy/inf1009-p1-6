@@ -58,6 +58,11 @@ public class AudioTrack {
 
     protected void setVolume(float volume) {
         this.volume = volume;
+        if (this.isFX) {
+        	this.sound.setVolume(0, volume);
+        } else {
+        	this.music.setVolume(volume);
+        }
     }
 
     protected Sound getSound() {
