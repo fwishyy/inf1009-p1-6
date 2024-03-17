@@ -59,7 +59,7 @@ public class AudioManager extends Manager {
     // Default Constructor
     public AudioManager() {
         audiolist = new ObjectMap<>();
-        debug = false;
+        debug = true;
     }
 
     // Debug Constructor
@@ -224,6 +224,19 @@ public class AudioManager extends Manager {
                 System.out.println("AudioManager: '" + name + "' Volume set to " + new_volume);
             }
         }
+    }
+    
+    public float getVolume(String name) {
+    	float audioVolume = 0;
+    	if (!audiolist.containsKey(name)) {
+    		if (debug) {
+    			System.out.println("AudioManager: '" + name + "' does not exist");
+    		}
+    	} else {
+    		AudioTrack getAudioTrack = audiolist.get(name);
+    		audioVolume = getAudioTrack.getVolume();
+    	} 
+    	return audioVolume;
     }
 
     public void setFX(String name, boolean isFX) {
