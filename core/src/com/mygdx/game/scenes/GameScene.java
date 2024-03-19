@@ -25,7 +25,9 @@ import com.mygdx.engine.utils.EventListener;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
+import com.mygdx.mechanics.Boundary;
 import com.mygdx.mechanics.SpawnSystem;
+import com.mygdx.mechanics.Wave;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
 
@@ -55,6 +57,8 @@ public class GameScene extends Scene {
     //Spawn
     private SpawnSystem enemySpawn;
     private BackGround bg;
+    
+    private Boundary bounds;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -114,7 +118,7 @@ public class GameScene extends Scene {
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
         
         // create spawn system and set interval to spawn 1 enemy/4s
-        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
+        enemySpawn = new SpawnSystem(container, 1, 1.5f, 10);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
         
         // simple seeking behaviour towards unique entity player1 with a speed of 50
@@ -124,13 +128,13 @@ public class GameScene extends Scene {
 //            bm.addBehaviour(entity, seek);
 //        }
         
-        
+        bounds = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
     }
 
     @Override
     public void render(float deltaTime) {
         ScreenUtils.clear(1, 0.5f, 0.5f, 1);
-        
+        bounds.update();
         batch.begin();
         bg.update(batch);
         em.update();
@@ -153,6 +157,9 @@ public class GameScene extends Scene {
         
         // spawn system
         enemySpawn.update(deltaTime);
+//        if(enemySpawn.getWave().isWaveEnded()) {
+//        	enemySpawn.nextWave(new Wave(20, 2f, 1.2f));
+//        }
         
     }
 
