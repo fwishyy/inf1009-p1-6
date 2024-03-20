@@ -65,11 +65,10 @@ public class SpawnSystem {
 		Vector2 centerPos = em.getEntity("player1").getVector2();
 		spawnArea.setCenter(centerPos);
 		
-		// enemy spawn logic -- spawn new goblin every interval seconds
+		// enemy spawn logic -- spawn new enemy every interval seconds
 		if(!wave.isStop()) {
 			if(timer >= interval && enemyCount < initialEnemies) {
-				Vector2 spawnPosition = getSpawnPosition();
-				spawn(spawnPosition);
+				spawn(getSpawnPosition());
 				wave.setTimer(0f);
 				System.out.println("Wave: " + waveCount + " " + "Max Enemies: " + initialEnemies + " " + "Current Enemies: " + enemyCount);
 			}
@@ -123,12 +122,29 @@ public class SpawnSystem {
     }
 	
 	private void spawn(Vector2 position) {
-		// create entities at the position
-		Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
-		em.addEntity(goblin);
-		cm.addCollider(goblin);
-		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
-		bm.addBehaviour(goblin, seek);
+		
+		int totalEnemyType = 1; // update this variable whenever enemy types are added in the switch case below
+		int chooseEnemy = wave.getEnemyCount() % totalEnemyType;
+		
+		// add more as needed
+		switch(chooseEnemy) {
+		case 0:
+			// create entities at the position
+			Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+			em.addEntity(goblin);
+			cm.addCollider(goblin);
+			SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
+			bm.addBehaviour(goblin, seek);
+			break;
+		default:
+			// create entities at the position
+			Enemy defaultEnemy = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+			em.addEntity(defaultEnemy);
+			cm.addCollider(defaultEnemy);
+			SeekBehaviour defaultSeek = new SeekBehaviour(em.getEntity("player1"), 50);
+			bm.addBehaviour(defaultEnemy, defaultSeek);
+		}
+		
 		
 		wave.setEnemyCount(wave.getEnemyCount() + 1);
 	}
