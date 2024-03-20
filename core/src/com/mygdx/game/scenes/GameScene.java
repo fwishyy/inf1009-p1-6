@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.backgroundsprite.Enemy;
 import com.mygdx.camera.Camera;
+import com.mygdx.entity.Enemy;
+import com.mygdx.entity.Pickup;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
@@ -26,7 +27,8 @@ import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
-import com.mygdx.player.Player;
+import com.mygdx.player.HealthBar;
+import com.mygdx.entity.Player;
 import com.mygdx.player.SeekBehaviour;
 
 import java.util.Random;
@@ -44,9 +46,13 @@ public class GameScene extends Scene {
     private BehaviourManager bm;
     private SceneManager sm;
     //CONCRETE GAME LAYER FOR DEMO PURPOSES
+    private HealthBar hbar;
     private Player p1;
+    private Enemy skull;
+    private Pickup healthPotion;
+    private Pickup maxHealthPotion;
     private SeekBehaviour seek;
-    private SpriteBatch batch;
+    private SpriteBatch batch;       
     private ShapeRenderer shapeRenderer;
     
     //Camera
@@ -86,9 +92,20 @@ public class GameScene extends Scene {
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        
+
         //Create entities to spawn here
         em.createEntity(1, Player.class, "sprite/Converted_Vampire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
+
+        Random random = new Random();
+
+        // pickup stuff
+        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
+        em.addEntity(healthPotion);
+        cm.addCollider(healthPotion); 
+        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
+        em.addEntity(maxHealthPotion);
+        cm.addCollider(maxHealthPotion);
+
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
         // add colliders to entities that need collision logic
@@ -104,8 +121,8 @@ public class GameScene extends Scene {
         ActionMap playerControls = new ActionMap();
         playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
         pm.setActionMap(p1, playerControls);
-        
-        
+
+
         bg = new BackGround("bg/bg.png");
         
         // create new camera and center it
@@ -135,6 +152,15 @@ public class GameScene extends Scene {
         bg.update(batch);
         em.update();
         em.draw(batch);
+        for (Entity entity : em.getEntities()) {
+            if (entity instanceof Enemy) {
+                Enemy bgSprite = (Enemy) entity;
+                if (bgSprite.isDead()) {
+                    bgSprite.potionDrop(); // Ensure you pass the EntityManager instance
+                }
+            }
+        }
+        
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
         batch.end();

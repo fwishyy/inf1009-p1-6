@@ -1,20 +1,21 @@
-package com.mygdx.player;
+package com.mygdx.entity;
 
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 
+public class Enemy extends Character {
 
-public class Player extends AnimatedEntity {
-
-    public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
-        super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
+    public Enemy(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
+        super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
+        this.currentHp = 20;
+        this.maxHp = 20;
     }
-
 
     @Override
     public void collide(Collider other) {
+        // TODO Auto-generated method stub
 //        if (other.getEntity().getType().equals("player1")) {
 //            LoseEvent.addEvent(new LoseEvent());
 //            this.dispose();

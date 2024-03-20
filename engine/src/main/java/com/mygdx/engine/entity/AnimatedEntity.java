@@ -37,7 +37,6 @@ public abstract class AnimatedEntity extends Entity {
         this.currentFrame = 0;
         prepAnimation();
 
-
     }
 
     @Override

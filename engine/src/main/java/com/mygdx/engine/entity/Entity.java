@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.engine.actions.Actionable;
+import com.mygdx.engine.actions.GameAction;
 
-public abstract class Entity {
+import java.util.ArrayList;
+
+public abstract class Entity implements Actionable {
 
     protected Sprite sprite;
     protected TextureRegion texture;
@@ -15,7 +19,7 @@ public abstract class Entity {
     protected float width;
     protected float height;
     protected String type;
-
+    protected ArrayList<GameAction> actions;
 
     protected Entity() {
         this.texture = null;
@@ -24,6 +28,7 @@ public abstract class Entity {
         this.height = 0;
         this.type = "";
         this.sprite = null;
+        this.actions = new ArrayList<>();
     }
 
     protected Entity(String texture, float x, float y, String type) {
@@ -33,6 +38,7 @@ public abstract class Entity {
         this.height = this.texture.getRegionHeight();
         this.type = type;
         this.sprite = new Sprite(this.texture);
+        this.actions = new ArrayList<>();
     }
 
     protected Entity(float x, float y, String type) {
@@ -42,6 +48,7 @@ public abstract class Entity {
         this.height = 0;
         this.type = type;
         this.sprite = null;
+        this.actions = new ArrayList<>();
     }
 
     protected Entity(float x, float y) {
@@ -51,6 +58,7 @@ public abstract class Entity {
         this.height = this.texture.getRegionHeight();
         this.type = "";
         this.sprite = null;
+        this.actions = new ArrayList<>();
     }
 
     protected Entity(String texture) {
@@ -60,9 +68,22 @@ public abstract class Entity {
         this.height = this.texture.getRegionHeight();
         this.type = "";
         this.sprite = new Sprite(this.texture);
+        this.actions = new ArrayList<>();
     }
 
-    protected void update() {
+    public void addAction(GameAction action) {
+        actions.add(action);
+    }
+
+    public void update() {
+        for (int i = 0; i < actions.size(); ++i) {
+            GameAction currAction = actions.get(i);
+            boolean isCompleted = currAction.act(this);
+            if (isCompleted) {
+                actions.remove(currAction);
+            }
+
+        }
     }
 
     public abstract void collide(Collider other);

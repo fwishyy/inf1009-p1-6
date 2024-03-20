@@ -1,15 +1,12 @@
 package com.mygdx.mechanics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.backgroundsprite.Enemy;
+import com.mygdx.entity.Enemy;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityManager;

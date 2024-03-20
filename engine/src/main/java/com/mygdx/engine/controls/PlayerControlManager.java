@@ -76,7 +76,8 @@ public class PlayerControlManager extends Manager {
                             int rightKeyState = heldKeys.get(keyCodes.get(3)) ? 1 : 0;
 
                             Vector2 keyState = new Vector2(rightKeyState - leftKeyState, upKeyState - downKeyState);
-                            inputAction.act(entity, new Vector2(keyState));
+                            inputAction.setKeyState(keyState);
+                            entity.addAction(inputAction);
                         } else {
                             action.act(entity);
                         }

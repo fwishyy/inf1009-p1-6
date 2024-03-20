@@ -3,7 +3,7 @@ package com.mygdx.actions;
 import com.mygdx.engine.actions.GameAction;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.player.Player;
+import com.mygdx.entity.Player;
 
 public class Attack extends GameAction {
 
