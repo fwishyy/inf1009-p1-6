@@ -270,9 +270,14 @@ public abstract class AnimatedEntity extends Entity {
 
         TextureRegion currentFrameRegion = this.getFrames()[currentFrame / cols][currentFrame % cols];
         
-        // If animation should be drawn inverted, use the inverse trick to draw it
-        if (this.flip) {
-        	batch.draw(currentFrameRegion, this.getX()+width, this.getY(), width*-1, height);
+        updateDirection(); // Updates direction for non player controlled entities
+        
+        /* 	If animation should be drawn inverted, use the inverse trick to draw it
+         	flip is manually controlled, while direction is calculated based on previous location
+         	We don't want the player to keep reseting to face right when the player is not moving, hence the extra logic here */
+        
+        if (this.flip || (this.direction && !this.flip)) {
+        	batch.draw(currentFrameRegion, this.getX()+width, this.getY(), width*-1, height);	
         }else {
         	batch.draw(currentFrameRegion, this.getX(), this.getY(), width, height);
         }

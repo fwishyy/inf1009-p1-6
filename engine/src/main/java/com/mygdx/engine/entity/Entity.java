@@ -18,60 +18,72 @@ public abstract class Entity implements Actionable {
     protected Sprite sprite;
     protected TextureRegion texture;
     protected Vector2 vector2;
+    protected Vector2 previous_vector2;
     protected float width;
     protected float height;
     protected String type;
     protected ArrayList<GameAction> actions;
     protected Map<Class<? extends GameAction>, Float> actionInterval;
+    protected boolean direction; //true for left, false for right
 
     protected Entity() {
         this.texture = null;
         this.vector2 = new Vector2();
+        this.previous_vector2 = null;
         this.width = 0;
         this.height = 0;
         this.type = "";
         this.sprite = null;
         this.actions = new ArrayList<>();
+        this.direction = false;
     }
 
     protected Entity(String texture, float x, float y, String type) {
         this.texture = new TextureRegion(new Texture(Gdx.files.internal(texture)));
         this.vector2 = new Vector2(x, y);
+        this.previous_vector2 = null;
         this.width = this.texture.getRegionWidth();
         this.height = this.texture.getRegionHeight();
         this.type = type;
         this.sprite = new Sprite(this.texture);
         this.actions = new ArrayList<>();
+        this.direction = false;
     }
 
     protected Entity(float x, float y, String type) {
         this.texture = null;
         this.vector2 = new Vector2(x, y);
+        this.previous_vector2 = null;
         this.width = 0;
         this.height = 0;
         this.type = type;
         this.sprite = null;
         this.actions = new ArrayList<>();
+        this.direction = false;
     }
 
     protected Entity(float x, float y) {
         this.texture = null;
         this.vector2 = new Vector2(x, y);
+        this.previous_vector2 = null;
         this.width = this.texture.getRegionWidth();
         this.height = this.texture.getRegionHeight();
         this.type = "";
         this.sprite = null;
         this.actions = new ArrayList<>();
+        this.direction = false;
     }
 
     protected Entity(String texture) {
         this.texture = new TextureRegion(new Texture(Gdx.files.internal(texture)));
         this.vector2 = new Vector2();
+        this.previous_vector2 = null;
         this.width = this.texture.getRegionWidth();
         this.height = this.texture.getRegionHeight();
         this.type = "";
         this.sprite = new Sprite(this.texture);
         this.actions = new ArrayList<>();
+        this.direction = false;
     }
 
     public void addAction(GameAction newAction) {
@@ -100,11 +112,40 @@ public abstract class Entity implements Actionable {
             }
         }
     }
+    
+    
 
     public abstract void collide(Collider other);
+    
+    // Helper function to check for direction given previous position
+    protected void updateDirection() {
+    	
+    	if(this.previous_vector2 == null) {
+    		this.direction = false;
+    		
+    	}else {   		
+        	float deltaX = vector2.x - previous_vector2.x;
+        	if (deltaX >= 0) {
+                this.direction = false;
+            } else {
+            	this.direction = true;
+            }
+    	}
+    	
+    	this.previous_vector2 = this.vector2;
+    }
 
     protected void draw(SpriteBatch batch) {
-        batch.draw(this.texture, this.vector2.x, this.vector2.y);
+        
+    	updateDirection();
+        
+        // if facing left, then invert texture
+        if (this.direction) {
+        	batch.draw(this.texture, this.vector2.x+width, this.vector2.y, width*-1, height);	
+        }else {
+        	batch.draw(this.texture, this.vector2.x, this.vector2.y, width, height);	
+        }
+        
     }
 
     public TextureRegion getTextureRegion() {
@@ -181,6 +222,7 @@ public abstract class Entity implements Actionable {
         this.vector2 = null; // Release previous object
         this.vector2 = new Vector2(x, y);
     }
+    
 
     public void setSize(float width, float height) {
         this.width = width;
