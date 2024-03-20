@@ -1,5 +1,6 @@
 package com.mygdx.player;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.AnimatedEntity;
@@ -25,13 +26,13 @@ public class Player extends AnimatedEntity {
                 y + 10
         );
         
-        healthBar = new HealthBar(healthBarPosition);
+        healthBar = new HealthBar(healthBarPosition, Color.GREEN, 80, 10);
     }
     
     public void draw(SpriteBatch batch) {
         super.draw(batch); 
         healthBar.update(maxHp, currentHp);
-        healthBar.draw(batch, getX(), getY()); 
+        healthBar.draw(batch, getX(), getY(), getWidth()); 
     }
 
 

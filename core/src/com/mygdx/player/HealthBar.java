@@ -23,16 +23,18 @@ public class HealthBar {
     private float currentHp;
     private float barWidth;
     private float barHeight;
+    private Color healthColour;
     private Vector2 positionOffset; // position relative to owner entity
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
 
-    public HealthBar(Vector2 positionOffset){
-        this.barWidth = 50; // initialise bar width
-        this.barHeight = (float) 6.25; // initalise bar height
+    public HealthBar(Vector2 positionOffset, Color healthColour, float barWidth, float barHeight){
+        this.barWidth = barWidth; // initialise bar width
+        this.barHeight = barHeight; // initalise bar height
         this.shapeRenderer = new ShapeRenderer();
         this.positionOffset = positionOffset;
         
+        this.healthColour = healthColour;
         this.font = new BitmapFont(); // libgdx default arial font
         this.font.setColor(Color.WHITE); // set font color to white
         
@@ -45,18 +47,18 @@ public class HealthBar {
     }
 
     // draw method
-    public void draw(SpriteBatch batch, float ownerX, float ownerY) {
-        float x = ownerX + positionOffset.x;
+    public void draw(SpriteBatch batch, float ownerX, float ownerY, float ownerWidth) {
+        float x = ownerX + ownerWidth / 2 - barWidth / 2;
         float y = ownerY - barHeight - positionOffset.y;
 
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x, y, barWidth, barHeight);
+        shapeRenderer.rect(x - 2, y - 2, barWidth + 4, barHeight + 4);
 
         float healthWidth = barWidth * (currentHp / maxHp);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(healthColour);
         shapeRenderer.rect(x, y, healthWidth, barHeight);
         shapeRenderer.end();
 

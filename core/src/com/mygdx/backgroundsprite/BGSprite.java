@@ -1,5 +1,6 @@
 package com.mygdx.backgroundsprite;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -20,13 +21,13 @@ public class BGSprite extends AnimatedEntity {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
         this.maxHp = 20;
         this.currentHp = 20;
-        healthBar = new HealthBar(new Vector2(38, 10));
+        healthBar = new HealthBar(new Vector2(38, -20), Color.RED, 80, 10);
     }
     
     public void draw(SpriteBatch batch) {
         super.draw(batch); 
         healthBar.update(maxHp, currentHp);
-        healthBar.draw(batch, getX(), getY()); 
+        healthBar.draw(batch, getX(), getY(), getWidth()); 
     }
 
     @Override
