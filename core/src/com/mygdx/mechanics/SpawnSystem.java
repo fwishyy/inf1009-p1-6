@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.backgroundsprite.Enemy;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
+import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.player.SeekBehaviour;
@@ -131,10 +132,7 @@ public class SpawnSystem {
 		case 0:
 			// create entities at the position
 			Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
-			em.addEntity(goblin);
-			cm.addCollider(goblin);
-			SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
-			bm.addBehaviour(goblin, seek);
+			initSpawn(goblin);
 			break;
 		default:
 			// create entities at the position
@@ -183,6 +181,13 @@ public class SpawnSystem {
 		}
 			
 		return new Vector2(x,y);
+	}
+	
+	private void initSpawn(Entity entity) {
+		em.addEntity(entity);
+		cm.addCollider(entity);
+		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
+		bm.addBehaviour(entity, seek);
 	}
 	
 	private boolean withinBoundary(float x, float y) {
