@@ -148,4 +148,3 @@ public abstract class AnimatedEntity extends Entity {
         super.dispose();
     }
 }
-

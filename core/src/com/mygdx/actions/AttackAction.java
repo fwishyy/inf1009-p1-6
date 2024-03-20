@@ -10,7 +10,7 @@ public class AttackAction extends TemporalAction {
 
     // TODO: fix a bug where too many attack commands are generated per click
     public AttackAction() {
-        setInterval(1500);
+        setInterval(150);
     }
     @Override
     public boolean act() {
@@ -20,15 +20,14 @@ public class AttackAction extends TemporalAction {
             // set the origin to the center of the player
             origin.x += player.getWidth() / 2;
             origin.y += player.getHeight() / 2;
-            Fireball fireball = new Fireball("characters/Mage_Fire/Run.png", origin.x, origin.y, "fireball", 1, 8, 0.1f);
+            Fireball fireball = new Fireball("projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 41, 0.1f);
 
             // calculate the target direction using the Player's target vector
             // which represents where the cursor is aiming
             Vector2 target = player.getTarget();
 
             if(target != null) {
-                Vector2 direction = new Vector2(target.cpy().sub(origin).nor());
-                fireball.setDirection(direction);
+                fireball.setDirection(target.nor());
 
                 EntityAddedEvent.addEvent(new EntityAddedEvent(fireball));
             }

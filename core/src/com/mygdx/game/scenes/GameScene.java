@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -195,6 +196,11 @@ public class GameScene extends Scene {
         // update where player is facing here
         if (e.getType() == PointerEvent.Type.HOVER) {
             Vector2 target = new Vector2(e.getScreenX(), e.getScreenY());
+            // invert y coordinates
+            target.y = Gdx.graphics.getHeight() - target.y;
+
+            target.x -= Gdx.graphics.getWidth() / 2;
+            target.y -= Gdx.graphics.getHeight() / 2;
             System.out.println(target);
             p1.setTarget(target);
         }
