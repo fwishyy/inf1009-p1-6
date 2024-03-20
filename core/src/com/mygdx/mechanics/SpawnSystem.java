@@ -124,7 +124,7 @@ public class SpawnSystem {
 		// TODO find better way to abstract this
 		// create entities at the position
 //		em.createEntity(1, Enemy.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
-			Enemy goblin = new Enemy("monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
+			Enemy goblin = new Enemy("characters/Skeleton_Warrior/Attack_1.png", position.x, position.y, "skeleton", 1, 5, 0.1f);
 			em.addEntity(goblin);
 			cm.addCollider(goblin);
 			SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);

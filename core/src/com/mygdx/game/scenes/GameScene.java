@@ -94,7 +94,7 @@ public class GameScene extends Scene {
         shapeRenderer = new ShapeRenderer();
 
         //Create entities to spawn here
-        em.createEntity(1, Player.class, "sprite/Converted_Vampire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
+        em.createEntity(1, Player.class, "characters/Mage_Fire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
 
         Random random = new Random();
 
