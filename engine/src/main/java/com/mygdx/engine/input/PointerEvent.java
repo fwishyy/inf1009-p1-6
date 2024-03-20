@@ -36,4 +36,8 @@ public class PointerEvent extends Event {
     public enum Type {
         DOWN, UP, HOVER
     }
+
+	public int getButton() {
+		return this.button;
+	}
 }

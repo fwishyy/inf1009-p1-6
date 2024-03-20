@@ -1,6 +1,7 @@
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,9 +15,11 @@ import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.core.GameContainer;
+import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.MyCursor;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
@@ -28,6 +31,8 @@ import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.player.Player;
 import com.mygdx.player.SeekBehaviour;
+import com.mygdx.engine.actions.GameAction;
+import com.mygdx.engine.actions.FlipAction;
 
 import java.util.Random;
 
@@ -52,6 +57,10 @@ public class GameScene extends Scene {
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    
+    //Cursor Test
+    private MyCursor testcursor;
+    
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -66,6 +75,18 @@ public class GameScene extends Scene {
     @Override
     public void show() {
         super.show();
+        
+     // FOR TESTING OF ANIMATED ENTITY ON MOUSE CLICK 
+        pointerEventListener = new EventListener<PointerEvent>() {
+            @Override
+            public void onSignal(Event e) {
+                if (e instanceof PointerEvent) handlePointerEvents((PointerEvent) e);
+            }
+        };
+        
+        EventBus.addListener(PointerEvent.class, pointerEventListener);
+        // FOR TESTING OF ANIMATED ENTITY ON MOUSE CLICK 
+
 
         winEventListener = new EventListener<WinEvent>() {
             public void onSignal(Event e) {
@@ -117,6 +138,11 @@ public class GameScene extends Scene {
         em.addEntity(skull);
         skull = new BGSprite("bg/PNG/Animation5.png", screenWidth / 2 - 50, screenHeight / 2 - 50, "skull", 3, 6, 0.1f);
         em.addEntity(skull);
+        
+        // Multi Animations
+        ((AnimatedEntity) em.getEntity("player1")).addAnimation("sprite/Converted_Vampire/attack_1.png", "attack", 5);
+        ((AnimatedEntity) em.getEntity("player1")).addAnimation("sprite/Converted_Vampire/Jump.png", "jump", 7);
+
 
         // Batch Filtering Showcase
         // Identify Entities to randomly set their position
@@ -164,6 +190,18 @@ public class GameScene extends Scene {
         for (Entity entity : em.getEntities("goblin")) {
             bm.addBehaviour(entity, seek);
         }
+        
+        // TEST CODE TO FLIP BASED ON USER DIRECTION     
+        GameAction flip_left = new FlipAction(em, true);
+        GameAction flip_right = new FlipAction(em, false);
+        playerControls.addAction("face_left", flip_left);
+        playerControls.addAction("face_right", flip_right);
+        playerControls.addNewBinding(Input.Keys.A, "face_left");
+        playerControls.addNewBinding(Input.Keys.D, "face_right");
+        // TEST CODE TO FLIP BASED ON USER DIRECTION  
+        
+        // SWAP CURSOR TEST
+        testcursor = new MyCursor("mouse/pointer-2.png");
 
 
     }
@@ -183,6 +221,9 @@ public class GameScene extends Scene {
 
         EventBus.processEvents(WinEvent.class);
         EventBus.processEvents(LoseEvent.class);
+        
+        //SWAP CURSOR TEST
+        testcursor.updateCursorPosition();
     }
 
     public void handlePointerEvent(PointerEvent e) {
@@ -223,4 +264,20 @@ public class GameScene extends Scene {
         lich = null;
         p1 = null;
     }
+    
+    // FOR TESTING OF ANIMATED ENTITY ON MOUSE CLICK ------------------------------------------------
+    private void handlePointerEvents(PointerEvent pointerEvent) {
+    	int button = pointerEvent.getButton();
+    	
+        if (button == 0) {
+        	((AnimatedEntity) em.getEntity("player1")).setAnimation("attack",1);
+        	
+        }else if (button == 1) {
+        	((AnimatedEntity) em.getEntity("player1")).setAnimation("jump",1);
+
+        	
+        }
+        
+    }
+    // FOR TESTING OF ANIMATED ENTITY ON MOUSE CLICK --------------------------------------------------
 }
