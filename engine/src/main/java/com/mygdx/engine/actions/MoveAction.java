@@ -1,7 +1,6 @@
 package com.mygdx.engine.actions;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Entity;
 
 public class MoveAction extends GameAction {
 
@@ -25,8 +24,8 @@ public class MoveAction extends GameAction {
     }
 
     @Override
-    public boolean act(Entity entity) {
-        entity.setPosition(targetPos);
+    public boolean act() {
+        actor.setPosition(targetPos);
 
         return true;
     }

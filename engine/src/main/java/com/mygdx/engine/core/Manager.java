@@ -1,5 +1,6 @@
 package com.mygdx.engine.core;
 
+import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityDisposedEvent;
 import com.mygdx.engine.input.KeyEvent;
 import com.mygdx.engine.input.PointerEvent;
@@ -34,6 +35,10 @@ public abstract class Manager {
         CollisionEvent.addListener(CollisionEvent.class, listener);
     }
 
+    protected void addEntityAddedListener(EventListener<EntityAddedEvent> listener) {
+        listeners.add(listener);
+        EntityAddedEvent.addListener(EntityAddedEvent.class, listener);
+    }
     protected void addEntityDisposedListener(EventListener<EntityDisposedEvent> listener) {
         listeners.add(listener);
         EntityDisposedEvent.addListener(EntityDisposedEvent.class, listener);

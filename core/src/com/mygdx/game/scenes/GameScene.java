@@ -189,7 +189,9 @@ public class GameScene extends Scene {
         // TODO: make sure that this is updated for the prototype camera
         // update where player is facing here
         if (e.getType() == PointerEvent.Type.HOVER) {
-            Vector2 target = new Vector2(e.getScreenX(), e.getScreenY());
+            Vector2 screenCoords = stage.screenToStageCoordinates(new Vector2(e.getScreenX(), e.getScreenY()));
+            Vector2 target = new Vector2(screenCoords);
+            System.out.println("set target");
             p1.setTarget(target);
         }
     }

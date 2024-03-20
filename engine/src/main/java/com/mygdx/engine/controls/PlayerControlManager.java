@@ -17,6 +17,8 @@ public class PlayerControlManager extends Manager {
 
     private final LinkedHashMap<Entity, ActionMap> entityActions;
     private final LinkedHashMap<Integer, Boolean> heldKeys;
+    private static final float dispatchDelay = 0.1f;
+    private float timeSinceLastDispatch = 0;
 
     public PlayerControlManager() {
         heldKeys = new LinkedHashMap<>();
@@ -55,6 +57,10 @@ public class PlayerControlManager extends Manager {
         return entityActions.get(entity);
     }
 
+    public boolean isDispatchReady() {
+        return timeSinceLastDispatch >= dispatchDelay;
+    }
+
     // Currently this updates frame by frame
     // TODO: Maybe fix the very lazy dispatching
     public void update() {
@@ -65,9 +71,9 @@ public class PlayerControlManager extends Manager {
             for (Map.Entry<GameAction, List<Integer>> actionMapEntry : entityEntry.getValue().getAllBindings().entrySet()) {
                 action = actionMapEntry.getKey();
                 List<Integer> keyCodes = actionMapEntry.getValue();
-
                 for (int keyCode : keyCodes) {
                     if (heldKeys.get(keyCode)) {
+                        action.setActor(entity);
                         if (action instanceof MoveByInputAction) {
                             MoveByInputAction inputAction = (MoveByInputAction) action;
                             int upKeyState = heldKeys.get(keyCodes.get(0)) ? 1 : 0;
@@ -78,10 +84,10 @@ public class PlayerControlManager extends Manager {
                             Vector2 keyState = new Vector2(rightKeyState - leftKeyState, upKeyState - downKeyState);
                             inputAction.setKeyState(keyState);
                             entity.addAction(inputAction);
+                            break;
                         } else {
                             entity.addAction(action);
                         }
-                        break;
                     }
                 }
             }
