@@ -147,11 +147,12 @@ public class GameScene extends Scene {
     @Override
     public void render(float deltaTime) {
         ScreenUtils.clear(1, 0.5f, 0.5f, 1);
-        
+
         batch.begin();
         bg.update(batch);
         em.update();
         em.draw(batch);
+        batch.end();
         for (Entity entity : em.getEntities()) {
             if (entity instanceof Enemy) {
                 Enemy bgSprite = (Enemy) entity;
@@ -160,10 +161,9 @@ public class GameScene extends Scene {
                 }
             }
         }
-        
+
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
-        batch.end();
         pm.update();
         
         // draw collider for debugging purposes

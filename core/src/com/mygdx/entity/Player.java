@@ -44,28 +44,11 @@ public class Player extends Character {
         	this.heal();
         }
     }
-    
-    public HealthBar getHbar() {
-    	return healthBar;
-    }
-    
-    public float getMaxHp() {
-    	return this.maxHp;
-    }
-    
-    public float getCurrentHp() {
-    	return this.currentHp;
-    }
-    
+
     // when player picks up increase max HP potion, it will increase by 5%
     // to be included in potion collisionevent
     public void increaseMaxHp() {
         maxHp += maxHp * (5.0f / 100.0f);
-    }
-    
-    public void takeDamage() {
-        currentHp -= 3;
-        if (currentHp < 0) currentHp = 0;
     }
 
     // when player picks up healing potion, health will +10
@@ -73,5 +56,4 @@ public class Player extends Character {
         currentHp += 10;
         if (currentHp > maxHp) currentHp = maxHp;
     }
-    
 }

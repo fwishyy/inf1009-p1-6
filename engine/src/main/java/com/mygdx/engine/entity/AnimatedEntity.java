@@ -60,7 +60,6 @@ public abstract class AnimatedEntity extends Entity {
         TextureRegion currentFrameRegion = this.getFrames()[currentFrame / cols][currentFrame % cols];
         // Draw every frame
         batch.draw(currentFrameRegion, this.getX(), this.getY(), width, height);
-
     }
 
     private void prepAnimation() {

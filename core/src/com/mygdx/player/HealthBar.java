@@ -52,18 +52,17 @@ public class HealthBar {
     public void draw(SpriteBatch batch) {
         float x = entity.getX() + entity.getWidth() / 2 - barWidth / 2;
         float y = entity.getY() - barHeight - positionOffset.y;
-        batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x - 2, y - 2, barWidth + 4, barHeight + 4);
+        // TODO: this is currently broken because of the integration between SpriteBatch and ShapeRenderer
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(Color.DARK_GRAY);
+//        shapeRenderer.rect(x - 2, y - 2, barWidth + 4, barHeight + 4);
+//
+//        float healthWidth = barWidth * (currentHp / maxHp);
+//        shapeRenderer.setColor(healthColour);
+//        shapeRenderer.rect(x, y, healthWidth, barHeight);
+//        shapeRenderer.end();
 
-        float healthWidth = barWidth * (currentHp / maxHp);
-        shapeRenderer.setColor(healthColour);
-        shapeRenderer.rect(x, y, healthWidth, barHeight);
-        shapeRenderer.end();
-
-        batch.begin(); 
         // GlyphLayout to measure the dimensions of HP value text
         GlyphLayout layout = new GlyphLayout(); 
         String text = String.format("%d/%d", (int) currentHp, (int) maxHp);

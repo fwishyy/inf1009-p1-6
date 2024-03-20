@@ -61,32 +61,11 @@ public class Character extends AnimatedEntity {
         return currentHp <= 0;
     }
 
-    // TODO: remove this and move it to an enemy
-    // potion drop logic
-    public void potionDrop() {
-        // check for a 1/5 chance to drop a potion
-        if (MathUtils.random(1, 5) == 1) {
-            // decide which potion to drop (50% chance each)
-            boolean dropHealthPotion = MathUtils.randomBoolean();
-
-            if (dropHealthPotion) {
-                // create a health potion at the enemy location
-                potion = new Pickup(new Vector2(getX(), getY()), "healthPotion");
-            } else {
-                // create a max health potion at the enemy location
-                potion = new Pickup(new Vector2(getX(), getY()), "maxHealthPotion");
-            }
-
-            // GameScene -> addEntity(potion);
-        }
-    }
-
     @Override
     public void update() {
         super.update();
         // check if enemy isDead
         if (isDead()) {
-            this.potionDrop();
             this.dispose();
         }
     }
