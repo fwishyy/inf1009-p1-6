@@ -10,15 +10,15 @@ import com.mygdx.engine.entity.Entity;
 
 
 public class HealthBar {
-	
-	/* owner: the entity that the health bar belongs to
-	 * xOffset: horizontal offset from entity position
-	 * yOffset: vertical offset from entity position
-	 * maxHp: maximum health points of entity
-	 * currentHp: current health points of entity
-	 * barWidth: width of health bar (fixed)
-	 * barHeight: height of health bar (fixed)
-	 */
+
+    /* owner: the entity that the health bar belongs to
+     * xOffset: horizontal offset from entity position
+     * yOffset: vertical offset from entity position
+     * maxHp: maximum health points of entity
+     * currentHp: current health points of entity
+     * barWidth: width of health bar (fixed)
+     * barHeight: height of health bar (fixed)
+     */
 
     private Entity entity;
     private float maxHp;
@@ -30,18 +30,18 @@ public class HealthBar {
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
 
-    public HealthBar(Entity entity, Vector2 positionOffset, Color healthColour, float barWidth, float barHeight){
+    public HealthBar(Entity entity, Vector2 positionOffset, Color healthColour, float barWidth, float barHeight) {
         this.entity = entity;
         this.barWidth = barWidth; // initialise bar width
         this.barHeight = barHeight; // initalise bar height
         this.shapeRenderer = new ShapeRenderer();
         this.positionOffset = positionOffset;
-        
+
         this.healthColour = healthColour;
         this.font = new BitmapFont(); // libgdx default arial font
         this.font.setColor(Color.WHITE); // set font color to white
     }
-    
+
     // update health
     public void update(float maxHp, float currentHp) {
         this.maxHp = maxHp;
@@ -50,21 +50,13 @@ public class HealthBar {
 
     // draw method
     public void draw(SpriteBatch batch) {
+        batch.begin();
+        // TODO: fix health bar positioning
         float x = entity.getX() + entity.getWidth() / 2 - barWidth / 2;
         float y = entity.getY() - barHeight - positionOffset.y;
 
-        // TODO: this is currently broken because of the integration between SpriteBatch and ShapeRenderer
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(Color.DARK_GRAY);
-//        shapeRenderer.rect(x - 2, y - 2, barWidth + 4, barHeight + 4);
-//
-//        float healthWidth = barWidth * (currentHp / maxHp);
-//        shapeRenderer.setColor(healthColour);
-//        shapeRenderer.rect(x, y, healthWidth, barHeight);
-//        shapeRenderer.end();
-
         // GlyphLayout to measure the dimensions of HP value text
-        GlyphLayout layout = new GlyphLayout(); 
+        GlyphLayout layout = new GlyphLayout();
         String text = String.format("%d/%d", (int) currentHp, (int) maxHp);
         layout.setText(font, text); // sets text of layout and calculates the bounds
 
@@ -74,12 +66,22 @@ public class HealthBar {
 
         // draw HP text
         font.draw(batch, layout, textX, textY);
+        batch.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(x - 2, y - 2, barWidth + 4, barHeight + 4);
+
+        float healthWidth = barWidth * (currentHp / maxHp);
+        shapeRenderer.setColor(healthColour);
+        shapeRenderer.rect(x, y, healthWidth, barHeight);
+        shapeRenderer.end();
     }
 
     public void dispose() {
         font.dispose();
         shapeRenderer.dispose();
     }
- 
+
 }
 	

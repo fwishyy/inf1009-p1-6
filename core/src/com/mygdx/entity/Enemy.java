@@ -13,8 +13,6 @@ public class Enemy extends Character {
     }
 
 
-    // TODO: remove this and move it to an enemy
-    // potion drop logic
     public void potionDrop() {
         // check for a 1/5 chance to drop a potion
         if (MathUtils.random(1, 5) == 1) {

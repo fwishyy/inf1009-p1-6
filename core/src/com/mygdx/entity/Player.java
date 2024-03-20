@@ -3,14 +3,13 @@ package com.mygdx.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.events.LoseEvent;
-import com.mygdx.events.WinEvent;
 import com.mygdx.player.HealthBar;
 
 
 public class Player extends Character {
+
+    private Vector2 target;
 
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
@@ -18,11 +17,20 @@ public class Player extends Character {
         this.currentHp = 50;
         Vector2 healthbarOffset = new Vector2(38, -20);
         this.healthBar = new HealthBar(this, healthbarOffset, Color.GREEN, 80, 10);
+        this.target = new Vector2();
+    }
+
+    public Vector2 getTarget() {
+        return target;
+    }
+
+    public void setTarget(Vector2 target) {
+        this.target = target;
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        super.draw(batch); 
+        super.draw(batch);
         healthBar.update(maxHp, currentHp);
     }
 
@@ -41,7 +49,7 @@ public class Player extends Character {
             this.increaseMaxHp();
         }
         if (other.getEntity().getType().equals("healthPotion")) {
-        	this.heal();
+            this.heal();
         }
     }
 

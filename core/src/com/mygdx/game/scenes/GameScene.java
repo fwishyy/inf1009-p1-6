@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.actions.AttackAction;
 import com.mygdx.camera.Camera;
-import com.mygdx.entity.Enemy;
-import com.mygdx.entity.Pickup;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
@@ -17,18 +16,21 @@ import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
+import com.mygdx.entity.Enemy;
+import com.mygdx.entity.Pickup;
+import com.mygdx.entity.Player;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.player.HealthBar;
-import com.mygdx.entity.Player;
 import com.mygdx.player.SeekBehaviour;
 
 import java.util.Random;
@@ -37,6 +39,7 @@ public class GameScene extends Scene {
 
     EventListener<WinEvent> winEventListener;
     EventListener<LoseEvent> loseEventListener;
+    EventListener<PointerEvent> pointerEventListener;
     //ENGINE
     private GameContainer container;
     private EntityManager em;
@@ -52,12 +55,12 @@ public class GameScene extends Scene {
     private Pickup healthPotion;
     private Pickup maxHealthPotion;
     private SeekBehaviour seek;
-    private SpriteBatch batch;       
+    private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    
+
     //Camera
     private Camera camera;
-    
+
     //Spawn
     private SpawnSystem enemySpawn;
     private BackGround bg;
@@ -86,9 +89,16 @@ public class GameScene extends Scene {
                 onLose();
             }
         };
+        pointerEventListener = new EventListener<PointerEvent>() {
+            public void onSignal(Event e) {
+                PointerEvent pointerEvent = (PointerEvent) e;
+                handlePointerEvent(pointerEvent);
+            }
+        };
 
         WinEvent.addListener(WinEvent.class, winEventListener);
         LoseEvent.addListener(LoseEvent.class, loseEventListener);
+        PointerEvent.addListener(PointerEvent.class, pointerEventListener);
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -101,7 +111,7 @@ public class GameScene extends Scene {
         // pickup stuff
         healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
         em.addEntity(healthPotion);
-        cm.addCollider(healthPotion); 
+        cm.addCollider(healthPotion);
         maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
         em.addEntity(maxHealthPotion);
         cm.addCollider(maxHealthPotion);
@@ -120,39 +130,38 @@ public class GameScene extends Scene {
         // player control mapping 
         ActionMap playerControls = new ActionMap();
         playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
+        playerControls.addNewBinding(KeyCodes.MOUSE1, new AttackAction());
         pm.setActionMap(p1, playerControls);
 
 
         bg = new BackGround("bg/bg.png");
-        
+
         // create new camera and center it
         camera = new Camera();
-        camera.setOffset(p1.getWidth()/2, p1.getHeight()/2);
+        camera.setOffset(p1.getWidth() / 2, p1.getHeight() / 2);
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
-        
+
         // create spawn system and set interval to spawn 1 enemy/4s
         enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
-        
+
         // simple seeking behaviour towards unique entity player1 with a speed of 50
 //        seek = new SeekBehaviour(em.getEntity("player1"), 50);
 //        bm.addBehaviour(lich, seek);
 //        for (Entity entity : em.getEntities("goblin")) {
 //            bm.addBehaviour(entity, seek);
 //        }
-        
-        
+
+
     }
 
     @Override
     public void render(float deltaTime) {
         ScreenUtils.clear(1, 0.5f, 0.5f, 1);
 
-        batch.begin();
         bg.update(batch);
         em.update();
         em.draw(batch);
-        batch.end();
         for (Entity entity : em.getEntities()) {
             if (entity instanceof Enemy) {
                 Enemy bgSprite = (Enemy) entity;
@@ -165,21 +174,30 @@ public class GameScene extends Scene {
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
         pm.update();
-        
+
         // draw collider for debugging purposes
         cm.drawCollider(shapeRenderer, Color.RED);
 
         EventBus.processEvents(WinEvent.class);
         EventBus.processEvents(LoseEvent.class);
-        
+
         // camera updates
         camera.cameraUpdate(deltaTime, p1.getVector2());
         camera.batchUpdate(batch);
         camera.shapeUpdate(shapeRenderer);
-        
+
         // spawn system
         enemySpawn.update(deltaTime);
-        
+    }
+
+    public void handlePointerEvent(PointerEvent e) {
+        // TODO: make sure that this is updated for the prototype camera
+        // update where player is facing here
+        if (e.getType() == PointerEvent.Type.HOVER) {
+            Vector2 target = new Vector2(e.getScreenX(), e.getScreenY());
+            System.out.println(target);
+            p1.setTarget(target);
+        }
     }
 
     private void onWin() {
@@ -194,15 +212,15 @@ public class GameScene extends Scene {
 
     @Override
     public void dispose() {
+        camera = null;
         cm.dispose();
         em.dispose();
         batch.dispose();
-        camera.dispose();
 
         EventBus.removeListener(winEventListener);
         EventBus.removeListener(loseEventListener);
-        
-        camera = null;
+        EventBus.removeListener(pointerEventListener);
+
         shapeRenderer = null;
         seek = null;
         p1 = null;

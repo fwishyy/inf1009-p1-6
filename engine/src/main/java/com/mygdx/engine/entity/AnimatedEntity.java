@@ -42,6 +42,7 @@ public abstract class AnimatedEntity extends Entity {
     @Override
     public void draw(SpriteBatch batch) {
 
+        batch.begin();
         int cols = this.getFrameCountColumn();
         int rows = this.getFrameCountRow();
         int width = (int) this.getWidth();
@@ -60,6 +61,7 @@ public abstract class AnimatedEntity extends Entity {
         TextureRegion currentFrameRegion = this.getFrames()[currentFrame / cols][currentFrame % cols];
         // Draw every frame
         batch.draw(currentFrameRegion, this.getX(), this.getY(), width, height);
+        batch.end();
     }
 
     private void prepAnimation() {

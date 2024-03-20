@@ -27,6 +27,13 @@ public class EntityManager extends Manager {
                 handleEntityDisposed((EntityDisposedEvent) e);
             }
         });
+
+        addEntityAddedListener(new EventListener<EntityAddedEvent>() {
+            @Override
+            public void onSignal(Event e) {
+                handleEntityAdded((EntityAddedEvent) e);
+            }
+        });
     }
 
     public EntityManager(List<Entity> entityList, LinkedHashMap<String, List<Entity>> entityMap) {
@@ -281,8 +288,6 @@ public class EntityManager extends Manager {
      */
     public void draw(SpriteBatch batch) {
         for (Entity entity : getAllEntities()) {
-//            System.out.println("drawing: " + entity.getType());
-//            if (!playAnimation(entity, batch))
             entity.draw(batch);
         }
 
@@ -319,12 +324,17 @@ public class EntityManager extends Manager {
         }
     }
 
+    private void processEntityEvents() {
+        EventBus.processEvents(EntityDisposedEvent.class);
+        EventBus.processEvents(EntityAddedEvent.class);
+    }
+
     /**
      * Calls all update functionality of all subclasses
      */
     public void update() {
-        // resolve disposed events first so we don't have floating references
-        EventBus.processEvents(EntityDisposedEvent.class);
+        // resolve added and disposed events first, so we don't have floating references
+        processEntityEvents();
         List<Entity> entityList = getAllEntities();
         for (Entity entity : entityList) {
             entity.update();
@@ -336,6 +346,10 @@ public class EntityManager extends Manager {
         for (List<Entity> entityList : entityMap.values()) {
             entityList.remove(disposedEntity);
         }
+    }
+
+    private void handleEntityAdded(EntityAddedEvent e) {
+        addEntity(e.getEntity());
     }
 
     public void dispose() {
@@ -379,6 +393,4 @@ public class EntityManager extends Manager {
             e.dispose();
         }
     }
-
-
 }

@@ -45,13 +45,15 @@ public class BackGround {
 		       --+-+--
 		        7|8|9
 		 */
-		
+
+		batch.begin();
 		//Draw Background using coordinates of the grid
 		for(int i = 1; i < 10; i++) {
 			float x = gridMap.get(i).x;
 			float y = gridMap.get(i).y;
 			batch.draw(texture, x, y);
 		}
+		batch.end();
 	}
 	
 	public Vector2 getMaxPos() {

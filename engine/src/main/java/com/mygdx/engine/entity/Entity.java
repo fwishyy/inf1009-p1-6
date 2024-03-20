@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.actions.Actionable;
 import com.mygdx.engine.actions.GameAction;
+import com.mygdx.engine.actions.TemporalAction;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public abstract class Entity implements Actionable {
 
@@ -20,6 +22,7 @@ public abstract class Entity implements Actionable {
     protected float height;
     protected String type;
     protected ArrayList<GameAction> actions;
+    protected Map<Class<? extends GameAction>, Float> actionInterval;
 
     protected Entity() {
         this.texture = null;
@@ -71,25 +74,39 @@ public abstract class Entity implements Actionable {
         this.actions = new ArrayList<>();
     }
 
-    public void addAction(GameAction action) {
-        actions.add(action);
+    public void addAction(GameAction newAction) {
+        if (newAction instanceof TemporalAction) {
+            for (GameAction action : actions) {
+                if (action.getClass().equals(newAction.getClass())) {
+                    return;
+                }
+            }
+        }
+        actions.add(newAction);
     }
 
     public void update() {
         for (int i = 0; i < actions.size(); ++i) {
             GameAction currAction = actions.get(i);
-            boolean isCompleted = currAction.act(this);
-            if (isCompleted) {
+            if (currAction instanceof TemporalAction) {
+                TemporalAction temporalAction = (TemporalAction) currAction;
+                boolean completed = temporalAction.update();
+                if (completed) {
+                    actions.remove(temporalAction);
+                }
+            } else {
+                currAction.act();
                 actions.remove(currAction);
             }
-
         }
     }
 
     public abstract void collide(Collider other);
 
     protected void draw(SpriteBatch batch) {
+        batch.begin();
         batch.draw(this.texture, this.vector2.x, this.vector2.y);
+        batch.end();
     }
 
     public TextureRegion getTextureRegion() {

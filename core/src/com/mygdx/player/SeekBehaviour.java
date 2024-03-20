@@ -24,6 +24,7 @@ public class SeekBehaviour implements Behaviour {
         float newX = entity.getX() + dir.x * this.speed * Gdx.graphics.getDeltaTime();
         float newY = entity.getY() + dir.y * this.speed * Gdx.graphics.getDeltaTime();
         MoveAction moveAction = new MoveAction();
+        moveAction.setActor(entity);
         moveAction.setTargetPos(newX, newY);
         entity.addAction(moveAction);
     }
