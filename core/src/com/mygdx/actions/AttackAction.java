@@ -17,16 +17,16 @@ public class AttackAction extends TemporalAction {
         if (actor instanceof Player) {
             Player player = (Player) actor;
             Vector2 origin = player.getVector2().cpy();
-            origin.x += player.getWidth() / 2;
-            origin.y += player.getHeight() / 2;
             Fireball fireball = new Fireball("projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 40, 0.05f);
 
+            // TODO: maybe this still needs to be reworked more, but the aiming feels kinda jank
             // calculate the target direction using the Player's target vector
             // which represents where the cursor is aiming
             Vector2 target = player.getTarget();
 
             if(target != null) {
-                fireball.setDirection(target.nor());
+                Vector2 direction = target.cpy().sub(origin).nor();
+                fireball.setDirection(direction);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(fireball));
             }
         }

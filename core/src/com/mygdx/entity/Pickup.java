@@ -1,5 +1,6 @@
 package com.mygdx.entity;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,9 +20,9 @@ public class Pickup extends Entity {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         // draw the pickup item
-        super.draw(batch);
+        super.draw(batch, shapeRenderer);
     }
 
 	@Override

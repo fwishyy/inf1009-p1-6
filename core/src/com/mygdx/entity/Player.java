@@ -2,14 +2,17 @@ package com.mygdx.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.player.HealthBar;
+import com.mygdx.ui.HealthBar;
+import com.mygdx.ui.TrajectoryLine;
 
 
 public class Player extends Character {
 
     private Vector2 target;
+    private TrajectoryLine trajectoryLine;
 
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
@@ -17,6 +20,7 @@ public class Player extends Character {
         this.currentHp = 50;
         Vector2 healthbarOffset = new Vector2(38, -20);
         this.healthBar = new HealthBar(this, healthbarOffset, Color.GREEN, 80, 10);
+        this.trajectoryLine = new TrajectoryLine(this);
         this.target = new Vector2();
     }
 
@@ -29,9 +33,10 @@ public class Player extends Character {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
-        super.draw(batch);
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+        super.draw(batch, shapeRenderer);
         healthBar.update(maxHp, currentHp);
+        trajectoryLine.draw();
     }
 
 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.actions.Actionable;
 import com.mygdx.engine.actions.GameAction;
@@ -25,6 +26,7 @@ public abstract class Entity implements Actionable {
     protected ArrayList<GameAction> actions;
     protected Map<Class<? extends GameAction>, Float> actionInterval;
     protected boolean direction; //true for left, false for right
+    protected Collider collider;
 
     protected Entity() {
         this.texture = null;
@@ -36,6 +38,7 @@ public abstract class Entity implements Actionable {
         this.sprite = null;
         this.actions = new ArrayList<>();
         this.direction = false;
+        this.collider = new Collider(this, width, height);
     }
 
     protected Entity(String texture, float x, float y, String type) {
@@ -134,9 +137,9 @@ public abstract class Entity implements Actionable {
         this.previous_vector2 = this.vector2;
     }
 
-    protected void draw(SpriteBatch batch) {
+    protected void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         batch.begin();
-        updateDirection();
+        batch.draw(texture, getX(), getY(), width, height);
         batch.end();
     }
 

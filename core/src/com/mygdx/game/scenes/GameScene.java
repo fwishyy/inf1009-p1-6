@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.actions.AttackAction;
+import com.mygdx.aicontrol.SeekBehaviour;
 import com.mygdx.camera.Camera;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
@@ -30,8 +31,7 @@ import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
-import com.mygdx.player.HealthBar;
-import com.mygdx.player.SeekBehaviour;
+import com.mygdx.ui.HealthBar;
 
 public class GameScene extends Scene {
 
@@ -153,7 +153,7 @@ public class GameScene extends Scene {
 
         bg.update(batch);
         em.update();
-        em.draw(batch);
+        em.draw(batch, shapeRenderer);
         for (Entity entity : em.getEntities()) {
             if (entity instanceof Enemy) {
                 Enemy bgSprite = (Enemy) entity;
@@ -186,14 +186,11 @@ public class GameScene extends Scene {
         // TODO: still need to fix this to make sure that it's targeting properly
         // update where player is facing here
         if (e.getType() == PointerEvent.Type.HOVER) {
-            Vector2 target = new Vector2(e.getScreenX(), e.getScreenY());
+            Vector2 cursorPos = new Vector2(e.getScreenX(), e.getScreenY());
             // invert y coordinates
-            target.y = Gdx.graphics.getHeight() - target.y;
-
-            target.x -= Gdx.graphics.getWidth() / 2;
-            target.y -= Gdx.graphics.getHeight() / 2;
-            System.out.println(target);
-            p1.setTarget(target);
+            cursorPos.y = Gdx.graphics.getHeight() - cursorPos.y;
+            System.out.println(camera.getOffsetY());
+            p1.setTarget(cursorPos);
         }
     }
 

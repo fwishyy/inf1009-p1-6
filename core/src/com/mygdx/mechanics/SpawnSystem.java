@@ -11,7 +11,7 @@ import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
-import com.mygdx.player.SeekBehaviour;
+import com.mygdx.aicontrol.SeekBehaviour;
 
 public class SpawnSystem {
 	

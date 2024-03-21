@@ -1,4 +1,4 @@
-package com.mygdx.player;
+package com.mygdx.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,13 +28,11 @@ public class HealthBar {
     private Color healthColour;
     private Vector2 positionOffset; // position relative to owner entity
     private BitmapFont font;
-    private ShapeRenderer shapeRenderer;
 
     public HealthBar(Entity entity, Vector2 positionOffset, Color healthColour, float barWidth, float barHeight) {
         this.entity = entity;
         this.barWidth = barWidth; // initialise bar width
         this.barHeight = barHeight; // initalise bar height
-        this.shapeRenderer = new ShapeRenderer();
         this.positionOffset = positionOffset;
 
         this.healthColour = healthColour;
@@ -49,7 +47,7 @@ public class HealthBar {
     }
 
     // draw method
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         batch.begin();
         // TODO: fix health bar positioning
         float x = entity.getX() + entity.getWidth() / 2 - barWidth / 2;
@@ -80,8 +78,6 @@ public class HealthBar {
 
     public void dispose() {
         font.dispose();
-        shapeRenderer.dispose();
     }
-
 }
 	

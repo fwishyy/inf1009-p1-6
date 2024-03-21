@@ -1,4 +1,4 @@
-package com.mygdx.player;
+package com.mygdx.aicontrol;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;

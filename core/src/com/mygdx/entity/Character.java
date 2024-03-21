@@ -2,11 +2,11 @@ package com.mygdx.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.player.HealthBar;
+import com.mygdx.ui.HealthBar;
 
 // Characters are generic animated entities for all on-screen things, like characters and monsters that have a health bar, the ability to take damage, and so on
 public class Character extends AnimatedEntity {
@@ -24,10 +24,10 @@ public class Character extends AnimatedEntity {
         healthBar = new HealthBar(this, positionOffset, Color.RED, 80, 10);
     }
 
-    public void draw(SpriteBatch batch) {
-        super.draw(batch);
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+        super.draw(batch, shapeRenderer);
         healthBar.update(maxHp, currentHp);
-        healthBar.draw(batch);
+        healthBar.draw(batch, shapeRenderer);
     }
 
     @Override

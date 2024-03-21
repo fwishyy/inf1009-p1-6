@@ -1,6 +1,7 @@
 package com.mygdx.engine.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.utils.Event;
@@ -286,9 +287,9 @@ public class EntityManager extends Manager {
      *
      * @param batch -- SpriteBatch object
      */
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shape) {
         for (Entity entity : getAllEntities()) {
-            entity.draw(batch);
+            entity.draw(batch, shape);
         }
 
     }
@@ -299,12 +300,12 @@ public class EntityManager extends Manager {
      * @param batch -- SpriteBatch object
      * @param type  -- entity type (E.g "monster")
      */
-    public void draw(SpriteBatch batch, String type) {
+    public void draw(SpriteBatch batch, ShapeRenderer shape, String type) {
         List<Entity> entityList = this.entityMap.get(type);
         for (Entity entity : entityList)
             if (entity.getType() == type)
 //                if (!playAnimation(entity, batch))
-                entity.draw(batch);
+                entity.draw(batch, shape);
     }
 
     /**
@@ -314,13 +315,13 @@ public class EntityManager extends Manager {
      * @param targetPosition -- position of a target x,y coordinate
      * @param range          -- range of detection (E.g 3.0f)
      */
-    public void draw(SpriteBatch batch, Vector2 targetPosition, float range) {
+    public void draw(SpriteBatch batch, ShapeRenderer shape, Vector2 targetPosition, float range) {
 
         for (Entity entity : getAllEntities()) {
             Vector2 currEntPos = entity.getVector2();
             if (currEntPos.dst(targetPosition) <= range)
 //                if (!playAnimation(entity, batch))
-                entity.draw(batch);
+                entity.draw(batch, shape);
         }
     }
 

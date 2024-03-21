@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -199,7 +200,7 @@ public abstract class AnimatedEntity extends Entity {
 
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shape) {
 
 
     	/* 	How it works:
@@ -271,9 +272,9 @@ public abstract class AnimatedEntity extends Entity {
         TextureRegion currentFrameRegion = this.getFrames()[currentFrame / cols][currentFrame % cols];
 
         if (flip) {
-            batch.draw(currentFrameRegion, this.getX() + width, this.getY(), width / 2, height / 2, width * -1, height, 1, 1, rotation);
+            batch.draw(currentFrameRegion, this.getX() + width, this.getY(), width / 2f, height / 2f, width * -1, height, 1, 1, rotation);
         } else {
-            batch.draw(currentFrameRegion, this.getX(), this.getY(), width / 2, height / 2, width, height, 1, 1, rotation);
+            batch.draw(currentFrameRegion, this.getX(), this.getY(), width / 2f, height / 2f, width, height, 1, 1, rotation);
         }
 
         batch.end();
