@@ -2,7 +2,6 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -33,8 +32,6 @@ import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.player.HealthBar;
 import com.mygdx.player.SeekBehaviour;
-
-import java.util.Random;
 
 public class GameScene extends Scene {
 
@@ -105,9 +102,8 @@ public class GameScene extends Scene {
         shapeRenderer = new ShapeRenderer();
 
         //Create entities to spawn here
-        em.createEntity(1, Player.class, "characters/Mage_Fire/Run.png", 0, 0, "player1", 1, 8, 0.1f);
-
-        Random random = new Random();
+        // TODO: move all this into player
+        em.createEntity(1, Player.class, "characters/Mage_Fire/Idle.png", 0, 0, "player1", 1, 7, 0.1f);
 
         // pickup stuff
         healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
@@ -119,6 +115,10 @@ public class GameScene extends Scene {
 
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
+
+        // TODO: also move this into player
+        p1.addAnimation("characters/Mage_Fire/Run.png", "run", 8);
+
         // add colliders to entities that need collision logic
         // in this case, remember that the current player using a spritesheet, so we have to calculate frame size of the 
         cm.addCollider(p1, p1.getWidth() / 2, p1.getHeight() / 2);
@@ -142,18 +142,9 @@ public class GameScene extends Scene {
         camera.setOffset(p1.getWidth() / 2, p1.getHeight() / 2);
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
 
-        // create spawn system and set interval to spawn 1 enemy/4s
-        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
-        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
-
-        // simple seeking behaviour towards unique entity player1 with a speed of 50
-//        seek = new SeekBehaviour(em.getEntity("player1"), 50);
-//        bm.addBehaviour(lich, seek);
-//        for (Entity entity : em.getEntities("goblin")) {
-//            bm.addBehaviour(entity, seek);
-//        }
-
-
+//        // create spawn system and set interval to spawn 1 enemy/4s
+//        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
+//        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
     }
 
     @Override
@@ -188,7 +179,7 @@ public class GameScene extends Scene {
         camera.shapeUpdate(shapeRenderer);
 
         // spawn system
-        enemySpawn.update(deltaTime);
+        //enemySpawn.update(deltaTime);
     }
 
     public void handlePointerEvent(PointerEvent e) {

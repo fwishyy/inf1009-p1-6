@@ -1,7 +1,9 @@
-package com.mygdx.engine.actions;
+package com.mygdx.actions;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.entity.AnimatedEntity;
 
 public class MoveByInputAction extends MoveAction {
@@ -17,14 +19,6 @@ public class MoveByInputAction extends MoveAction {
 
         super.setTargetPos(newX, newY);
         super.act();
-
-        if(actor instanceof AnimatedEntity) {
-            AnimatedEntity animatedEntity = (AnimatedEntity)actor;
-            if(animatedEntity.getCurrentAnimation() != "run") {
-                animatedEntity.setAnimation("run");
-            }
-            animatedEntity.setFlip((keyState.x == -1));
-        }
 
         return true;
     }
