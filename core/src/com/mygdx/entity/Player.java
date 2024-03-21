@@ -33,10 +33,10 @@ public class Player extends Character {
     }
 
     @Override
-    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        super.draw(batch, shapeRenderer);
+    public void draw(SpriteBatch batch, ShapeRenderer shape) {
+        super.draw(batch, shape);
         healthBar.update(maxHp, currentHp);
-        trajectoryLine.draw();
+        trajectoryLine.draw(shape);
     }
 
 

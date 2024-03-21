@@ -7,19 +7,20 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.entity.Player;
 
 public class TrajectoryLine {
-    private ShapeRenderer shapeRenderer;
     private Player player;
 
     public TrajectoryLine(Player player) {
         this.player = player;
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setAutoShapeType(true);
     }
 
-    public void draw() {
-        shapeRenderer.begin();
-        shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.line(new Vector2(320, 240), player.getTarget());
-        shapeRenderer.end();
+    public void draw(ShapeRenderer shape) {
+        Vector2 position = player.getVector2().cpy();
+        position.x += player.getWidth() / 2f;
+        position.y += player.getHeight() / 2f;
+        shape.setAutoShapeType(true);
+        shape.begin();
+        shape.setColor(1, 1, 1, 1);
+        shape.line(position, player.getTarget());
+        shape.end();
     }
 }

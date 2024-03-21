@@ -2,9 +2,11 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.actions.AttackAction;
 import com.mygdx.aicontrol.SeekBehaviour;
@@ -187,10 +189,9 @@ public class GameScene extends Scene {
         // update where player is facing here
         if (e.getType() == PointerEvent.Type.HOVER) {
             Vector2 cursorPos = new Vector2(e.getScreenX(), e.getScreenY());
-            // invert y coordinates
-            cursorPos.y = Gdx.graphics.getHeight() - cursorPos.y;
-            System.out.println(camera.getOffsetY());
-            p1.setTarget(cursorPos);
+            Vector3 cursorWorldPos = camera.getCamera().unproject(new Vector3(cursorPos.x, cursorPos.y, 0));
+            Vector2 target = new Vector2(cursorWorldPos.x, cursorWorldPos.y);
+            p1.setTarget(target);
         }
     }
 

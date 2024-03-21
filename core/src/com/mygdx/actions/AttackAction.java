@@ -17,6 +17,8 @@ public class AttackAction extends TemporalAction {
         if (actor instanceof Player) {
             Player player = (Player) actor;
             Vector2 origin = player.getVector2().cpy();
+            origin.x += player.getWidth() / 2f;
+            origin.y += player.getWidth() / 2f;
             Fireball fireball = new Fireball("projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 40, 0.05f);
 
             // TODO: maybe this still needs to be reworked more, but the aiming feels kinda jank
