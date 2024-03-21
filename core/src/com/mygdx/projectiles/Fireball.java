@@ -14,12 +14,13 @@ public class Fireball extends AnimatedEntity {
 
     public Fireball(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
-        this.speed = 150;
+        this.speed = 500;
         this.direction = new Vector2();
     }
 
     public void setDirection(Vector2 direction) {
         this.direction = direction;
+        setRotation(direction.angleDeg());
     }
 
     @Override

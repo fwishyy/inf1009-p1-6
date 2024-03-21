@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityDisposedEvent;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
@@ -23,6 +24,12 @@ public class CollisionManager extends Manager {
 
         colliderMap = new HashMap<>();
 
+        addEntityAddedListener(new EventListener<EntityAddedEvent>() {
+            @Override
+            public void onSignal(Event e) {
+                handleEntityAdded((EntityAddedEvent) e);
+            }
+        });
         addEntityDisposedListener(new EventListener<EntityDisposedEvent>() {
             @Override
             public void onSignal(Event e) {
@@ -74,6 +81,14 @@ public class CollisionManager extends Manager {
 
         checkCollisions(colliderList);
         EventBus.processEvents(CollisionEvent.class);
+    }
+
+    private void handleEntityAdded(EntityAddedEvent e) {
+        Entity entity = e.getEntity();
+        // add collider if entity does not already have one
+        if (!colliderMap.containsKey(entity)) {
+            addCollider(entity);
+        }
     }
 
     private void handleEntityDisposed(EntityDisposedEvent e) {

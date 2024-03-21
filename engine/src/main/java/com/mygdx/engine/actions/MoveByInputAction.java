@@ -20,7 +20,7 @@ public class MoveByInputAction extends MoveAction {
 
         if(actor instanceof AnimatedEntity) {
             AnimatedEntity animatedEntity = (AnimatedEntity)actor;
-            if(animatedEntity.getCurrentAnimation() != "run") {
+            if(!animatedEntity.getCurrentAnimation().equals("run")) {
                 animatedEntity.setAnimation("run");
             }
             animatedEntity.setFlip((keyState.x == -1));

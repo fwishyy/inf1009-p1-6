@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public abstract class TemporalAction extends GameAction {
 
+    float lastExecutedTime;
     // interval is expressed in ms
     float interval = 1;
 

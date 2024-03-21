@@ -20,6 +20,7 @@ public abstract class AnimatedEntity extends Entity {
     protected TextureRegion[][] frames; // to hold sliced frames
     protected int currentFrame;
     protected String currentAnimation;
+    protected float rotation;
 
     // Multiple Animations
     protected ObjectMap<String, TextureRegion[][]> animations;
@@ -267,13 +268,12 @@ public abstract class AnimatedEntity extends Entity {
             this.flag = false;
         }
 
-
         TextureRegion currentFrameRegion = this.getFrames()[currentFrame / cols][currentFrame % cols];
 
-        if(flip) {
-            batch.draw(currentFrameRegion, this.getX()+width, this.getY(), width * -1, height);
+        if (flip) {
+            batch.draw(currentFrameRegion, this.getX() + width, this.getY(), width / 2, height / 2, width * -1, height, 1, 1, rotation);
         } else {
-            batch.draw(currentFrameRegion, this.getX(), this.getY(), width, height);
+            batch.draw(currentFrameRegion, this.getX(), this.getY(), width / 2, height / 2, width, height, 1, 1, rotation);
         }
 
         batch.end();
@@ -303,6 +303,14 @@ public abstract class AnimatedEntity extends Entity {
         this.frameCountRow = frameCount;
     }
 
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+
     public float getStateTime() {
         return this.stateTime;
     }
@@ -330,6 +338,7 @@ public abstract class AnimatedEntity extends Entity {
     public String getCurrentAnimation() {
         return currentAnimation;
     }
+
     public int getCurrentFrame() {
         return this.currentFrame;
     }

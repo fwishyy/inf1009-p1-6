@@ -17,10 +17,9 @@ public class AttackAction extends TemporalAction {
         if (actor instanceof Player) {
             Player player = (Player) actor;
             Vector2 origin = player.getVector2().cpy();
-            // set the origin to the center of the player
             origin.x += player.getWidth() / 2;
             origin.y += player.getHeight() / 2;
-            Fireball fireball = new Fireball("projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 41, 0.1f);
+            Fireball fireball = new Fireball("projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 40, 0.05f);
 
             // calculate the target direction using the Player's target vector
             // which represents where the cursor is aiming
@@ -28,7 +27,6 @@ public class AttackAction extends TemporalAction {
 
             if(target != null) {
                 fireball.setDirection(target.nor());
-
                 EntityAddedEvent.addEvent(new EntityAddedEvent(fireball));
             }
         }

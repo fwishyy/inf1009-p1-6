@@ -183,7 +183,7 @@ public class GameScene extends Scene {
     }
 
     public void handlePointerEvent(PointerEvent e) {
-        // TODO: make sure that this is updated for the prototype camera
+        // TODO: still need to fix this to make sure that it's targeting properly
         // update where player is facing here
         if (e.getType() == PointerEvent.Type.HOVER) {
             Vector2 target = new Vector2(e.getScreenX(), e.getScreenY());
