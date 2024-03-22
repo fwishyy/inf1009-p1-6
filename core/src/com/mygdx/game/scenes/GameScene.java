@@ -144,9 +144,9 @@ public class GameScene extends Scene {
         camera.setOffset(p1.getWidth() / 2, p1.getHeight() / 2);
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
 
-//        // create spawn system and set interval to spawn 1 enemy/4s
-//        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
-//        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
+        // create spawn system and set interval to spawn 1 enemy/4s
+        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
+        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
     }
 
     @Override
@@ -181,7 +181,7 @@ public class GameScene extends Scene {
         camera.shapeUpdate(shapeRenderer);
 
         // spawn system
-        //enemySpawn.update(deltaTime);
+        enemySpawn.update(deltaTime);
     }
 
     public void handlePointerEvent(PointerEvent e) {
