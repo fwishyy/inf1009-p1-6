@@ -1,5 +1,9 @@
 package com.mygdx.game.scenes;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +37,7 @@ import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
+import com.mygdx.ui.DamageIndicator;
 import com.mygdx.ui.HealthBar;
 
 public class GameScene extends Scene {
@@ -64,6 +69,9 @@ public class GameScene extends Scene {
     //Spawn
     private SpawnSystem enemySpawn;
     private BackGround bg;
+    
+    //Damage Indicators
+    private List<DamageIndicator> damageIndicators = new ArrayList<>();
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -108,12 +116,12 @@ public class GameScene extends Scene {
         em.createEntity(1, Player.class, "characters/Mage_Fire/Idle.png", 0, 0, "player1", 1, 7, 0.1f);
 
         // pickup stuff
-        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
-        em.addEntity(healthPotion);
-        cm.addCollider(healthPotion);
-        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
-        em.addEntity(maxHealthPotion);
-        cm.addCollider(maxHealthPotion);
+//        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
+//        em.addEntity(healthPotion);
+//        cm.addCollider(healthPotion);
+//        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
+//        em.addEntity(maxHealthPotion);
+//        cm.addCollider(maxHealthPotion);
 
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
@@ -145,8 +153,8 @@ public class GameScene extends Scene {
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
 
 //        // create spawn system and set interval to spawn 1 enemy/4s
-//        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
-//        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
+        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
+        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
     }
 
     @Override
@@ -162,6 +170,17 @@ public class GameScene extends Scene {
                 if (bgSprite.isDead()) {
                     bgSprite.potionDrop(); // Ensure you pass the EntityManager instance
                 }
+            }
+        }
+        
+        Iterator<DamageIndicator> iterator = damageIndicators.iterator();
+        while (iterator.hasNext()) {
+            DamageIndicator indicator = iterator.next();
+            indicator.update(deltaTime);
+            if (indicator.isFinished()) {
+                iterator.remove(); // Remove the indicator if it's finished
+            } else {
+                indicator.draw(batch); // Otherwise, draw the indicator
             }
         }
 
@@ -181,7 +200,7 @@ public class GameScene extends Scene {
         camera.shapeUpdate(shapeRenderer);
 
         // spawn system
-        //enemySpawn.update(deltaTime);
+        enemySpawn.update(deltaTime);
     }
 
     public void handlePointerEvent(PointerEvent e) {

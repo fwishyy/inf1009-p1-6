@@ -11,6 +11,7 @@ import com.mygdx.engine.entity.Collider;
 public class Fireball extends AnimatedEntity {
     private int speed;
     private Vector2 direction;
+    private boolean hasHit = false;
 
     public Fireball(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
@@ -22,6 +23,14 @@ public class Fireball extends AnimatedEntity {
         this.direction = direction;
         setRotation(direction.angleDeg());
     }
+    
+    public boolean hasHit() {
+    	return hasHit;
+    }
+    
+    public void completeHit() {
+        this.hasHit = true;
+    }
 
     @Override
     public void update() {
@@ -31,6 +40,8 @@ public class Fireball extends AnimatedEntity {
     }
 
     public void collide(Collider other) {
-
+    	if (other.getEntity().getType().equals("skeletion") && !hasHit) {
+    		hasHit = true;
+    	}
     }
 }

@@ -152,7 +152,7 @@ public abstract class AnimatedEntity extends Entity {
             currentAnimation = name;
 
         } else {
-            System.out.println("AnimatedEntity: requested animation does not exsist");
+            System.out.println("AnimatedEntity: requested animation does not exist");
         }
     }
 
