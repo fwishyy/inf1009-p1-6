@@ -137,7 +137,7 @@ public class GameScene extends Scene {
         pm.setActionMap(p1, playerControls);
 
 
-        bg = new BackGround("bg/bg.png");
+        bg = new BackGround("bg/new_bg.png", false);
 
         // create new camera and center it
         camera = new Camera();
