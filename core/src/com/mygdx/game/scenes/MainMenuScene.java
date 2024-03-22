@@ -29,6 +29,7 @@ import com.mygdx.engine.scenes.SceneManager;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
+import com.mygdx.engine.input.MyCursor;
 
 
 public class MainMenuScene extends Scene {
@@ -49,6 +50,9 @@ public class MainMenuScene extends Scene {
     private TextButton settingsButton;
     private BitmapFont font;
     private boolean paused;
+    
+    private MyCursor cursor;
+    private MyCursor hand;
 
     public MainMenuScene(GameContainer container) {
         super(container);
@@ -98,8 +102,10 @@ public class MainMenuScene extends Scene {
         
         
         stage.addActor(table);
-        stage.addAction(Actions.sequence(Actions.alpha(0.0f), Actions.fadeIn(5.0f)));
+        stage.addAction(Actions.sequence(Actions.alpha(0.0f), Actions.fadeIn(1.0f)));
         im.addInputProcessor(stage);
+        
+        //stage.setDebugAll(true);
         
         
         startButton.addListener(new InputListener() {
@@ -118,6 +124,24 @@ public class MainMenuScene extends Scene {
 				// TODO Auto-generated method stub
 				super.touchUp(event, x, y, pointer, button);
 			}
+			
+		    @Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	startButton.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Reset the TextButton
+		    	startButton.getLabel().setFontScale(1f);
+		       
+		    }
+        	
         	
         });
         
@@ -130,23 +154,47 @@ public class MainMenuScene extends Scene {
 				sceneManager.setScene(new SettingsScene(container));
 				return super.touchDown(event, x, y, pointer, button);
 			}
+			
+		    @Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	settingsButton.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	settingsButton.getLabel().setFontScale(1f);
+		    }
+		    
         	
         });
+        
+        // Add 2 different cursors
+        cursor = new MyCursor("mouse/pointer.png");
+        hand = new MyCursor("mouse/hand.png");
+        
+        // Set cursor as the displayed cursor
+        cursor.updateCursorPosition();
         	
     }
 
     private void handlePointerEvents(PointerEvent pointerEvent) {
         PointerEvent.Type type = pointerEvent.getType();
-
-        
-        
+       
     }
 
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(); // Need this so that the mouse hover works
         stage.draw();
+        
     }
 
     @Override
