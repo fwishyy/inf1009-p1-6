@@ -14,6 +14,7 @@ public class Enemy extends Character {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
         this.currentHp = 20;
         this.maxHp = 20;
+        this.addAnimation("characters/Skeleton_Warrior/Hurt.png", "hurt", 2);
     }
     
     @Override
@@ -21,6 +22,11 @@ public class Enemy extends Character {
     	super.takeDamage(damage, position);
         DamageIndicator indicator = new DamageIndicator(position, damage, 1.0f, Color.RED);
         damageIndicators.add(indicator);
+        this.setAnimation("hurt", 1);
+    }
+    
+    public int getCurrentFrame() {
+        return this.currentFrame;
     }
 
     public void potionDrop() {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
+import com.mygdx.events.LoseEvent;
 import com.mygdx.ui.DamageIndicator;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
@@ -23,7 +24,10 @@ public class Player extends Character {
         this.healthBar = new HealthBar(this, healthbarOffset, Color.GREEN, 80, 10);
         this.trajectoryLine = new TrajectoryLine(this);
         this.target = new Vector2();
+        this.addAnimation("characters/Mage_Fire/Hurt.png", "hurt", 3);
     }
+    
+    
 
     public Vector2 getTarget() {
         return target;
@@ -60,6 +64,7 @@ public class Player extends Character {
     	super.takeDamage(damage, position);
         DamageIndicator indicator = new DamageIndicator(position, damage, 1.0f, Color.YELLOW);
         damageIndicators.add(indicator);
+        this.setAnimation("hurt", 1);
     }
 
     @Override
@@ -81,7 +86,18 @@ public class Player extends Character {
             System.out.println("Healed 10 HP.");
         }
         if (other.getEntity().getType().equals("skeleton")) {
-        	
+        	Enemy skeleton = (Enemy) other.getEntity();
+        	if (skeleton.getCurrentFrame() == 3) { // Frames are 0-indexed, so the fourth frame is index 3
+                if (this.getCurrentHp() >= 0) {
+	        		this.takeDamage(1, target);
+	                System.out.println("Player took damage from skeleton attack.");
+                }
+                else {
+                	// implement lose event here
+                	this.isDead();
+                	System.out.println("GAME OVER");
+                }
+            }
         }
     }
 

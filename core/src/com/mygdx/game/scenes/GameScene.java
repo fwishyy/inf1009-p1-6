@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.actions.AttackAction;
 import com.mygdx.aicontrol.SeekBehaviour;
 import com.mygdx.camera.Camera;
+import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
@@ -53,6 +54,7 @@ public class GameScene extends Scene {
     private PlayerControlManager pm;
     private BehaviourManager bm;
     private SceneManager sm;
+    private AudioManager am;
     //CONCRETE GAME LAYER FOR DEMO PURPOSES
     private HealthBar hbar;
     private Player p1;
@@ -81,6 +83,7 @@ public class GameScene extends Scene {
         bm = container.getBehaviourManager();
         im = container.getInputManager();
         sm = container.getSceneManager();
+        am = container.getAudioManager();
     }
 
     @Override

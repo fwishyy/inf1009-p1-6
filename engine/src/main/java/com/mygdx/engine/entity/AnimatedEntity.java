@@ -173,7 +173,7 @@ public abstract class AnimatedEntity extends Entity {
     public void addAnimation(String filepath, String name, int number_of_frames) {
 
         if (animations.containsKey(name)) {
-            System.out.println("AnimatedEntity: animation already exsists!");
+            System.out.println("AnimatedEntity: animation already exists!");
         } else {
 
             loadAnimation(filepath, name, number_of_frames);
