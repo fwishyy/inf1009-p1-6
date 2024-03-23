@@ -50,7 +50,6 @@ public class MainMenuScene extends Scene {
     private TextButton settingsButton;
     private BitmapFont font;
     private boolean paused;
-    
     private MyCursor cursor;
     private MyCursor hand;
 
@@ -71,6 +70,10 @@ public class MainMenuScene extends Scene {
             }
         };
         EventBus.addListener(PointerEvent.class, pointerEventListener);
+        
+        // Add 2 different cursors
+        cursor = new MyCursor("mouse/pointer.png");
+        hand = new MyCursor("mouse/hand.png");
         
         // Menu Screen Audio
         am.addMusic("MenuMusic", "audio/music/Hell-Night.mp3");
@@ -105,27 +108,10 @@ public class MainMenuScene extends Scene {
         stage.addAction(Actions.sequence(Actions.alpha(0.0f), Actions.fadeIn(1.0f)));
         im.addInputProcessor(stage);
         
-        //stage.setDebugAll(true);
-        
         
         startButton.addListener(new InputListener() {
-
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				// TODO Auto-generated method stub
-				System.out.println("START");
-				am.stop("MenuMusic");
-				sceneManager.setScene(new GameScene(container));
-				return super.touchDown(event, x, y, pointer, button);
-			}
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				// TODO Auto-generated method stub
-				super.touchUp(event, x, y, pointer, button);
-			}
-			
-		    @Override
+        	
+        	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 		    	hand.updateCursorPosition();
 		    	
@@ -141,21 +127,28 @@ public class MainMenuScene extends Scene {
 		    	startButton.getLabel().setFontScale(1f);
 		       
 		    }
-        	
-        	
-        });
-        
-        settingsButton.addListener(new InputListener() {
+		    
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				// TODO Auto-generated method stub
-				System.out.println("SETTINGS");
-				sceneManager.setScene(new SettingsScene(container));
+				System.out.println("START");
+				//sceneManager.setScene(new GameScene(container));
+				sceneManager.setScene(new CharacterSelectionScene(container));
 				return super.touchDown(event, x, y, pointer, button);
 			}
-			
-		    @Override
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				// TODO Auto-generated method stub
+				super.touchUp(event, x, y, pointer, button);
+			}
+        	
+        });
+        
+        settingsButton.addListener(new InputListener() {
+        	
+        	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 		    	hand.updateCursorPosition();
 		    	
@@ -170,13 +163,17 @@ public class MainMenuScene extends Scene {
 		    	// Scale the TextButton
 		    	settingsButton.getLabel().setFontScale(1f);
 		    }
-		    
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				// TODO Auto-generated method stub
+				System.out.println("SETTINGS");
+				sceneManager.setScene(new SettingsScene(container));
+				return super.touchDown(event, x, y, pointer, button);
+			}
         	
         });
         
-        // Add 2 different cursors
-        cursor = new MyCursor("mouse/pointer.png");
-        hand = new MyCursor("mouse/hand.png");
         
         // Set cursor as the displayed cursor
         cursor.updateCursorPosition();
@@ -185,7 +182,9 @@ public class MainMenuScene extends Scene {
 
     private void handlePointerEvents(PointerEvent pointerEvent) {
         PointerEvent.Type type = pointerEvent.getType();
-       
+
+        // Not sure if want to remove this yet.
+        
     }
 
     @Override
@@ -194,7 +193,6 @@ public class MainMenuScene extends Scene {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(); // Need this so that the mouse hover works
         stage.draw();
-        
     }
 
     @Override
@@ -202,6 +200,5 @@ public class MainMenuScene extends Scene {
         EventBus.removeListener(pointerEventListener);
         stage.dispose();
         skin.dispose();
-        //am.dispose();
     }
 }
