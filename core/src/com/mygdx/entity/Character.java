@@ -9,7 +9,6 @@ import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.ui.HealthBar;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.ui.DamageIndicator;
 
 
 // Characters are generic animated entities for all on-screen things, like characters and monsters that have a health bar, the ability to take damage, and so on
@@ -19,7 +18,6 @@ public class Character extends AnimatedEntity {
     protected float maxHp;
     protected float currentHp;
     Pickup potion;
-    protected Array<DamageIndicator> damageIndicators = new Array<>();
 
     public Character (String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
@@ -63,26 +61,7 @@ public class Character extends AnimatedEntity {
             currentHp = 0;
         }
 
-        DamageIndicator indicator = new DamageIndicator(position, damage, 1f, Color.YELLOW); // Customize as needed
-        damageIndicators.add(indicator);
-    }
-    
-    public void updateDamageIndicators(float deltaTime) {
-        for (int i = damageIndicators.size - 1; i >= 0; i--) {
-            DamageIndicator indicator = damageIndicators.get(i);
-            indicator.update(deltaTime);
-            if (indicator.isFinished()) {
-                damageIndicators.removeIndex(i);
-                indicator.dispose();
-            }
-        }
-    }
-
-    // Render the damage indicators
-    public void renderDamageIndicators(SpriteBatch batch) {
-        for (DamageIndicator indicator : damageIndicators) {
-            indicator.draw(batch);
-        }
+        
     }
 
     public boolean isDead() {
@@ -92,7 +71,6 @@ public class Character extends AnimatedEntity {
     @Override
     public void update() {
         super.update();
-        updateDamageIndicators(Gdx.graphics.getDeltaTime());
         // check if enemy isDead
         if (isDead()) {
             this.dispose();

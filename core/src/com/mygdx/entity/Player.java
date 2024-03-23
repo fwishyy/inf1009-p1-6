@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.events.LoseEvent;
-import com.mygdx.ui.DamageIndicator;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
 
@@ -62,8 +61,6 @@ public class Player extends Character {
     @Override
     public void takeDamage(int damage, Vector2 position) {
     	super.takeDamage(damage, position);
-        DamageIndicator indicator = new DamageIndicator(position, damage, 1.0f, Color.YELLOW);
-        damageIndicators.add(indicator);
         this.setAnimation("hurt", 1);
     }
 

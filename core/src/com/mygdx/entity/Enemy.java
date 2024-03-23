@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.projectiles.Fireball;
-import com.mygdx.ui.DamageIndicator;
 
 public class Enemy extends Character {
 
@@ -20,8 +19,6 @@ public class Enemy extends Character {
     @Override
     public void takeDamage(int damage, Vector2 position) {
     	super.takeDamage(damage, position);
-        DamageIndicator indicator = new DamageIndicator(position, damage, 1.0f, Color.RED);
-        damageIndicators.add(indicator);
         this.setAnimation("hurt", 1);
     }
     

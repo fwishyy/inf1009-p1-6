@@ -38,7 +38,6 @@ import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
-import com.mygdx.ui.DamageIndicator;
 import com.mygdx.ui.HealthBar;
 
 public class GameScene extends Scene {
@@ -73,7 +72,6 @@ public class GameScene extends Scene {
     private BackGround bg;
     
     //Damage Indicators
-    private List<DamageIndicator> damageIndicators = new ArrayList<>();
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -173,17 +171,6 @@ public class GameScene extends Scene {
                 if (bgSprite.isDead()) {
                     bgSprite.potionDrop(); // Ensure you pass the EntityManager instance
                 }
-            }
-        }
-        
-        Iterator<DamageIndicator> iterator = damageIndicators.iterator();
-        while (iterator.hasNext()) {
-            DamageIndicator indicator = iterator.next();
-            indicator.update(deltaTime);
-            if (indicator.isFinished()) {
-                iterator.remove(); // Remove the indicator if it's finished
-            } else {
-                indicator.draw(batch); // Otherwise, draw the indicator
             }
         }
 
