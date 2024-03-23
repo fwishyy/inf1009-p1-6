@@ -27,6 +27,8 @@ public class Character extends AnimatedEntity {
     private BitmapFont font = new BitmapFont();
     private Color messageColor = new Color(Color.WHITE);
     private GlyphLayout layout = new GlyphLayout();
+    private Vector2 messagePosition = new Vector2();
+    private final float messageSpeed = 20f;
 
     // constructor
     public Character (String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
@@ -42,13 +44,11 @@ public class Character extends AnimatedEntity {
         // Draw the message if there is one
         if (!message.isEmpty()) {
         	layout.setText(font, message);
-        	float textWidth = layout.width;
+            float textWidth = layout.width;
             float textHeight = layout.height;
-            float x = this.getX() + (this.getWidth() - textWidth) / 2;
-            float y = this.getY() + this.getHeight() + textHeight - 30;
             
             font.setColor(messageColor);
-            font.draw(batch, layout, x, y);
+            font.draw(batch, message, messagePosition.x - textWidth / 2, messagePosition.y + textHeight);
         }
 
         batch.end();
@@ -101,19 +101,22 @@ public class Character extends AnimatedEntity {
         this.message = message;
         this.messageTime = time;
         this.messageColor = color;
+        this.messagePosition.set(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50);
     }
 
     @Override
     public void update() {
         super.update();
-        if (isDead()) {
-            this.dispose();
-        }
         
         if (messageTime > 0) {
             messageTime -= Gdx.graphics.getDeltaTime();
+            messagePosition.y += messageSpeed * Gdx.graphics.getDeltaTime();
         } else {
             message = ""; // Clear the message when the time is up
+        }
+        
+        if (isDead()) {
+            this.dispose();
         }
         
     }
