@@ -2,7 +2,6 @@ package com.mygdx.aicontrol;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.behaviour.Behaviour;
 import com.mygdx.engine.entity.Entity;
 
@@ -23,9 +22,6 @@ public class SeekBehaviour implements Behaviour {
         dir.y = (entity.getY() - target.getY() < 0) ? 1 : -1;
         float newX = entity.getX() + dir.x * this.speed * Gdx.graphics.getDeltaTime();
         float newY = entity.getY() + dir.y * this.speed * Gdx.graphics.getDeltaTime();
-        MoveAction moveAction = new MoveAction();
-        moveAction.setActor(entity);
-        moveAction.setTargetPos(newX, newY);
-        entity.addAction(moveAction);
+        entity.setPosition(newX, newY);
     }
 }

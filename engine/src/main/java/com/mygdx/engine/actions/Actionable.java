@@ -1,8 +1,7 @@
 package com.mygdx.engine.actions;
 
-import com.mygdx.engine.actions.GameAction;
+import com.mygdx.engine.controls.ActionMap;
 
 public interface Actionable {
-    void addAction(GameAction action);
-    void update();
+    void setActionMap(ActionMap actionMap);
 }

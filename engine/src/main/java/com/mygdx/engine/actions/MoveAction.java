@@ -2,31 +2,39 @@ package com.mygdx.engine.actions;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class MoveAction extends GameAction {
+import java.util.HashMap;
 
-    private Vector2 targetPos;
+public class MoveAction extends InputAction {
+    Vector2 moveState;
+    // movement keys
+    private int upKey;
+    private int leftKey;
+    private int downKey;
+    private int rightKey;
+    private HashMap<String, Integer> binding;
 
-    public MoveAction() {
-        targetPos = new Vector2();
+    public MoveAction(int upKey, int leftKey, int downKey, int rightKey) {
+        this.moveState = new Vector2();
+        this.upKey = upKey;
+        this.leftKey = leftKey;
+        this.downKey = downKey;
+        this.rightKey = rightKey;
+        this.binding = new HashMap<>();
+        binding.put("up", upKey);
+        binding.put("left", leftKey);
+        binding.put("down", downKey);
+        binding.put("right", rightKey);
     }
 
-    public Vector2 getTargetPos() {
-        return targetPos;
+    public HashMap<String, Integer> getBindings() {
+        return binding;
     }
 
-    public void setTargetPos(Vector2 targetPos) {
-        this.targetPos = targetPos;
+    public Vector2 readValue() {
+        return moveState;
     }
 
-    public void setTargetPos(float x, float y) {
-        this.targetPos.x = x;
-        this.targetPos.y = y;
-    }
-
-    @Override
-    public boolean act() {
-        actor.setPosition(targetPos);
-
-        return true;
+    public void setValue(Vector2 moveState) {
+        this.moveState = moveState;
     }
 }

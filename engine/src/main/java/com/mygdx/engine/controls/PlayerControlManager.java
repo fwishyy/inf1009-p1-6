@@ -1,101 +1,63 @@
 package com.mygdx.engine.controls;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.actions.GameAction;
-import com.mygdx.engine.actions.MoveByInputAction;
+import com.mygdx.engine.actions.Actionable;
+import com.mygdx.engine.actions.InputAction;
+import com.mygdx.engine.actions.MoveAction;
+import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.core.Manager;
-import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.input.KeyEvent;
-import com.mygdx.engine.utils.Event;
-import com.mygdx.engine.utils.EventListener;
+import com.mygdx.engine.input.InputManager;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PlayerControlManager extends Manager {
 
-    private final LinkedHashMap<Entity, ActionMap> entityActions;
-    private final LinkedHashMap<Integer, Boolean> heldKeys;
-    private static final float dispatchDelay = 0.1f;
-    private float timeSinceLastDispatch = 0;
+    private InputManager inputManager;
+    private final LinkedHashMap<Actionable, ActionMap> entityActionMaps;
 
-    public PlayerControlManager() {
-        heldKeys = new LinkedHashMap<>();
-        entityActions = new LinkedHashMap<>();
-        addKeyListener(new EventListener<KeyEvent>() {
-            @Override
-            public void onSignal(Event e) {
-                if (e instanceof KeyEvent)
-                    handleKeyEvent((KeyEvent) e);
-            }
-        });
+    public PlayerControlManager(GameContainer container) {
+        super(container);
+        entityActionMaps = new LinkedHashMap<>();
+        inputManager = container.getInputManager();
     }
 
-    /**
-     * Keybindings are resolved here and translated into GameActions that are fired to the respective entities
-     *
-     * @param e KeyEvent to resolve and dispatch
-     */
-    private void handleKeyEvent(KeyEvent e) {
-        heldKeys.put(e.getKeyCode(), e.isPressed());
-    }
-
-    public void setActionMap(Entity entity, ActionMap actionMap) {
+    public void setActionMap(Actionable entity, ActionMap actionMap) {
         // Create a new specific action map for this entity and assign it to a dispatch list
-        entityActions.put(entity, actionMap);
-
-        for (Map.Entry<GameAction, List<Integer>> entry : actionMap.getAllBindings().entrySet()) {
-            List<Integer> keyCodes = entry.getValue();
-            for (int keyCode : keyCodes) {
-                heldKeys.put(keyCode, false);
-            }
-        }
-    }
-
-    public ActionMap getActionMap(Entity entity) {
-        return entityActions.get(entity);
-    }
-
-    public boolean isDispatchReady() {
-        return timeSinceLastDispatch >= dispatchDelay;
+        entityActionMaps.put(entity, actionMap);
+        entity.setActionMap(actionMap);
     }
 
     // Currently this updates frame by frame
-    // TODO: Maybe fix the very lazy dispatching
+    // TODO: change this for new actions
     public void update() {
-        GameAction action;
-        Entity entity;
-        for (Map.Entry<Entity, ActionMap> entityEntry : entityActions.entrySet()) {
-            entity = entityEntry.getKey();
-            for (Map.Entry<GameAction, List<Integer>> actionMapEntry : entityEntry.getValue().getAllBindings().entrySet()) {
-                action = actionMapEntry.getKey();
-                List<Integer> keyCodes = actionMapEntry.getValue();
-                for (int keyCode : keyCodes) {
-                    if (heldKeys.get(keyCode)) {
-                        action.setActor(entity);
-                        if (action instanceof MoveByInputAction) {
-                            MoveByInputAction inputAction = (MoveByInputAction) action;
-                            int upKeyState = heldKeys.get(keyCodes.get(0)) ? 1 : 0;
-                            int leftKeyState = heldKeys.get(keyCodes.get(1)) ? 1 : 0;
-                            int downKeyState = heldKeys.get(keyCodes.get(2)) ? 1 : 0;
-                            int rightKeyState = heldKeys.get(keyCodes.get(3)) ? 1 : 0;
+        for (Map.Entry<Actionable, ActionMap> entry : entityActionMaps.entrySet()) {
+            ActionMap actionMap = entry.getValue();
+            for (Map.Entry<String, InputAction> actionEntry : actionMap.getActions().entrySet()) {
+                InputAction inputAction = actionEntry.getValue();
+                if (inputAction instanceof MoveAction) {
+                    MoveAction moveAction = (MoveAction) inputAction;
+                    HashMap<String, Integer> bindings = moveAction.getBindings();
+                    int upKeyState = (inputManager.getKeyState(bindings.get("up")) ? 1 : 0);
+                    int leftKeyState = (inputManager.getKeyState(bindings.get("left")) ? 1 : 0);
+                    int downKeyState = (inputManager.getKeyState(bindings.get("down")) ? 1 : 0);
+                    int rightKeyState = (inputManager.getKeyState(bindings.get("right")) ? 1 : 0);
 
-                            Vector2 keyState = new Vector2(rightKeyState - leftKeyState, upKeyState - downKeyState);
-                            inputAction.setKeyState(keyState);
-                            entity.addAction(inputAction);
-                            break;
-                        } else {
-                            entity.addAction(action);
-                        }
-                    }
+                    Vector2 moveState = new Vector2();
+                    moveState.x = rightKeyState - leftKeyState;
+                    moveState.y = upKeyState - downKeyState;
+                    moveAction.setValue(moveState);
+
+                    moveAction.setTriggered(moveState.x != 0 || moveState.y != 0);
+                } else {
+                    inputAction.setTriggered(inputManager.getKeyState(inputAction.getBinding()));
                 }
             }
         }
     }
 
     public void dispose() {
-        heldKeys.clear();
-        entityActions.clear();
+        entityActionMaps.clear();
     }
 }

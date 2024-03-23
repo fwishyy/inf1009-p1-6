@@ -7,14 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.actions.Actionable;
-import com.mygdx.engine.actions.GameAction;
-import com.mygdx.engine.actions.TemporalAction;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-public abstract class Entity implements Actionable {
+public abstract class Entity {
 
     protected Sprite sprite;
     protected TextureRegion texture;
@@ -23,8 +17,6 @@ public abstract class Entity implements Actionable {
     protected float width;
     protected float height;
     protected String type;
-    protected ArrayList<GameAction> actions;
-    protected Map<Class<? extends GameAction>, Float> actionInterval;
     protected boolean direction; //true for left, false for right
     protected Collider collider;
 
@@ -36,7 +28,6 @@ public abstract class Entity implements Actionable {
         this.height = 0;
         this.type = "";
         this.sprite = null;
-        this.actions = new ArrayList<>();
         this.direction = false;
         this.collider = new Collider(this, width, height);
     }
@@ -49,7 +40,6 @@ public abstract class Entity implements Actionable {
         this.height = this.texture.getRegionHeight();
         this.type = type;
         this.sprite = new Sprite(this.texture);
-        this.actions = new ArrayList<>();
         this.direction = false;
     }
 
@@ -61,7 +51,6 @@ public abstract class Entity implements Actionable {
         this.height = 0;
         this.type = type;
         this.sprite = null;
-        this.actions = new ArrayList<>();
         this.direction = false;
     }
 
@@ -73,7 +62,6 @@ public abstract class Entity implements Actionable {
         this.height = this.texture.getRegionHeight();
         this.type = "";
         this.sprite = null;
-        this.actions = new ArrayList<>();
         this.direction = false;
     }
 
@@ -85,35 +73,11 @@ public abstract class Entity implements Actionable {
         this.height = this.texture.getRegionHeight();
         this.type = "";
         this.sprite = new Sprite(this.texture);
-        this.actions = new ArrayList<>();
         this.direction = false;
     }
 
-    public void addAction(GameAction newAction) {
-        if (newAction instanceof TemporalAction) {
-            for (GameAction action : actions) {
-                if (action.getClass().equals(newAction.getClass())) {
-                    return;
-                }
-            }
-        }
-        actions.add(newAction);
-    }
-
     public void update() {
-        for (int i = 0; i < actions.size(); ++i) {
-            GameAction currAction = actions.get(i);
-            if (currAction instanceof TemporalAction) {
-                TemporalAction temporalAction = (TemporalAction) currAction;
-                boolean completed = temporalAction.update();
-                if (completed) {
-                    actions.remove(temporalAction);
-                }
-            } else {
-                currAction.act();
-                actions.remove(currAction);
-            }
-        }
+        // TODO: transition this to FSM
     }
 
 

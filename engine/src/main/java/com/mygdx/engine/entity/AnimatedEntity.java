@@ -328,6 +328,10 @@ public abstract class AnimatedEntity extends Entity {
         this.frameDuration = frameDuration;
     }
 
+    public float getAnimationDuration() {
+        return this.frameCountColumn * this.frameCountRow * this.frameDuration;
+    }
+
     public TextureRegion[][] getFrames() {
         return this.frames;
     }

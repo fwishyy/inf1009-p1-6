@@ -2,13 +2,11 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.actions.AttackAction;
 import com.mygdx.aicontrol.SeekBehaviour;
 import com.mygdx.camera.Camera;
 import com.mygdx.engine.behaviour.BehaviourManager;
@@ -120,6 +118,7 @@ public class GameScene extends Scene {
 
         // TODO: also move this into player
         p1.addAnimation("characters/Mage_Fire/Run.png", "run", 8);
+        p1.addAnimation("characters/Mage_Fire/Fireball.png", "attack", 8);
 
         // add colliders to entities that need collision logic
         // in this case, remember that the current player using a spritesheet, so we have to calculate frame size of the 
@@ -131,11 +130,10 @@ public class GameScene extends Scene {
                 p1);
 
         // player control mapping 
-        ActionMap playerControls = new ActionMap();
-        playerControls.add2DMovementBindings(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
-        playerControls.addNewBinding(KeyCodes.MOUSE1, new AttackAction());
+        ActionMap playerControls = new ActionMap("controls");
+        playerControls.addMoveAction(KeyCodes.W, KeyCodes.A, KeyCodes.S, KeyCodes.D);
+        playerControls.addInputAction("attack", KeyCodes.MOUSE1);
         pm.setActionMap(p1, playerControls);
-
 
         bg = new BackGround("bg/bg.png");
 

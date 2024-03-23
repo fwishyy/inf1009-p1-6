@@ -15,9 +15,14 @@ import java.util.List;
 public abstract class Manager {
     // Holds all events that a manager is subscribed to
     private List<EventListener<? extends Event>> listeners;
+    private GameContainer container;
 
     public Manager() {
         listeners = new ArrayList<>();
+    }
+
+    public Manager(GameContainer container) {
+        this.container = container;
     }
 
     protected void addPointerListener(EventListener<PointerEvent> listener) {
@@ -39,6 +44,7 @@ public abstract class Manager {
         listeners.add(listener);
         EntityAddedEvent.addListener(EntityAddedEvent.class, listener);
     }
+
     protected void addEntityDisposedListener(EventListener<EntityDisposedEvent> listener) {
         listeners.add(listener);
         EntityDisposedEvent.addListener(EntityDisposedEvent.class, listener);

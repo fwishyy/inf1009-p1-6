@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
+import com.mygdx.entity.fsm.states.player.PlayerStateMachine;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
 
@@ -13,6 +14,8 @@ public class Player extends Character {
 
     private Vector2 target;
     private TrajectoryLine trajectoryLine;
+    private int fireRate;
+    private PlayerStateMachine stateMachine;
 
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
@@ -22,6 +25,9 @@ public class Player extends Character {
         this.healthBar = new HealthBar(this, healthbarOffset, Color.GREEN, 80, 10);
         this.trajectoryLine = new TrajectoryLine(this);
         this.target = new Vector2();
+        this.fireRate = 30;
+        this.stateMachine = new PlayerStateMachine(this);
+        stateMachine.setIdleState();
     }
 
     public Vector2 getTarget() {
@@ -39,6 +45,11 @@ public class Player extends Character {
         trajectoryLine.draw(shape);
     }
 
+    @Override
+    public void update() {
+        super.update();
+        stateMachine.update();
+    }
 
     @Override
     public void collide(Collider other) {

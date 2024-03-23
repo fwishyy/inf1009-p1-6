@@ -29,7 +29,7 @@ public class GameContainer {
         collisionManager = new CollisionManager();
         sceneManager = new SceneManager();
         inputManager = new InputManager(Gdx.input);
-        playerControlManager = new PlayerControlManager();
+        playerControlManager = new PlayerControlManager(this);
         audioManager = new AudioManager();
         behaviourManager = new BehaviourManager(entityManager);
     }

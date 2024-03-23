@@ -1,74 +1,40 @@
 package com.mygdx.engine.controls;
 
-import com.mygdx.engine.actions.GameAction;
-import com.mygdx.engine.actions.MoveByInputAction;
+import com.mygdx.engine.actions.InputAction;
+import com.mygdx.engine.actions.MoveAction;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
-
 
 /**
- * ActionMap bind keys to GameActions
- * These can be assigned uniquely to entities to create really cool keybindings
- * actions is used to store labels for GameActions for easy reference and to also allow for multiple keys to trigger the same action
- * keybinds map actual keys to GameActions
+ * New Action
  */
 public class ActionMap {
-    private static LinkedHashMap<String, GameAction> actions;
-    private final LinkedHashMap<GameAction, List<Integer>> keybinds;
+    private String name;
+    private LinkedHashMap<String, InputAction> actions;
 
-    public ActionMap() {
-        actions = new LinkedHashMap<>();
-        keybinds = new LinkedHashMap<>();
+    public ActionMap(String name) {
+        this.name = name;
+        this.actions = new LinkedHashMap<>();
     }
 
-    public synchronized void addAction(String label, GameAction action) {
-        actions.put(label, action);
+    public LinkedHashMap<String, InputAction> getActions() {
+        return actions;
     }
 
-    public synchronized void removeAction(String label) {
-        actions.remove(label);
+    public void addInputAction(String actionName, int keyCode) {
+        actions.put(actionName, new InputAction(keyCode));
     }
 
-    public synchronized GameAction getAction(String label) {
-        return actions.get(label);
+    public void addMoveAction(int upKey, int leftKey, int downKey, int rightKey) {
+        actions.put("Move", new MoveAction(upKey, leftKey, downKey, rightKey));
     }
 
-    public void addNewBinding(int keyCode, String label) {
-        GameAction action = getAction(label);
-        if (action != null) {
-            checkAndAddBinding(keyCode, action);
-        }
+    public InputAction getAction(String name) {
+        return actions.get(name);
     }
 
-    public void addNewBinding(int keyCode, GameAction action) {
-        if (action != null) {
-            checkAndAddBinding(keyCode, action);
-        }
-    }
-
-    private void checkAndAddBinding(int keyCode, GameAction action) {
-        if (keybinds.containsKey(action)) {
-            keybinds.get(action).add(keyCode);
-        } else {
-            keybinds.put(action, new ArrayList<Integer>(Arrays.asList(keyCode)));
-        }
-    }
-
-    // TODO: maybe make this more customisable
-    // Special helper function created to add generic 2d movement to an entity
-    // Easy to use and applicable to many games
-    public void add2DMovementBindings(Integer upKeyCode, Integer leftKeyCode, Integer downKeyCode, Integer rightKeyCode) {
-        MoveByInputAction moveAction = new MoveByInputAction();
-        addNewBinding(upKeyCode, moveAction);
-        addNewBinding(leftKeyCode, moveAction);
-        addNewBinding(downKeyCode, moveAction);
-        addNewBinding(rightKeyCode, moveAction);
-    }
-
-    public LinkedHashMap<GameAction, List<Integer>> getAllBindings() {
-        return keybinds;
+    public MoveAction getMoveAction() {
+        MoveAction moveAction = (MoveAction) actions.get("Move");
+        return moveAction;
     }
 }
