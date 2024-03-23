@@ -3,6 +3,7 @@ package com.mygdx.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -25,6 +26,7 @@ public class Character extends AnimatedEntity {
     private float messageTime = 0f;
     private BitmapFont font = new BitmapFont();
     private Color messageColor = new Color(Color.WHITE);
+    private GlyphLayout layout = new GlyphLayout();
 
     // constructor
     public Character (String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
@@ -38,9 +40,15 @@ public class Character extends AnimatedEntity {
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
     	batch.begin();
         // Draw the message if there is one
-    	font.setColor(messageColor);
         if (!message.isEmpty()) {
-            font.draw(batch, message, this.getX(), this.getY() + this.getHeight() + 20); // Adjust the Y offset as needed
+        	layout.setText(font, message);
+        	float textWidth = layout.width;
+            float textHeight = layout.height;
+            float x = this.getX() + (this.getWidth() - textWidth) / 2;
+            float y = this.getY() + this.getHeight() + textHeight - 30;
+            
+            font.setColor(messageColor);
+            font.draw(batch, layout, x, y);
         }
 
         batch.end();
