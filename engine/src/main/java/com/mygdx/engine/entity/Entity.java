@@ -189,6 +189,14 @@ public abstract class Entity {
         this.sprite.setSize(width, height);
     }
 
+    public Collider getCollider() {
+    	return this.collider;
+    }
+    
+    public void setCollider(Collider collider) {
+    	this.collider = collider;
+    }
+    
     public void dispose() {
         EntityDisposedEvent.addEvent(new EntityDisposedEvent(this));
         this.sprite.getTexture().dispose();

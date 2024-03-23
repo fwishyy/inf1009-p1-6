@@ -30,7 +30,9 @@ import com.mygdx.entity.Player;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
+import com.mygdx.mechanics.Boundary;
 import com.mygdx.mechanics.SpawnSystem;
+import com.mygdx.mechanics.Wave;
 import com.mygdx.ui.HealthBar;
 
 public class GameScene extends Scene {
@@ -62,6 +64,8 @@ public class GameScene extends Scene {
     //Spawn
     private SpawnSystem enemySpawn;
     private BackGround bg;
+    
+    private Boundary bound;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -131,16 +135,21 @@ public class GameScene extends Scene {
         playerControls.addInputAction("attack", KeyCodes.MOUSE1);
         pm.setActionMap(p1, playerControls);
 
-        bg = new BackGround("bg/bg.png");
+        bg = new BackGround("bg/new_bg.png", false);
 
         // create new camera and center it
         camera = new Camera();
         camera.setOffset(p1.getWidth() / 2, p1.getHeight() / 2);
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
 
-//        // create spawn system and set interval to spawn 1 enemy/4s
-//        enemySpawn = new SpawnSystem(container, 4, 1.5f, 10);
-//        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
+        // create spawn system and set interval to spawn
+        enemySpawn = new SpawnSystem(container, 2, 1.5f, 1);
+        enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
+        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 5);
+        enemySpawn.getWave().setBossWave(5);
+        enemySpawn.getWave().setBossCount(2);
+        
+        bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
     }
 
     @Override
@@ -175,7 +184,9 @@ public class GameScene extends Scene {
         camera.shapeUpdate(shapeRenderer);
 
         // spawn system
-        //enemySpawn.update(deltaTime);
+        enemySpawn.update(deltaTime);
+        
+        bound.update();
     }
 
     public void handlePointerEvent(PointerEvent e) {

@@ -9,19 +9,30 @@ public class SeekBehaviour implements Behaviour {
 
     private Entity target;
     private float speed;
+    private float range;
 
     public SeekBehaviour(Entity target, float speed) {
         this.target = target;
         this.speed = speed;
+        this.range = 0f;
+    }
+
+    public SeekBehaviour(Entity target, float speed, float range) {
+        this.target = target;
+        this.speed = speed;
+        this.range = range;
     }
 
     @Override
     public void update(Entity entity, float deltaTime) {
-        Vector2 dir = new Vector2();
-        dir.x = (entity.getX() - target.getX() < 0) ? 1 : -1;
-        dir.y = (entity.getY() - target.getY() < 0) ? 1 : -1;
-        float newX = entity.getX() + dir.x * this.speed * Gdx.graphics.getDeltaTime();
-        float newY = entity.getY() + dir.y * this.speed * Gdx.graphics.getDeltaTime();
-        entity.setPosition(newX, newY);
+        float dist = entity.getVector2().dst(target.getVector2());
+        if (dist > range) {
+            Vector2 dir = new Vector2();
+            dir.x = (entity.getX() - target.getX() < 0) ? 1 : -1;
+            dir.y = (entity.getY() - target.getY() < 0) ? 1 : -1;
+            float newX = entity.getX() + dir.x * this.speed * Gdx.graphics.getDeltaTime();
+            float newY = entity.getY() + dir.y * this.speed * Gdx.graphics.getDeltaTime();
+            entity.setPosition(newX, newY);
+        }
     }
 }

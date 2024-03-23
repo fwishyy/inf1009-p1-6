@@ -12,18 +12,27 @@ public class BackGround {
 	
 	private Texture texture = null;
 	private Vector2 startPos = null;
-	private  Vector2 maxPos = null;
+	private Vector2 maxPos = null;
 	private Vector2 minPos = null;
-
-	private HashMap<Integer, Vector2> gridMap;
 	
-	public BackGround(String texture) {
+	private HashMap<Integer, Vector2> gridMap;
+	private boolean useGrid = true;
+	
+	public BackGround(String texture, boolean useGrid) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 		this.startPos =  new Vector2(-(this.texture.getWidth() / 2), -(this.texture.getHeight() / 2));
-		this.gridMap = new HashMap<>();
-		createGrid();
-		this.maxPos = new Vector2(this.startPos.x + this.texture.getWidth()*2, this.startPos.y + this.texture.getHeight()*2);
-		this.minPos = new Vector2(this.startPos.x - this.texture.getWidth(), this.startPos.y - this.texture.getHeight());
+		this.useGrid = useGrid;
+		
+		if(this.useGrid) {
+			this.gridMap = new HashMap<>();
+			createGrid();
+			this.maxPos = new Vector2(this.startPos.x + this.texture.getWidth()*2, this.startPos.y + this.texture.getHeight()*2);
+			this.minPos = new Vector2(this.startPos.x - this.texture.getWidth(), this.startPos.y - this.texture.getHeight());
+		}else {
+			this.maxPos = new Vector2(this.startPos.x + this.texture.getWidth(), this.startPos.y + this.texture.getHeight());
+			this.minPos = new Vector2(this.startPos.x , this.startPos.y);
+		}
+		
 	}
 	
 	//for specifying start position of texture
@@ -45,14 +54,19 @@ public class BackGround {
 		       --+-+--
 		        7|8|9
 		 */
-
+		
 		batch.begin();
-		//Draw Background using coordinates of the grid
-		for(int i = 1; i < 10; i++) {
-			float x = gridMap.get(i).x;
-			float y = gridMap.get(i).y;
-			batch.draw(texture, x, y);
+		if(useGrid) {
+			//Draw Background using coordinates of the grid
+			for(int i = 1; i < 10; i++) {
+				float x = gridMap.get(i).x;
+				float y = gridMap.get(i).y;
+				batch.draw(texture, x, y);
+			}
+		}else {
+			batch.draw(texture, startPos.x, startPos.y);
 		}
+		
 		batch.end();
 	}
 	
