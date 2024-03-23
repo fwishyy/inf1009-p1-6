@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.MyCursor;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
@@ -32,13 +34,17 @@ public class SettingsScene extends Scene{
     private SceneManager sceneManager;
     private Skin skin;
     private BitmapFont font;
-    private TextButton back;
+    private TextButton backBtn;
     
     // Audio Buttons
     private TextButton volume;
     private TextButton volumeUp;
     private TextButton volumeDown;
     private float MenuMusicVolume;
+    
+    // Cursor
+    private MyCursor cursor;
+    private MyCursor hand;
     
     public SettingsScene(GameContainer container) {
     	super(container);
@@ -49,8 +55,12 @@ public class SettingsScene extends Scene{
     
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		
+		
 		super.show();
+		// Add 2 different cursors
+        cursor = new MyCursor("mouse/pointer.png");
+        hand = new MyCursor("mouse/hand.png");
 		MenuMusicVolume = am.getVolume("MenuMusic");
 		
 		table = new Table();
@@ -88,7 +98,7 @@ public class SettingsScene extends Scene{
         volumeDown = new TextButton("", decreaseVolumeStyle);
         
         // Back button
-        back = new TextButton("Back", backButtonStyle);
+        backBtn = new TextButton("Back", backButtonStyle);
         
         
         table.setFillParent(true);
@@ -101,14 +111,31 @@ public class SettingsScene extends Scene{
         table.row();
         
         // Back button row
-        table.add(back).padTop(20f).colspan(3);
-        table.setDebug(false);
+        table.add(backBtn).padTop(20f).colspan(3);
+        table.setDebug(true);
         
         stage.addActor(table);
         im.addInputProcessor(stage);
         
         // When the volume down button is pressed
         volumeDown.addListener(new InputListener() {
+        	
+        	@Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	volumeDown.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Reset the TextButton
+		    	volumeDown.getLabel().setFontScale(1f);
+		       
+		    }
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -117,8 +144,6 @@ public class SettingsScene extends Scene{
 					MenuMusicVolume -= 0.1f;
 					MenuMusicVolume = Math.round(MenuMusicVolume * 10.0f) / 10.0f;
 					am.setVolume("MenuMusic", MenuMusicVolume);
-					//am.stop("MenuMusic");
-					//am.play("MenuMusic");
 					volume.setText("BGM Volume: " + MenuMusicVolume);
 				}
 				return super.touchDown(event, x, y, pointer, button);
@@ -128,6 +153,23 @@ public class SettingsScene extends Scene{
         
         // When the volume up button is pressed
         volumeUp.addListener(new InputListener() {
+        	
+        	@Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	volumeUp.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Reset the TextButton
+		    	volumeUp.getLabel().setFontScale(1f);
+		       
+		    }
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -137,8 +179,6 @@ public class SettingsScene extends Scene{
 					MenuMusicVolume += 0.1f;
 					MenuMusicVolume = Math.round(MenuMusicVolume * 10.0f) / 10.0f;
 					am.setVolume("MenuMusic", MenuMusicVolume);
-					//am.stop("MenuMusic");
-					//am.play("MenuMusic");
 					volume.setText("BGM Volume: " + MenuMusicVolume);
 				}
 				return super.touchDown(event, x, y, pointer, button);
@@ -146,7 +186,24 @@ public class SettingsScene extends Scene{
         	
         });
         
-        back.addListener(new InputListener() {
+        backBtn.addListener(new InputListener() {
+        	
+        	@Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	backBtn.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Reset the TextButton
+		    	backBtn.getLabel().setFontScale(1f);
+		       
+		    }
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -157,6 +214,9 @@ public class SettingsScene extends Scene{
         	
         });
         
+        // Set cursor as the displayed cursor
+        cursor.updateCursorPosition();
+        
 	}
     
     @Override
@@ -164,6 +224,7 @@ public class SettingsScene extends Scene{
 		// TODO Auto-generated method stub
     	Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act();
         stage.draw();
 	}
 
@@ -172,5 +233,5 @@ public class SettingsScene extends Scene{
 		// TODO Auto-generated method stub
 		stage.dispose();
         skin.dispose();
-	}
+	} 
 }
