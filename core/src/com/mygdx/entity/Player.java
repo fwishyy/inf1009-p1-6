@@ -18,11 +18,17 @@ public class Player extends Character {
     private PlayerStateMachine stateMachine;
 
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
+        // set idle animation for player
         super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
+
+        // add other animation
+        addAnimation("characters/Mage_Fire/Run.png", "run", 8);
+        addAnimation("characters/Mage_Fire/Fireball.png", "attack", 8);
+
         this.maxHp = 100;
         this.currentHp = 50;
-        Vector2 healthbarOffset = new Vector2(38, -20);
-        this.healthBar = new HealthBar(this, healthbarOffset, Color.GREEN, 80, 10);
+        Vector2 healthBarOffset = new Vector2(38, -20);
+        this.healthBar = new HealthBar(this, healthBarOffset, Color.GREEN, 80, 10);
         this.trajectoryLine = new TrajectoryLine(this);
         this.target = new Vector2();
         this.fireRate = 30;

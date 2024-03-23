@@ -116,10 +116,6 @@ public class GameScene extends Scene {
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
 
-        // TODO: also move this into player
-        p1.addAnimation("characters/Mage_Fire/Run.png", "run", 8);
-        p1.addAnimation("characters/Mage_Fire/Fireball.png", "attack", 8);
-
         // add colliders to entities that need collision logic
         // in this case, remember that the current player using a spritesheet, so we have to calculate frame size of the 
         cm.addCollider(p1, p1.getWidth() / 2, p1.getHeight() / 2);
