@@ -55,7 +55,7 @@ public class Enemy extends Character {
         	if (!fireball.hasHit()) { // Check if the fireball has not already hit
                 fireball.completeHit(); // Prevent further damage by marking the fireball
                 this.takeDamage(2, new Vector2(getX(), getY())); // Apply damage
-                this.showMessage("-2", 2.0f, Color.YELLOW);
+                this.showMessage("-2", 2.0f, Color.MAGENTA);
                 if (this.currentHp <= 0) {
                 	potionDrop(); // Drop potion if enemy is defeated
                 	this.dispose();      

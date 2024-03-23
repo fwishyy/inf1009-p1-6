@@ -47,6 +47,15 @@ public class Character extends AnimatedEntity {
             float textWidth = layout.width;
             float textHeight = layout.height;
             
+            // text outline
+            font.setColor(Color.BLACK);
+            float outlineWidth = 1;
+            
+            font.draw(batch, layout, messagePosition.x - textWidth / 2 - outlineWidth, messagePosition.y + textHeight);
+            font.draw(batch, layout, messagePosition.x - textWidth / 2 + outlineWidth, messagePosition.y + textHeight);
+            font.draw(batch, layout, messagePosition.x - textWidth / 2, messagePosition.y + textHeight - outlineWidth);
+            font.draw(batch, layout, messagePosition.x - textWidth / 2, messagePosition.y + textHeight + outlineWidth);
+            
             font.setColor(messageColor);
             font.draw(batch, message, messagePosition.x - textWidth / 2, messagePosition.y + textHeight);
         }
