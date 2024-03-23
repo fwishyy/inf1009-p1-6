@@ -49,6 +49,8 @@ public class GameScene extends Scene {
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    
+
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -59,6 +61,7 @@ public class GameScene extends Scene {
         im = container.getInputManager();
         sm = container.getSceneManager();
     }
+    
 
     @Override
     public void show() {
@@ -85,6 +88,7 @@ public class GameScene extends Scene {
 
         field = new bgField("bg/bg.png", -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, "field");
         em.addEntity(field);
+        
 
         // Dynamic Creation Showcase
         em.createEntity(5, bgField.class, "bg/PNG/Objects_separately/Crystal_shadow1_1.png", 0, 0, "crystal");
@@ -153,7 +157,13 @@ public class GameScene extends Scene {
         for (Entity entity : em.getEntities("goblin")) {
             bm.addBehaviour(entity, seek);
         }
-
+        
+        // Retrieve the instance of CharacterSelectionScene
+        CharacterSelectionScene characterSelectionScene = CharacterSelectionScene.getInstance();
+        boolean isMageSelected = characterSelectionScene.isMageSelected();
+        boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
+        
+        System.out.println(isMageSelected);
 
     }
 
