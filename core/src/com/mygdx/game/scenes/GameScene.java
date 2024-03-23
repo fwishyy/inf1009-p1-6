@@ -7,6 +7,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +40,7 @@ import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.ui.HealthBar;
+import com.mygdx.entity.Character;
 
 public class GameScene extends Scene {
 
@@ -72,6 +74,7 @@ public class GameScene extends Scene {
     private BackGround bg;
     
     //Damage Indicators
+    private BitmapFont font;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -169,10 +172,18 @@ public class GameScene extends Scene {
             if (entity instanceof Enemy) {
                 Enemy bgSprite = (Enemy) entity;
                 if (bgSprite.isDead()) {
-                    bgSprite.potionDrop(); // Ensure you pass the EntityManager instance
+                    bgSprite.potionDrop(); 
                 }
             }
         }
+        
+//        for (Entity entity : em.getEntities()) {
+//            if (entity instanceof Character) {
+//                Character character = (Character) entity;
+//                character.update(); // Update the character
+//                character.draw(batch, shapeRenderer); // Draw the character and the message if there is one
+//            }
+//        }
 
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
@@ -220,6 +231,7 @@ public class GameScene extends Scene {
         cm.dispose();
         em.dispose();
         batch.dispose();
+        font.dispose();
 
         EventBus.removeListener(winEventListener);
         EventBus.removeListener(loseEventListener);

@@ -2,9 +2,11 @@ package com.mygdx.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.camera.Camera;
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.ui.HealthBar;
@@ -18,7 +20,13 @@ public class Character extends AnimatedEntity {
     protected float maxHp;
     protected float currentHp;
     Pickup potion;
+    
+    private String message = "";
+    private float messageTime = 0f;
+    private BitmapFont font = new BitmapFont();
+    private Color messageColor = new Color(Color.WHITE);
 
+    // constructor
     public Character (String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
         this.maxHp = 100;
@@ -28,14 +36,23 @@ public class Character extends AnimatedEntity {
     }
 
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+    	batch.begin();
+        // Draw the message if there is one
+    	font.setColor(messageColor);
+        if (!message.isEmpty()) {
+            font.draw(batch, message, this.getX(), this.getY() + this.getHeight() + 20); // Adjust the Y offset as needed
+        }
+
+        batch.end();
+    	
         super.draw(batch, shapeRenderer);
+        
         healthBar.update(maxHp, currentHp);
         healthBar.draw(batch, shapeRenderer);
     }
 
     @Override
     public void collide(Collider other) {
-        // TODO Auto-generated method stub
         if (other.getEntity().getType().equals("player1")) {
             if (this.currentHp >= 5) {
                 this.currentHp -= 5;
@@ -43,37 +60,53 @@ public class Character extends AnimatedEntity {
         }
     }
 
+    // health bar getter
     public HealthBar getHbar() {
         return healthBar;
     }
 
+    // max HP getter
     public float getMaxHp() {
         return this.maxHp;
     }
 
+    // current HP getter
     public float getCurrentHp() {
         return this.currentHp;
     }
 
+    // take damage function
     public void takeDamage(int damage, Vector2 position) {
         currentHp -= damage;
         if (currentHp < 0) {
             currentHp = 0;
         }
 
-        
     }
 
+    // check if character is dead
     public boolean isDead() {
         return currentHp <= 0;
+    }
+    
+    public void showMessage(String message, float time, Color color) {
+        this.message = message;
+        this.messageTime = time;
+        this.messageColor = color;
     }
 
     @Override
     public void update() {
         super.update();
-        // check if enemy isDead
         if (isDead()) {
             this.dispose();
         }
+        
+        if (messageTime > 0) {
+            messageTime -= Gdx.graphics.getDeltaTime();
+        } else {
+            message = ""; // Clear the message when the time is up
+        }
+        
     }
 }

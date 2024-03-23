@@ -76,10 +76,12 @@ public class Player extends Character {
 //        }
         if (other.getEntity().getType().equals("maxHealthPotion")) {
             this.increaseMaxHp();
+            this.showMessage("Max HP +5%", 2.0f, Color.GREEN);
             System.out.println("Max health increased by 5%");
         }
         if (other.getEntity().getType().equals("healthPotion")) {
             this.heal();
+            this.showMessage("+10 HP", 2.0f, Color.GREEN);
             System.out.println("Healed 10 HP.");
         }
         if (other.getEntity().getType().equals("skeleton")) {
@@ -87,6 +89,7 @@ public class Player extends Character {
         	if (skeleton.getCurrentFrame() == 3) { // Frames are 0-indexed, so the fourth frame is index 3
                 if (this.getCurrentHp() >= 0) {
 	        		this.takeDamage(1, target);
+	        		this.showMessage("-1", 2.0f, Color.RED);
 	                System.out.println("Player took damage from skeleton attack.");
                 }
                 else {
