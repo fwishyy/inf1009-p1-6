@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.MyCursor;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
@@ -34,6 +36,11 @@ public class LoseScene extends Scene {
     
     private TextButton restartBtn;
     private TextButton menuBtn;
+    
+    // Cursor
+    private MyCursor cursor;
+    private MyCursor hand;
+    
 
     public LoseScene(GameContainer container) {
         super(container);
@@ -53,6 +60,11 @@ public class LoseScene extends Scene {
         };
 
         EventBus.addListener(PointerEvent.class, pointerEventListener);
+        
+        
+        // Add 2 different cursors
+        cursor = new MyCursor("mouse/pointer.png");
+        hand = new MyCursor("mouse/hand.png");
         
         textureAtlas = new TextureAtlas(Gdx.files.internal("sgx/skin/menu-ui.atlas"));
         font = new BitmapFont(Gdx.files.internal("sgx/skin/font-export.fnt"));
@@ -81,6 +93,23 @@ public class LoseScene extends Scene {
         
         // Handler for the 2 buttons
         restartBtn.addListener(new InputListener() {
+        	
+        	@Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	restartBtn.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Reset the TextButton
+		    	restartBtn.getLabel().setFontScale(1f);
+		       
+		    }
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -92,6 +121,23 @@ public class LoseScene extends Scene {
         });
         
         menuBtn.addListener(new InputListener() {
+        	
+        	@Override
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	hand.updateCursorPosition();
+		    	
+		    	// Scale the TextButton
+		    	menuBtn.getLabel().setFontScale(1.2f);
+		    }
+
+		    @Override
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+		    	cursor.updateCursorPosition();
+		    	
+		    	// Reset the TextButton
+		    	menuBtn.getLabel().setFontScale(1f);
+		       
+		    }
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -101,6 +147,9 @@ public class LoseScene extends Scene {
 			}
         	
         });
+        
+        // Set cursor as the displayed cursor
+        cursor.updateCursorPosition();
     }
 
     private void handlePointerEvent(PointerEvent e) {
@@ -115,6 +164,7 @@ public class LoseScene extends Scene {
     @Override
     public void render(float deltaTime) {
         stage.draw();
+        stage.act();
     }
 
     @Override
