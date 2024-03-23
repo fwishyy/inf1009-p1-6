@@ -105,14 +105,17 @@ public class SettingsScene extends Scene{
         table.setBackground(bgTextureDrawable); 
         
         // Volume buttons row
-        table.add(volumeDown).padTop(100f);
-        table.add(volume).padTop(100f);
-        table.add(volumeUp).padTop(100f);
+        table.add(volumeDown).padRight(10f);
+        table.add(volume).padRight(10f);
+        table.add(volumeUp);
+        table.padTop(100f);
         table.row();
         
         // Back button row
         table.add(backBtn).padTop(20f).colspan(3);
-        table.setDebug(true);
+        //table.setDebug(true);
+        volumeUp.setTransform(true);
+        volumeDown.setTransform(true);
         
         stage.addActor(table);
         im.addInputProcessor(stage);
@@ -125,7 +128,7 @@ public class SettingsScene extends Scene{
 		    	hand.updateCursorPosition();
 		    	
 		    	// Scale the TextButton
-		    	volumeDown.getLabel().setFontScale(1.2f);
+		    	volumeDown.setScale(1.2f);
 		    }
 
 		    @Override
@@ -133,7 +136,7 @@ public class SettingsScene extends Scene{
 		    	cursor.updateCursorPosition();
 		    	
 		    	// Reset the TextButton
-		    	volumeDown.getLabel().setFontScale(1f);
+		    	volumeDown.setScale(1.0f);
 		       
 		    }
 
@@ -159,7 +162,7 @@ public class SettingsScene extends Scene{
 		    	hand.updateCursorPosition();
 		    	
 		    	// Scale the TextButton
-		    	volumeUp.getLabel().setFontScale(1.2f);
+		    	volumeUp.setScale(1.2f);
 		    }
 
 		    @Override
@@ -167,7 +170,7 @@ public class SettingsScene extends Scene{
 		    	cursor.updateCursorPosition();
 		    	
 		    	// Reset the TextButton
-		    	volumeUp.getLabel().setFontScale(1f);
+		    	volumeUp.setScale(1.0f);
 		       
 		    }
 
