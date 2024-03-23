@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entity.Enemy;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
+import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.aicontrol.SeekBehaviour;
@@ -26,6 +27,7 @@ public class SpawnSystem {
 	private Rectangle spawnArea = null;
 	
 	private Wave wave = null;
+	private boolean isSpawnBoss = true;
 	
 	public SpawnSystem(GameContainer container, float interval, float multiplier, int initialEnemies) {
 		this.em = container.getEntityManager();
@@ -57,10 +59,22 @@ public class SpawnSystem {
 				wave.setTimer(0f);
 				System.out.println("Wave: " + wave.getWaveCount() + " " + "Max Enemies: " + initialEnemies + " " + "Current Enemies: " + enemyCount);
 			}
+			
 			if(enemyCount >= initialEnemies) {
 				wave.stop();
 				wave.waveEnded();
 				System.out.println("Wave stopped at: " + wave.getWaveCount());
+			}
+		}
+		
+		// Boss spawner
+		if(wave.getBossWave() != 0 && (wave.getBossWave() % wave.getWaveCount() == 0)) {
+			if(isSpawnBoss) {
+				for(int i = 0; i<wave.getBossCount(); i++) {
+					System.out.println("Spawn boss");
+					spawnBoss(getSpawnPosition());
+				}
+				isSpawnBoss = false;
 			}
 		}
 	}
@@ -69,6 +83,7 @@ public class SpawnSystem {
 		wave.start();
 		wave.setInitialEnemies((int)(wave.getInitialEnemies() * 1.5));
 		wave.setWaveCount(wave.getWaveCount() + 1);
+		isSpawnBoss = true;
 	}
 	
 	public void nextWave(Wave wave) {
@@ -77,8 +92,18 @@ public class SpawnSystem {
 		dispose();
 		// continue next wave with new wave object
 		this.wave = wave;
-		this.wave.setWaveCount(waveCount);
+		this.wave.setWaveCount(waveCount + 1);
 		this.wave.start();
+		isSpawnBoss = true;
+	}
+	
+	public void nextWave(Wave wave, int nextWaveCount) {
+		dispose();
+		// continue next wave with new wave object
+		this.wave = wave;
+		this.wave.setWaveCount(nextWaveCount);
+		this.wave.start();
+		isSpawnBoss = true;
 	}
 	
 	public Wave getWave() {
@@ -111,52 +136,56 @@ public class SpawnSystem {
 	}
 	
 	private void spawn(Vector2 position) {
-		// TODO find better way to abstract this
 		// create entities at the position
-//		em.createEntity(1, Enemy.class, "monsters/Goblin/Attack3.png", position.x, position.y, "goblin", 1, 12, 0.1f);
-//		Enemy goblin = new Enemy("characters/Skeleton_Warrior/Attack_1.png", position.x, position.y, "skeleton", 1, 5, 0.1f);
-//		em.addEntity(goblin);
-//		cm.addCollider(goblin);
-//		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
-//		bm.addBehaviour(goblin, seek);
-//		wave.setEnemyCount(wave.getEnemyCount() + 1);
 		
 		int totalEnemyType = 3; // update this variable whenever enemy types are added in the switch case below
 		int chooseEnemy = wave.getEnemyCount() % totalEnemyType;
 		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
-		System.out.println("choose enemy:" + chooseEnemy);
+		SeekBehaviour seekRanged = new SeekBehaviour(em.getEntity("player1"), 50, 250);
+//		System.out.println("choose enemy:" + chooseEnemy);
 		// add more as needed 
 		// create entities at the position
 		switch(chooseEnemy) {
 		case 0:
 			Enemy skeletonWarrior = new Enemy("characters/Skeleton_Warrior/Attack_1.png", position.x, position.y, "skeletonWarrior", 1, 5, 0.1f);
-			em.addEntity(skeletonWarrior);
+			EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonWarrior));
+//			em.addEntity(skeletonWarrior);
 //			cm.addCollider(skeletonWarrior);
 			bm.addBehaviour(skeletonWarrior, seek);
 			break;
 		case 1:
 			Enemy skeletonArcher= new Enemy("characters/Skeleton_Archer/Shot_1.png", position.x, position.y, "skeletonArcher", 1, 15, 0.1f);
-			em.addEntity(skeletonArcher);
+			EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonArcher));
+//			em.addEntity(skeletonArcher);
 //			cm.addCollider(skeletonArcher);
-			bm.addBehaviour(skeletonArcher, seek);
+			bm.addBehaviour(skeletonArcher, seekRanged);
 			break;
 		case 2:
 			Enemy skeletonSpearman = new Enemy("characters/Skeleton_Spearman/Attack_1.png", position.x, position.y, "skeletonSpearman", 1, 4, 0.1f);
-			em.addEntity(skeletonSpearman);
+			EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonSpearman));
+//			em.addEntity(skeletonSpearman);
 //			cm.addCollider(skeletonSpearman);
 			bm.addBehaviour(skeletonSpearman, seek);
 			break;
 		default:
 			// create entities at the position
 			Enemy defaultEnemy = new Enemy("characters/Skeleton_Warrior/Attack_1.png", position.x, position.y, "goblin", 1, 5, 0.1f);
-			em.addEntity(defaultEnemy);
-			cm.addCollider(defaultEnemy);
+			EntityAddedEvent.addEvent(new EntityAddedEvent(defaultEnemy));
+//			em.addEntity(defaultEnemy);
+//			cm.addCollider(defaultEnemy);
 			SeekBehaviour defaultSeek = new SeekBehaviour(em.getEntity("player1"), 50);
 			bm.addBehaviour(defaultEnemy, defaultSeek);
 		}
 		
 		
 		wave.setEnemyCount(wave.getEnemyCount() + 1);
+	}
+	
+	private void spawnBoss(Vector2 position) {
+		Enemy yokai = new Enemy("characters/Yokai_Yamabushi_Tengu/Walk.png", position.x, position.y, "yokai", 1, 8, 0.1f);
+		EntityAddedEvent.addEvent(new EntityAddedEvent(yokai));
+		SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
+		bm.addBehaviour(yokai, seek);
 	}
 	
 	private Vector2 getSpawnPosition() {

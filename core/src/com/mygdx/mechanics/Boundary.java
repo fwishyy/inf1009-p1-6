@@ -25,8 +25,8 @@ public class Boundary {
 			entity.setX(min.x);
 		if(targetMaxX >= max.x)
 			entity.setX(max.x - entity.getWidth());
-		if(targetMinY <= min.y)
-			entity.setY(min.y);
+		if(targetMinY <= min.y + 50)
+			entity.setY(min.y + 50);
 		if(targetMaxY >= max.y)
 			entity.setY(max.y - entity.getHeight());
 			

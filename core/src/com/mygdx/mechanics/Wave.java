@@ -9,14 +9,24 @@ public class Wave {
 	private boolean waveEnded = false;
 	private float timer = 0f;
 	private int enemyCount = 1;
-	private int waveCount = 0;
+	private int waveCount = 1;
+	
+	private int bossWave = 0;
+	private int bossCount = 0;
 	
 	public Wave() {}
 	
 	public Wave(int initialEnemies, float interval, float multiplier) {
-		this.setInitialEnemies(initialEnemies);
-		this.setInterval(interval);
-		this.setMultiplier(multiplier);
+		this.initialEnemies = initialEnemies;
+		this.interval = interval ;
+		this.multiplier = multiplier;
+	}
+	
+	public Wave(int initialEnemies, float interval, float multiplier, int waveCount) {
+		this.initialEnemies = initialEnemies;
+		this.interval = interval ;
+		this.multiplier = multiplier;
+		this.waveCount = waveCount;
 	}
 	
 	public int getInitialEnemies() {
@@ -41,6 +51,22 @@ public class Wave {
 
 	public void setMultiplier(float multiplier) {
 		this.multiplier = multiplier;
+	}
+
+	public int getBossWave() {
+		return bossWave;
+	}
+
+	public void setBossWave(int bossWave) {
+		this.bossWave = bossWave;
+	}
+
+	public int getBossCount() {
+		return bossCount;
+	}
+
+	public void setBossCount(int bossCount) {
+		this.bossCount = bossCount;
 	}
 
 	public boolean isStop() {

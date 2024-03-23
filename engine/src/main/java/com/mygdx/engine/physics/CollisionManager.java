@@ -55,6 +55,7 @@ public class CollisionManager extends Manager {
     public void addCollider(Entity entity) {
         Collider col = new Collider(entity);
         col.setEntity(entity);
+        entity.setCollider(col);
         this.colliderMap.put(entity, col);
     }
 
