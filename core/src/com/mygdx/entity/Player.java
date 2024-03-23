@@ -22,6 +22,7 @@ public class Player extends Character {
         super(texture, x, y, type, frameCountRow, frameCountCol, frameDuration);
 
         // add other animation
+        addAnimation("characters/Mage_Fire/Hurt.png", "hurt", 3);
         addAnimation("characters/Mage_Fire/Run.png", "run", 8);
         addAnimation("characters/Mage_Fire/Fireball.png", "attack", 8);
 
@@ -35,6 +36,7 @@ public class Player extends Character {
         this.stateMachine = new PlayerStateMachine(this);
         stateMachine.setIdleState();
     }
+
 
     public Vector2 getTarget() {
         return target;
@@ -51,10 +53,32 @@ public class Player extends Character {
         trajectoryLine.draw(shape);
     }
 
+
     @Override
     public void update() {
         super.update();
         stateMachine.update();
+        // when player picks up increase max HP potion, it will increase by 5%
+        // to be included in potion collisionevent
+    }
+
+    public void increaseMaxHp() {
+        maxHp += maxHp * (5.0f / 100.0f);
+        System.out.println("New Max HP: " + this.maxHp);
+    }
+
+    // when player picks up healing potion, health will +10
+    public void heal() {
+        currentHp += 10;
+        if (currentHp > maxHp) currentHp = maxHp;
+        System.out.println("New Current HP: " + this.currentHp);
+
+    }
+
+    @Override
+    public void takeDamage(int damage, Vector2 position) {
+        super.takeDamage(damage, position);
+        this.setAnimation("hurt", 1);
     }
 
     @Override
@@ -69,21 +93,27 @@ public class Player extends Character {
 //        }
         if (other.getEntity().getType().equals("maxHealthPotion")) {
             this.increaseMaxHp();
+            this.showMessage("Max HP +5%", 2.0f, Color.GREEN);
+            System.out.println("Max health increased by 5%");
         }
         if (other.getEntity().getType().equals("healthPotion")) {
             this.heal();
+            this.showMessage("+10 HP", 2.0f, Color.GREEN);
+            System.out.println("Healed 10 HP.");
         }
-    }
-
-    // when player picks up increase max HP potion, it will increase by 5%
-    // to be included in potion collisionevent
-    public void increaseMaxHp() {
-        maxHp += maxHp * (5.0f / 100.0f);
-    }
-
-    // when player picks up healing potion, health will +10
-    public void heal() {
-        currentHp += 10;
-        if (currentHp > maxHp) currentHp = maxHp;
+        if (other.getEntity().getType().equals("skeleton")) {
+            Enemy skeleton = (Enemy) other.getEntity();
+            if (skeleton.getCurrentFrame() == 3) { // Frames are 0-indexed, so the fourth frame is index 3
+                if (this.getCurrentHp() >= 0) {
+                    this.takeDamage(1, target);
+                    this.showMessage("-1", 2.0f, Color.RED);
+                    System.out.println("Player took damage from skeleton attack.");
+                } else {
+                    // implement lose event here
+                    this.isDead();
+                    System.out.println("GAME OVER");
+                }
+            }
+        }
     }
 }

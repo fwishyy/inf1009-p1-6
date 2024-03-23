@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.aicontrol.SeekBehaviour;
 import com.mygdx.camera.Camera;
+import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
@@ -48,6 +50,7 @@ public class GameScene extends Scene {
     private PlayerControlManager pm;
     private BehaviourManager bm;
     private SceneManager sm;
+    private AudioManager am;
     //CONCRETE GAME LAYER FOR DEMO PURPOSES
     private HealthBar hbar;
     private Player p1;
@@ -64,8 +67,10 @@ public class GameScene extends Scene {
     //Spawn
     private SpawnSystem enemySpawn;
     private BackGround bg;
-    
+
     private Boundary bound;
+    //Damage Indicators
+    private BitmapFont font;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -75,6 +80,7 @@ public class GameScene extends Scene {
         bm = container.getBehaviourManager();
         im = container.getInputManager();
         sm = container.getSceneManager();
+        am = container.getAudioManager();
     }
 
     @Override
@@ -110,12 +116,12 @@ public class GameScene extends Scene {
         em.createEntity(1, Player.class, "characters/Mage_Fire/Idle.png", 0, 0, "player1", 1, 7, 0.1f);
 
         // pickup stuff
-        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
-        em.addEntity(healthPotion);
-        cm.addCollider(healthPotion);
-        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
-        em.addEntity(maxHealthPotion);
-        cm.addCollider(maxHealthPotion);
+//        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
+//        em.addEntity(healthPotion);
+//        cm.addCollider(healthPotion);
+//        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
+//        em.addEntity(maxHealthPotion);
+//        cm.addCollider(maxHealthPotion);
 
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
@@ -148,7 +154,7 @@ public class GameScene extends Scene {
         enemySpawn.nextWave(new Wave(10, 2, 1.5f), 5);
         enemySpawn.getWave().setBossWave(5);
         enemySpawn.getWave().setBossCount(2);
-        
+
         bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
     }
 
@@ -163,10 +169,18 @@ public class GameScene extends Scene {
             if (entity instanceof Enemy) {
                 Enemy bgSprite = (Enemy) entity;
                 if (bgSprite.isDead()) {
-                    bgSprite.potionDrop(); // Ensure you pass the EntityManager instance
+                    bgSprite.potionDrop();
                 }
             }
         }
+
+//        for (Entity entity : em.getEntities()) {
+//            if (entity instanceof Character) {
+//                Character character = (Character) entity;
+//                character.update(); // Update the character
+//                character.draw(batch, shapeRenderer); // Draw the character and the message if there is one
+//            }
+//        }
 
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
@@ -185,7 +199,6 @@ public class GameScene extends Scene {
 
         // spawn system
         enemySpawn.update(deltaTime);
-        
         bound.update();
     }
 
@@ -216,6 +229,7 @@ public class GameScene extends Scene {
         cm.dispose();
         em.dispose();
         batch.dispose();
+        font.dispose();
 
         EventBus.removeListener(winEventListener);
         EventBus.removeListener(loseEventListener);

@@ -3,6 +3,7 @@ package com.mygdx.entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,6 +19,7 @@ public class Pickup extends Entity {
     public Pickup(String texture, float x, float y, String potionType) {
     	super(texture, x, y, potionType);
     }
+
 
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
