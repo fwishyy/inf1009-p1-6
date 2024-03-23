@@ -16,6 +16,7 @@ import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
+import com.mygdx.engine.input.MyCursor;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
@@ -49,6 +50,8 @@ public class GameScene extends Scene {
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    
+    private MyCursor crosshair;
     
 
 
@@ -164,6 +167,8 @@ public class GameScene extends Scene {
         boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
         
         System.out.println(isMageSelected);
+        
+        crosshair = new MyCursor("mouse/crosshair.png");
 
     }
 
@@ -182,6 +187,7 @@ public class GameScene extends Scene {
 
         EventBus.processEvents(WinEvent.class);
         EventBus.processEvents(LoseEvent.class);
+        crosshair.updateCursorPosition();
     }
 
     private void onWin() {
