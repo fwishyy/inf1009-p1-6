@@ -60,6 +60,8 @@ public class GameScene extends Scene {
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    
+
 
     //Camera
     private Camera camera;
@@ -82,6 +84,7 @@ public class GameScene extends Scene {
         sm = container.getSceneManager();
         am = container.getAudioManager();
     }
+    
 
     @Override
     public void show() {
@@ -115,14 +118,6 @@ public class GameScene extends Scene {
         // TODO: move all this into player
         em.createEntity(1, Player.class, "characters/Mage_Fire/Idle.png", 0, 0, "player1", 1, 7, 0.1f);
 
-        // pickup stuff
-//        healthPotion = new Pickup("sprite/health_potion.png", 30, 180, "healthPotion");
-//        em.addEntity(healthPotion);
-//        cm.addCollider(healthPotion);
-//        maxHealthPotion = new Pickup("sprite/max_hp_potion.png", 100, 180, "maxHealthPotion");
-//        em.addEntity(maxHealthPotion);
-//        cm.addCollider(maxHealthPotion);
-
         // assignment of unique entities
         p1 = (Player) em.getEntity("player1");
 
@@ -147,6 +142,13 @@ public class GameScene extends Scene {
         camera = new Camera();
         camera.setOffset(p1.getWidth() / 2, p1.getHeight() / 2);
         camera.setBoundary(bg.getMinPos(), bg.getMaxPos());
+
+        // Retrieve the instance of CharacterSelectionScene
+        CharacterSelectionScene characterSelectionScene = CharacterSelectionScene.getInstance();
+        boolean isMageSelected = characterSelectionScene.isMageSelected();
+        boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
+        
+        System.out.println(isMageSelected);
 
         // create spawn system and set interval to spawn
         enemySpawn = new SpawnSystem(container, 2, 1.5f, 1);

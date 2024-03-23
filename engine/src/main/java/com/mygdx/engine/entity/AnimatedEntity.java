@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-public abstract class AnimatedEntity extends Entity {
+public class AnimatedEntity extends Entity {
 
     // Animation settings
     protected boolean isAnimation;
@@ -436,6 +436,8 @@ public abstract class AnimatedEntity extends Entity {
         this.trigger_frame = frame;
     }
 
+    @Override
+    public void collide(Collider other) {}
 
     @Override
     public void dispose() {

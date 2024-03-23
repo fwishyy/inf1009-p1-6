@@ -1,0 +1,11 @@
+menu-ui.png
+size:512,64
+repeat:none
+Button-BG-shadow
+bounds:2,2,200,48
+button-emphasis-disabled
+bounds:204,19,51,31
+button-minus-disabled
+bounds:257,19,27,31
+button-plus-disabled
+bounds:286,19,27,31
