@@ -122,7 +122,7 @@ public class SettingsScene extends Scene{
         	
         	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.updateCursorPosition();
+		    	hand.update();
 		    	
 		    	// Scale the TextButton
 		    	volumeDown.getLabel().setFontScale(1.2f);
@@ -130,7 +130,7 @@ public class SettingsScene extends Scene{
 
 		    @Override
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.updateCursorPosition();
+		    	cursor.update();
 		    	
 		    	// Reset the TextButton
 		    	volumeDown.getLabel().setFontScale(1f);
@@ -156,7 +156,7 @@ public class SettingsScene extends Scene{
         	
         	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.updateCursorPosition();
+		    	hand.update();
 		    	
 		    	// Scale the TextButton
 		    	volumeUp.getLabel().setFontScale(1.2f);
@@ -164,7 +164,7 @@ public class SettingsScene extends Scene{
 
 		    @Override
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.updateCursorPosition();
+		    	cursor.update();
 		    	
 		    	// Reset the TextButton
 		    	volumeUp.getLabel().setFontScale(1f);
@@ -190,7 +190,7 @@ public class SettingsScene extends Scene{
         	
         	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.updateCursorPosition();
+		    	hand.update();
 		    	
 		    	// Scale the TextButton
 		    	backBtn.getLabel().setFontScale(1.2f);
@@ -198,7 +198,7 @@ public class SettingsScene extends Scene{
 
 		    @Override
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.updateCursorPosition();
+		    	cursor.update();
 		    	
 		    	// Reset the TextButton
 		    	backBtn.getLabel().setFontScale(1f);
@@ -215,7 +215,7 @@ public class SettingsScene extends Scene{
         });
         
         // Set cursor as the displayed cursor
-        cursor.updateCursorPosition();
+        cursor.update();
         
 	}
     

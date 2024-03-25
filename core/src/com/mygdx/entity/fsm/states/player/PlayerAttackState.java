@@ -6,28 +6,31 @@ import com.mygdx.engine.actions.InputAction;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.Player;
+import com.mygdx.entity.fsm.states.AttackState;
+import com.mygdx.entity.fsm.states.CharacterStateMachine;
 import com.mygdx.projectiles.Fireball;
 
-public class PlayerAttackState extends PlayerState {
+public class PlayerAttackState extends AttackState {
 
     private float animationDuration;
     private float attackTimer;
 
-    public PlayerAttackState(Player player, PlayerStateMachine stateMachine) {
-        super(player, stateMachine);
+    public PlayerAttackState(Player player) {
+        super(player);
     }
 
     @Override
     public void onStateEnter() {
-        player.setAnimation("attack");
-        animationDuration = player.getAnimationDuration();
+        super.onStateEnter();
+        animationDuration = character.getAnimationDuration();
     }
 
     @Override
     public void update() {
+        Player player = (Player) character;
         ActionMap actionMap = player.getActionMap();
         InputAction attackAction = actionMap.getAction("attack");
+
 
         if (attackAction.isTriggered()) {
             attackTimer += Gdx.graphics.getDeltaTime();

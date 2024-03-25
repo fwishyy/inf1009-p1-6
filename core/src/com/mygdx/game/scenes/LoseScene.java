@@ -96,7 +96,7 @@ public class LoseScene extends Scene {
         	
         	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.updateCursorPosition();
+		    	hand.update();
 		    	
 		    	// Scale the TextButton
 		    	restartBtn.getLabel().setFontScale(1.2f);
@@ -104,7 +104,7 @@ public class LoseScene extends Scene {
 
 		    @Override
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.updateCursorPosition();
+		    	cursor.update();
 		    	
 		    	// Reset the TextButton
 		    	restartBtn.getLabel().setFontScale(1f);
@@ -124,7 +124,7 @@ public class LoseScene extends Scene {
         	
         	@Override
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.updateCursorPosition();
+		    	hand.update();
 		    	
 		    	// Scale the TextButton
 		    	menuBtn.getLabel().setFontScale(1.2f);
@@ -132,7 +132,7 @@ public class LoseScene extends Scene {
 
 		    @Override
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.updateCursorPosition();
+		    	cursor.update();
 		    	
 		    	// Reset the TextButton
 		    	menuBtn.getLabel().setFontScale(1f);
@@ -149,7 +149,7 @@ public class LoseScene extends Scene {
         });
         
         // Set cursor as the displayed cursor
-        cursor.updateCursorPosition();
+        cursor.update();
     }
 
     private void handlePointerEvent(PointerEvent e) {

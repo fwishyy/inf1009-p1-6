@@ -6,19 +6,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.entity.Player;
+import com.mygdx.entity.fsm.states.AttackState;
+import com.mygdx.entity.fsm.states.CharacterStateMachine;
+import com.mygdx.entity.fsm.states.RunState;
 
-public class PlayerRunState extends PlayerState {
-    public PlayerRunState(Player player, PlayerStateMachine stateMachine) {
-        super(player, stateMachine);
-    }
-
-    @Override
-    public void onStateEnter() {
-        player.setAnimation("run");
+public class PlayerRunState extends RunState {
+    public PlayerRunState(Player player) {
+        super(player);
     }
 
     @Override
     public void update() {
+        Player player = (Player) character;
         ActionMap actionMap = player.getActionMap();
         MoveAction moveAction = actionMap.getMoveAction();
 

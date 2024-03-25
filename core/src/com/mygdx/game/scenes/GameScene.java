@@ -35,6 +35,7 @@ import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.Boundary;
 import com.mygdx.mechanics.SpawnSystem;
 import com.mygdx.mechanics.Wave;
+import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
 
 public class GameScene extends Scene {
@@ -60,8 +61,8 @@ public class GameScene extends Scene {
     private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    
 
+    private Cursor crosshair;
 
     //Camera
     private Camera camera;
@@ -84,7 +85,7 @@ public class GameScene extends Scene {
         sm = container.getSceneManager();
         am = container.getAudioManager();
     }
-    
+
 
     @Override
     public void show() {
@@ -113,6 +114,7 @@ public class GameScene extends Scene {
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        crosshair = new Cursor("mouse/crosshair.png");
 
         //Create entities to spawn here
         // TODO: move all this into player
@@ -147,15 +149,15 @@ public class GameScene extends Scene {
         CharacterSelectionScene characterSelectionScene = CharacterSelectionScene.getInstance();
         boolean isMageSelected = characterSelectionScene.isMageSelected();
         boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
-        
+
         System.out.println(isMageSelected);
 
         // create spawn system and set interval to spawn
         enemySpawn = new SpawnSystem(container, 2, 1.5f, 1);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
-        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 5);
         enemySpawn.getWave().setBossWave(5);
         enemySpawn.getWave().setBossCount(2);
+        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 5);
 
         bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
     }
@@ -176,14 +178,6 @@ public class GameScene extends Scene {
             }
         }
 
-//        for (Entity entity : em.getEntities()) {
-//            if (entity instanceof Character) {
-//                Character character = (Character) entity;
-//                character.update(); // Update the character
-//                character.draw(batch, shapeRenderer); // Draw the character and the message if there is one
-//            }
-//        }
-
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
         pm.update();
@@ -202,10 +196,12 @@ public class GameScene extends Scene {
         // spawn system
         enemySpawn.update(deltaTime);
         bound.update();
+
+        // cursor update
+        crosshair.update();
     }
 
     public void handlePointerEvent(PointerEvent e) {
-        // TODO: still need to fix this to make sure that it's targeting properly
         // update where player is facing here
         if (e.getType() == PointerEvent.Type.HOVER) {
             Vector2 cursorPos = new Vector2(e.getScreenX(), e.getScreenY());

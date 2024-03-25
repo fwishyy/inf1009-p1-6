@@ -13,17 +13,11 @@ public class Enemy extends Character {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
         this.currentHp = 20;
         this.maxHp = 20;
-        this.addAnimation("characters/Skeleton_Warrior/Hurt.png", "hurt", 2);
     }
-    
+
     @Override
     public void takeDamage(int damage, Vector2 position) {
-    	super.takeDamage(damage, position);
-        this.setAnimation("hurt", 1);
-    }
-    
-    public int getCurrentFrame() {
-        return this.currentFrame;
+        super.takeDamage(damage, position);
     }
 
     public void potionDrop() {
@@ -45,20 +39,20 @@ public class Enemy extends Character {
             // GameScene -> addEntity(potion);
         }
     }
-   
+
 
     @Override
     public void collide(Collider other) {
         // TODO Auto-generated method stub
         if (other.getEntity().getType().equals("fireball")) {
-        	Fireball fireball = (Fireball) other.getEntity();
-        	if (!fireball.hasHit()) { // Check if the fireball has not already hit
+            Fireball fireball = (Fireball) other.getEntity();
+            if (!fireball.hasHit()) { // Check if the fireball has not already hit
                 fireball.completeHit(); // Prevent further damage by marking the fireball
                 this.takeDamage(2, new Vector2(getX(), getY())); // Apply damage
                 this.showMessage("-2", 2.0f, Color.YELLOW);
                 if (this.currentHp <= 0) {
-                	potionDrop(); // Drop potion if enemy is defeated
-                	this.dispose();      
+                    potionDrop(); // Drop potion if enemy is defeated
+                    this.dispose();
                     System.out.println("Enemy defeated.");
                 }
             }

@@ -132,7 +132,7 @@ public class CharacterSelectionScene extends Scene {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                hand.updateCursorPosition();
+                hand.update();
 
                 // Scale the TextButton
                 mageSelectBtn.getLabel().setFontScale(1.2f);
@@ -140,7 +140,7 @@ public class CharacterSelectionScene extends Scene {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                cursor.updateCursorPosition();
+                cursor.update();
 
                 // Reset the TextButton
                 mageSelectBtn.getLabel().setFontScale(1f);
@@ -166,7 +166,7 @@ public class CharacterSelectionScene extends Scene {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                hand.updateCursorPosition();
+                hand.update();
 
                 // Scale the TextButton
                 skeletonSelectBtn.getLabel().setFontScale(1.2f);
@@ -174,7 +174,7 @@ public class CharacterSelectionScene extends Scene {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                cursor.updateCursorPosition();
+                cursor.update();
 
                 // Reset the TextButton
                 skeletonSelectBtn.getLabel().setFontScale(1f);
@@ -198,7 +198,7 @@ public class CharacterSelectionScene extends Scene {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                hand.updateCursorPosition();
+                hand.update();
 
                 // Scale the TextButton
                 playBtn.getLabel().setFontScale(1.2f);
@@ -206,7 +206,7 @@ public class CharacterSelectionScene extends Scene {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                cursor.updateCursorPosition();
+                cursor.update();
 
                 // Reset the TextButton
                 playBtn.getLabel().setFontScale(1f);
@@ -226,7 +226,7 @@ public class CharacterSelectionScene extends Scene {
         });
 
         // Set cursor as the displayed cursor
-        cursor.updateCursorPosition();
+        cursor.update();
 
     }
 

@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.entity.fsm.states.player.PlayerStateMachine;
+import com.mygdx.entity.fsm.states.CharacterStateMachine;
+import com.mygdx.entity.fsm.states.player.PlayerAttackState;
+import com.mygdx.entity.fsm.states.player.PlayerIdleState;
+import com.mygdx.entity.fsm.states.player.PlayerRunState;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
 
@@ -15,7 +18,10 @@ public class Player extends Character {
     private Vector2 target;
     private TrajectoryLine trajectoryLine;
     private int fireRate;
-    private PlayerStateMachine stateMachine;
+    private CharacterStateMachine stateMachine;
+    private PlayerIdleState idleState;
+    private PlayerRunState runState;
+    private PlayerAttackState attackState;
 
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
         // set idle animation for player
@@ -33,7 +39,10 @@ public class Player extends Character {
         this.trajectoryLine = new TrajectoryLine(this);
         this.target = new Vector2();
         this.fireRate = 30;
-        this.stateMachine = new PlayerStateMachine(this);
+        this.idleState = new PlayerIdleState(this);
+        this.attackState = new PlayerAttackState(this);
+        this.runState = new PlayerRunState(this);
+        this.stateMachine = new CharacterStateMachine(this, idleState, runState, attackState);
         stateMachine.setIdleState();
     }
 
