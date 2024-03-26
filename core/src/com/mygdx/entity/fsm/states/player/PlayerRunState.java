@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.controls.ActionMap;
+import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.Player;
 import com.mygdx.entity.fsm.states.AttackState;
 import com.mygdx.entity.fsm.states.CharacterStateMachine;
@@ -46,6 +47,11 @@ public class PlayerRunState extends RunState {
 
     @Override
     public void onStateExit() {
+
+    }
+
+    @Override
+    public void onCollisionEnter(Collider collider) {
 
     }
 }

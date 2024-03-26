@@ -4,16 +4,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.engine.actions.Actionable;
+import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.fsm.states.CharacterStateMachine;
 import com.mygdx.entity.fsm.states.player.PlayerAttackState;
+import com.mygdx.entity.fsm.states.player.PlayerHurtState;
 import com.mygdx.entity.fsm.states.player.PlayerIdleState;
 import com.mygdx.entity.fsm.states.player.PlayerRunState;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
 
 
-public class Player extends Character {
+public class Player extends Character implements Actionable {
 
     private Vector2 target;
     private TrajectoryLine trajectoryLine;
@@ -22,6 +25,9 @@ public class Player extends Character {
     private PlayerIdleState idleState;
     private PlayerRunState runState;
     private PlayerAttackState attackState;
+    private PlayerHurtState hurtState;
+
+    private ActionMap actionMap;
 
     public Player(String texture, float x, float y, String type, int frameCountRow, int frameCountCol, float frameDuration) {
         // set idle animation for player
@@ -42,10 +48,19 @@ public class Player extends Character {
         this.idleState = new PlayerIdleState(this);
         this.attackState = new PlayerAttackState(this);
         this.runState = new PlayerRunState(this);
-        this.stateMachine = new CharacterStateMachine(this, idleState, runState, attackState);
+        this.hurtState = new PlayerHurtState(this);
+        this.stateMachine = new CharacterStateMachine(this, idleState, runState, attackState, hurtState);
         stateMachine.setIdleState();
     }
 
+
+    public ActionMap getActionMap() {
+        return actionMap;
+    }
+
+    public void setActionMap(ActionMap actionMap) {
+        this.actionMap = actionMap;
+    }
 
     public Vector2 getTarget() {
         return target;
@@ -87,19 +102,11 @@ public class Player extends Character {
     @Override
     public void takeDamage(int damage, Vector2 position) {
         super.takeDamage(damage, position);
-        this.setAnimation("hurt", 1);
     }
 
     @Override
     public void collide(Collider other) {
-//        if (other.getEntity().getType().equals("player1")) {
-//            LoseEvent.addEvent(new LoseEvent());
-//            this.dispose();
-//        }
-//        if (other.getEntity().getType().equals("player2")) {
-//            WinEvent.addEvent(new WinEvent());
-//            this.dispose();
-//        }
+        // TODO: refactor this such that they lie on the other party, not the player
         if (other.getEntity().getType().equals("maxHealthPotion")) {
             this.increaseMaxHp();
             this.showMessage("Max HP +5%", 2.0f, Color.GREEN);
@@ -110,7 +117,7 @@ public class Player extends Character {
             this.showMessage("+10 HP", 2.0f, Color.GREEN);
             System.out.println("Healed 10 HP.");
         }
-        if (other.getEntity().getType().equals("skeleton")) {
+        if (other.getEntity().getType().equals("skeletonWarrior")) {
             Enemy skeleton = (Enemy) other.getEntity();
             if (skeleton.getCurrentFrame() == 3) { // Frames are 0-indexed, so the fourth frame is index 3
                 if (this.getCurrentHp() >= 0) {
@@ -123,6 +130,8 @@ public class Player extends Character {
                     System.out.println("GAME OVER");
                 }
             }
+
+            stateMachine.setHurtState();
         }
     }
 }

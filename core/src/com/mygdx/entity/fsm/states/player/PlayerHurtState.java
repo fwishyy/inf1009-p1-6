@@ -3,13 +3,13 @@ package com.mygdx.entity.fsm.states.player;
 import com.mygdx.engine.actions.InputAction;
 import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.controls.ActionMap;
-import com.mygdx.engine.entity.Collider;
+import com.mygdx.entity.Character;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.fsm.states.IdleState;
+import com.mygdx.entity.fsm.states.HurtState;
 
-public class PlayerIdleState extends IdleState {
-    public PlayerIdleState(Player player) {
-        super(player);
+public class PlayerHurtState extends HurtState {
+    public PlayerHurtState(Character character) {
+        super(character);
     }
 
     @Override
@@ -25,15 +25,12 @@ public class PlayerIdleState extends IdleState {
         if (attackAction.isTriggered()) {
             stateMachine.setAttackState();
         }
+
+        stateMachine.setIdleState();
     }
 
     @Override
     public void onStateExit() {
-
-    }
-
-    @Override
-    public void onCollisionEnter(Collider other) {
 
     }
 }

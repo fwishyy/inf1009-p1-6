@@ -8,15 +8,18 @@ public class CharacterStateMachine extends StateMachine {
     protected IdleState idleState;
     protected AttackState attackState;
     protected RunState runState;
+    protected HurtState hurtState;
 
-    public CharacterStateMachine(Character character, IdleState idleState, RunState runState, AttackState attackState) {
+    public CharacterStateMachine(Character character, IdleState idleState, RunState runState, AttackState attackState, HurtState hurtState) {
         this.character = character;
         this.idleState = idleState;
         this.runState = runState;
         this.attackState = attackState;
+        this.hurtState = hurtState;
         idleState.setStateMachine(this);
         runState.setStateMachine(this);
         attackState.setStateMachine(this);
+        hurtState.setStateMachine(this);
     }
 
     public void setIdleState() {
@@ -29,5 +32,9 @@ public class CharacterStateMachine extends StateMachine {
 
     public void setAttackState() {
         changeState(attackState);
+    }
+
+    public void setHurtState() {
+        changeState(hurtState);
     }
 }

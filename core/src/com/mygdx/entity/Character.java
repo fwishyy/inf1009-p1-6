@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.actions.Actionable;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
@@ -15,8 +14,7 @@ import com.mygdx.ui.HealthBar;
 
 
 // Characters are generic animated entities for all on-screen things, like characters and monsters that have a health bar, the ability to take damage, and so on
-public class Character extends AnimatedEntity implements Actionable {
-
+public class Character extends AnimatedEntity {
 
     private String message = "";
     private float messageTime = 0f;
@@ -59,16 +57,9 @@ public class Character extends AnimatedEntity implements Actionable {
         healthBar.draw(batch, shapeRenderer);
     }
 
-    public ActionMap getActionMap() {
-        return actionMap;
-    }
-
-    public void setActionMap(ActionMap actionMap) {
-        this.actionMap = actionMap;
-    }
-
     @Override
     public void collide(Collider other) {
+        // implement common behaviours here
         if (other.getEntity().getType().equals("player1")) {
             if (this.currentHp >= 5) {
                 this.currentHp -= 5;
