@@ -8,11 +8,8 @@ public abstract class CharacterState extends State {
     protected Character character;
     protected CharacterStateMachine stateMachine;
 
-    public CharacterState(Character character) {
+    public CharacterState(Character character, CharacterStateMachine stateMachine) {
         this.character = character;
-    }
-
-    public void setStateMachine(CharacterStateMachine stateMachine) {
         this.stateMachine = stateMachine;
     }
 

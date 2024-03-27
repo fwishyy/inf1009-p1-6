@@ -7,13 +7,19 @@ import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.fsm.states.AttackState;
+import com.mygdx.entity.fsm.states.CharacterState;
+import com.mygdx.entity.fsm.states.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.CharacterStateMachine;
-import com.mygdx.entity.fsm.states.RunState;
 
-public class PlayerRunState extends RunState {
-    public PlayerRunState(Player player) {
-        super(player);
+public class PlayerRunState extends CharacterState {
+
+    public PlayerRunState(Player player, CharacterStateMachine stateMachine) {
+        super(player, stateMachine);
+    }
+
+    @Override
+    public void onStateEnter() {
+        character.setAnimation("run");
     }
 
     @Override
@@ -36,12 +42,12 @@ public class PlayerRunState extends RunState {
             player.setPosition(newX, newY);
 
             // Temporary workaround to move the target if the mouse isn't moved
-            Vector2 target = player.getTarget();
+            Vector2 target = player.getCrosshairPosition();
             target.x = target.x + moveState.x * 200 * Gdx.graphics.getDeltaTime();
             target.y = target.y + moveState.y * 200 * Gdx.graphics.getDeltaTime();
 
         } else {
-            stateMachine.setIdleState();
+            stateMachine.setState(CharacterStateEnum.IDLE);
         }
     }
 

@@ -41,6 +41,7 @@ public abstract class Entity {
         this.type = type;
         this.sprite = new Sprite(this.texture);
         this.direction = false;
+        this.collider = new Collider(this, width, height);
     }
 
     protected Entity(float x, float y, String type) {
@@ -52,6 +53,7 @@ public abstract class Entity {
         this.type = type;
         this.sprite = null;
         this.direction = false;
+        this.collider = new Collider(this, width, height);
     }
 
     protected Entity(float x, float y) {
@@ -63,6 +65,7 @@ public abstract class Entity {
         this.type = "";
         this.sprite = null;
         this.direction = false;
+        this.collider = new Collider(this, width, height);
     }
 
     protected Entity(String texture) {
@@ -74,6 +77,7 @@ public abstract class Entity {
         this.type = "";
         this.sprite = new Sprite(this.texture);
         this.direction = false;
+        this.collider = new Collider(this, width, height);
     }
 
     public void update() {
@@ -190,16 +194,17 @@ public abstract class Entity {
     }
 
     public Collider getCollider() {
-    	return this.collider;
+        return this.collider;
     }
-    
+
     public void setCollider(Collider collider) {
-    	this.collider = collider;
+        this.collider = collider;
     }
-    
+
     public void dispose() {
-        EntityDisposedEvent.addEvent(new EntityDisposedEvent(this));
         this.sprite.getTexture().dispose();
         this.texture.getTexture().dispose();
+        System.out.println("dispose");
+        EntityDisposedEvent.addEvent(new EntityDisposedEvent(this));
     }
 }

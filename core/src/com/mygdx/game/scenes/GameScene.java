@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.aicontrol.SeekBehaviour;
 import com.mygdx.camera.Camera;
 import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.behaviour.BehaviourManager;
@@ -58,7 +57,6 @@ public class GameScene extends Scene {
     private Enemy skull;
     private Pickup healthPotion;
     private Pickup maxHealthPotion;
-    private SeekBehaviour seek;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
 
@@ -153,11 +151,11 @@ public class GameScene extends Scene {
         System.out.println(isMageSelected);
 
         // create spawn system and set interval to spawn
-        enemySpawn = new SpawnSystem(container, 2, 1.5f, 1);
+        enemySpawn = new SpawnSystem(container, 2, 1.5f, 2);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
-        enemySpawn.getWave().setBossWave(5);
-        enemySpawn.getWave().setBossCount(2);
-        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 5);
+//        enemySpawn.getWave().setBossWave(5);
+//        enemySpawn.getWave().setBossCount(2);
+//        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 1);
 
         bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
     }
@@ -207,7 +205,7 @@ public class GameScene extends Scene {
             Vector2 cursorPos = new Vector2(e.getScreenX(), e.getScreenY());
             Vector3 cursorWorldPos = camera.getCamera().unproject(new Vector3(cursorPos.x, cursorPos.y, 0));
             Vector2 target = new Vector2(cursorWorldPos.x, cursorWorldPos.y);
-            p1.setTarget(target);
+            p1.setCrosshairPosition(target);
         }
     }
 
@@ -234,7 +232,6 @@ public class GameScene extends Scene {
         EventBus.removeListener(pointerEventListener);
 
         shapeRenderer = null;
-        seek = null;
         p1 = null;
     }
 }

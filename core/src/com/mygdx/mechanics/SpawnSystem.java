@@ -6,13 +6,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.aicontrol.SeekBehaviour;
+import com.mygdx.aicontrol.EnemyBehaviour;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.entity.Enemy;
+import com.mygdx.entity.Player;
+import com.mygdx.entity.SkeletonWarrior;
 
 public class SpawnSystem {
 
@@ -25,6 +27,7 @@ public class SpawnSystem {
     private Vector2 minPos = null;
     private Vector2 maxPos = null;
     private Rectangle spawnArea = null;
+    private Player p1;
 
     private Wave wave = null;
     private boolean isSpawnBoss = true;
@@ -40,6 +43,7 @@ public class SpawnSystem {
 
     public void update(float deltaTime) {
 
+        this.p1 = (Player) em.getEntity("player1");
         // update timer
         float timer = wave.getTimer() + deltaTime;
         wave.setTimer(timer);
@@ -140,33 +144,35 @@ public class SpawnSystem {
 
         int totalEnemyType = 3; // update this variable whenever enemy types are added in the switch case below
         int chooseEnemy = wave.getEnemyCount() % totalEnemyType;
-        SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
-        SeekBehaviour seekRanged = new SeekBehaviour(em.getEntity("player1"), 50, 250);
+        EnemyBehaviour enemyBehaviour = new EnemyBehaviour(p1);
 //		System.out.println("choose enemy:" + chooseEnemy);
         // add more as needed
         // create entities at the position
         switch (chooseEnemy) {
             case 0:
-                Enemy skeletonWarrior = new Enemy("characters/Skeleton_Warrior/Attack_1.png", position.x, position.y, "skeletonWarrior", 1, 5, 0.1f);
+                SkeletonWarrior skeletonWarrior = new SkeletonWarrior();
+                skeletonWarrior.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonWarrior));
-                bm.addBehaviour(skeletonWarrior, seek);
+                bm.addBehaviour(skeletonWarrior, enemyBehaviour);
                 break;
             case 1:
-                Enemy skeletonArcher = new Enemy("characters/Skeleton_Archer/Shot_1.png", position.x, position.y, "skeletonArcher", 1, 15, 0.1f);
+                Enemy skeletonArcher = new SkeletonWarrior();
+                skeletonArcher.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonArcher));
-                bm.addBehaviour(skeletonArcher, seekRanged);
+                bm.addBehaviour(skeletonArcher, enemyBehaviour);
                 break;
             case 2:
-                Enemy skeletonSpearman = new Enemy("characters/Skeleton_Spearman/Attack_1.png", position.x, position.y, "skeletonSpearman", 1, 4, 0.1f);
+                Enemy skeletonSpearman = new SkeletonWarrior();
+                skeletonSpearman.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonSpearman));
-                bm.addBehaviour(skeletonSpearman, seek);
+                bm.addBehaviour(skeletonSpearman, enemyBehaviour);
                 break;
             default:
                 // create entities at the position
-                Enemy defaultEnemy = new Enemy("characters/Skeleton_Warrior/Attack_1.png", position.x, position.y, "goblin", 1, 5, 0.1f);
+                Enemy defaultEnemy = new SkeletonWarrior();
+                defaultEnemy.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(defaultEnemy));
-                SeekBehaviour defaultSeek = new SeekBehaviour(em.getEntity("player1"), 50);
-                bm.addBehaviour(defaultEnemy, defaultSeek);
+                bm.addBehaviour(defaultEnemy, enemyBehaviour);
         }
 
 
@@ -176,7 +182,7 @@ public class SpawnSystem {
     private void spawnBoss(Vector2 position) {
         Enemy yokai = new Enemy("characters/Yokai_Yamabushi_Tengu/Walk.png", position.x, position.y, "yokai", 1, 8, 0.1f);
         EntityAddedEvent.addEvent(new EntityAddedEvent(yokai));
-        SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
+        EnemyBehaviour seek = new EnemyBehaviour(p1);
         bm.addBehaviour(yokai, seek);
     }
 

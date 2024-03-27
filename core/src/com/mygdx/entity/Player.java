@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.actions.Actionable;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.entity.fsm.states.CharacterStateMachine;
+import com.mygdx.entity.fsm.states.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.player.PlayerAttackState;
 import com.mygdx.entity.fsm.states.player.PlayerHurtState;
 import com.mygdx.entity.fsm.states.player.PlayerIdleState;
@@ -18,10 +18,9 @@ import com.mygdx.ui.TrajectoryLine;
 
 public class Player extends Character implements Actionable {
 
-    private Vector2 target;
+    private Vector2 crosshairPosition;
     private TrajectoryLine trajectoryLine;
     private int fireRate;
-    private CharacterStateMachine stateMachine;
     private PlayerIdleState idleState;
     private PlayerRunState runState;
     private PlayerAttackState attackState;
@@ -38,19 +37,29 @@ public class Player extends Character implements Actionable {
         addAnimation("characters/Mage_Fire/Run.png", "run", 8);
         addAnimation("characters/Mage_Fire/Fireball.png", "attack", 8);
 
+        // Player Stats
         this.maxHp = 100;
         this.currentHp = 50;
+        this.fireRate = 3;
+        this.invincibilityDurationMS = 1000;
+        this.damage = 1000;
+
         Vector2 healthBarOffset = new Vector2(38, -20);
         this.healthBar = new HealthBar(this, healthBarOffset, Color.GREEN, 80, 10);
         this.trajectoryLine = new TrajectoryLine(this);
-        this.target = new Vector2();
-        this.fireRate = 30;
-        this.idleState = new PlayerIdleState(this);
-        this.attackState = new PlayerAttackState(this);
-        this.runState = new PlayerRunState(this);
-        this.hurtState = new PlayerHurtState(this);
-        this.stateMachine = new CharacterStateMachine(this, idleState, runState, attackState, hurtState);
-        stateMachine.setIdleState();
+        this.crosshairPosition = new Vector2();
+
+        this.idleState = new PlayerIdleState(this, stateMachine);
+        this.attackState = new PlayerAttackState(this, stateMachine);
+        this.runState = new PlayerRunState(this, stateMachine);
+        this.hurtState = new PlayerHurtState(this, stateMachine);
+
+        stateMachine.addState(CharacterStateEnum.IDLE, idleState);
+        stateMachine.addState(CharacterStateEnum.RUN, runState);
+        stateMachine.addState(CharacterStateEnum.ATTACK, attackState);
+        stateMachine.addState(CharacterStateEnum.HURT, hurtState);
+
+        stateMachine.setState(CharacterStateEnum.IDLE);
     }
 
 
@@ -62,12 +71,12 @@ public class Player extends Character implements Actionable {
         this.actionMap = actionMap;
     }
 
-    public Vector2 getTarget() {
-        return target;
+    public Vector2 getCrosshairPosition() {
+        return crosshairPosition;
     }
 
-    public void setTarget(Vector2 target) {
-        this.target = target;
+    public void setCrosshairPosition(Vector2 crosshairPosition) {
+        this.crosshairPosition = crosshairPosition;
     }
 
     @Override
@@ -99,9 +108,12 @@ public class Player extends Character implements Actionable {
 
     }
 
-    @Override
-    public void takeDamage(int damage, Vector2 position) {
-        super.takeDamage(damage, position);
+    public void move() {
+        move(actionMap);
+    }
+
+    public void move(ActionMap actionMap) {
+        stateMachine.setState(CharacterStateEnum.RUN);
     }
 
     @Override
@@ -116,22 +128,6 @@ public class Player extends Character implements Actionable {
             this.heal();
             this.showMessage("+10 HP", 2.0f, Color.GREEN);
             System.out.println("Healed 10 HP.");
-        }
-        if (other.getEntity().getType().equals("skeletonWarrior")) {
-            Enemy skeleton = (Enemy) other.getEntity();
-            if (skeleton.getCurrentFrame() == 3) { // Frames are 0-indexed, so the fourth frame is index 3
-                if (this.getCurrentHp() >= 0) {
-                    this.takeDamage(1, target);
-                    this.showMessage("-1", 2.0f, Color.RED);
-                    System.out.println("Player took damage from skeleton attack.");
-                } else {
-                    // implement lose event here
-                    this.isDead();
-                    System.out.println("GAME OVER");
-                }
-            }
-
-            stateMachine.setHurtState();
         }
     }
 }

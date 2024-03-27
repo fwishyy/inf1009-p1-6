@@ -54,7 +54,7 @@ public class AnimatedEntity extends Entity {
     /* Assists when an animation is to be played n-times, and then disposed
        Calling this.dispose happens outside of this class, so in the meantime, this
        variables will ensure animated entities are not drawn to prevent glitchy black boxes from appearing */
-    
+
     protected boolean dispose_after_playing;
     protected boolean ready_to_dispose;
 
@@ -63,6 +63,7 @@ public class AnimatedEntity extends Entity {
         this.texture = new TextureRegion();
         this.vector2 = new Vector2(x, y);
         this.type = type;
+        this.width = this.texture.getRegionWidth() / frameCountColumn;
         this.frameCountRow = frameCountRow;
         this.frameCountColumn = frameCountColumn;
         this.frameDuration = frameDuration;
@@ -82,7 +83,7 @@ public class AnimatedEntity extends Entity {
         // For trigger
         this.flag = false;
         trigger_frame = 0;
-        
+
         // flag to prevent rendering when animated entity will be disposed after animation ends
         this.dispose_after_playing = false;
         this.ready_to_dispose = false;
@@ -96,6 +97,8 @@ public class AnimatedEntity extends Entity {
 
         // Sets the animation to default
         setAnimation("default");
+
+        this.collider = new Collider(this, this.width, this.height);
     }
 
     // This method loads the texture into the objectmaps for future use
@@ -177,16 +180,16 @@ public class AnimatedEntity extends Entity {
         this.loop = false;
         this.playcount = playcount;
         this.framelimit = playcount * this.frameCountColumn;
-        
+
     }
-    
+
     // setAnimation but marks animated entity for disposal
     // Disposal still handled elsewhere, but by marking for disposal, it prevents glitchy boxes from rendering
     public void setAnimation(String name, int playcount, boolean dispose) {
 
         // Calls the same method previously
         setAnimation(name);
-        
+
         System.out.println("AnimatedEntity: Animation '" + name + "' will be marked for disposal after " + playcount + " loop");
 
         // Initialise the extra parameters for a non-looping animation
@@ -194,7 +197,7 @@ public class AnimatedEntity extends Entity {
         this.playcount = playcount;
         this.framelimit = playcount * this.frameCountColumn;
         this.dispose_after_playing = true;
-        
+
     }
 
 
@@ -226,7 +229,7 @@ public class AnimatedEntity extends Entity {
 
         }
     }
-    
+
 //    public boolean isAnimationFinished() {
 //    	
 //    	//System.out.println("[FRAMECOUNTER] " + this.framecounter + " [LIMIT] " + this.framelimit + " [BOOL] " + (this.framecounter == this.framelimit-1 && !this.loop));
@@ -239,12 +242,10 @@ public class AnimatedEntity extends Entity {
 //    	}
 //
 //    }
-    
-    public boolean readyToDispose() {
-    	return this.ready_to_dispose;
-    }
-    
 
+    public boolean readyToDispose() {
+        return this.ready_to_dispose;
+    }
 
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shape) {
@@ -293,7 +294,7 @@ public class AnimatedEntity extends Entity {
                 currentFrame = 0;
             }
         }
-        
+
         // When a specific frame is reached, trigger the flag for other methods to know
         // Eg. frame of character releasing of a bow to fire arrow
         if (currentFrame == this.trigger_frame) {
@@ -312,29 +313,27 @@ public class AnimatedEntity extends Entity {
                 this.framelimit = 0;
                 this.loop = true;
                 System.out.println("Animation Reset");
-                
-                if(this.dispose_after_playing) {
-                	this.ready_to_dispose = true;
+
+                if (this.dispose_after_playing) {
+                    this.ready_to_dispose = true;
                 }
             }
         }
 
         TextureRegion currentFrameRegion = this.getFrames()[currentFrame / cols][currentFrame % cols];
-        
-        
-        
+
+
         if (!this.ready_to_dispose) {
-        	
+
             if (flip) {
                 batch.draw(currentFrameRegion, this.getX() + width, this.getY(), width / 2f, height / 2f, width * -1, height, 1, 1, rotation);
             } else {
                 batch.draw(currentFrameRegion, this.getX(), this.getY(), width / 2f, height / 2f, width, height, 1, 1, rotation);
             }
-            
-        } else {
-        	// Stop drawing to prevent glitching black boxes from appearing
-        }
 
+        } else {
+            // Stop drawing to prevent glitching black boxes from appearing
+        }
 
 
         batch.end();
@@ -437,7 +436,8 @@ public class AnimatedEntity extends Entity {
     }
 
     @Override
-    public void collide(Collider other) {}
+    public void collide(Collider other) {
+    }
 
     @Override
     public void dispose() {

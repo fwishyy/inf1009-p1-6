@@ -1,23 +1,64 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.EntityAddedEvent;
-import com.mygdx.projectiles.Fireball;
+import com.mygdx.entity.fsm.states.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.enemy.EnemyDeathState;
+import com.mygdx.entity.fsm.states.enemy.EnemyHurtState;
+import com.mygdx.entity.fsm.states.enemy.EnemyIdleState;
+import com.mygdx.entity.fsm.states.enemy.EnemyRunState;
 
 public class Enemy extends Character {
 
+    protected Character target;
+    protected EnemyIdleState idleState;
+    protected EnemyRunState runState;
+    protected EnemyHurtState hurtState;
+    protected EnemyDeathState deathState;
+
+    // Enemy specific stats
+    protected float strikingDistance;
+
     public Enemy(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
-        this.currentHp = 20;
-        this.maxHp = 20;
+
+        idleState = new EnemyIdleState(this, stateMachine);
+        runState = new EnemyRunState(this, stateMachine);
+        hurtState = new EnemyHurtState(this, stateMachine);
+        deathState = new EnemyDeathState(this, stateMachine);
+
+        stateMachine.addState(CharacterStateEnum.IDLE, idleState);
+        stateMachine.addState(CharacterStateEnum.RUN, runState);
+        stateMachine.addState(CharacterStateEnum.HURT, hurtState);
+        stateMachine.addState(CharacterStateEnum.DIE, deathState);
+
+        stateMachine.setState(CharacterStateEnum.IDLE);
     }
 
-    @Override
-    public void takeDamage(int damage, Vector2 position) {
-        super.takeDamage(damage, position);
+    public void setTarget(Character target) {
+        this.target = target;
+    }
+
+    public Character getTarget() {
+        return target;
+    }
+
+    public float getStrikingDistance() {
+        return strikingDistance;
+    }
+
+    public CharacterStateEnum getState() {
+        return (CharacterStateEnum) stateMachine.getCurrentState();
+    }
+
+    public void move() {
+        stateMachine.setState(CharacterStateEnum.RUN);
+    }
+
+    public void attack() {
+        stateMachine.setState(CharacterStateEnum.ATTACK);
     }
 
     public void potionDrop() {
@@ -43,19 +84,11 @@ public class Enemy extends Character {
 
     @Override
     public void collide(Collider other) {
-        // TODO Auto-generated method stub
-        if (other.getEntity().getType().equals("fireball")) {
-            Fireball fireball = (Fireball) other.getEntity();
-            if (!fireball.hasHit()) { // Check if the fireball has not already hit
-                fireball.completeHit(); // Prevent further damage by marking the fireball
-                this.takeDamage(2, new Vector2(getX(), getY())); // Apply damage
-                this.showMessage("-2", 2.0f, Color.YELLOW);
-                if (this.currentHp <= 0) {
-                    potionDrop(); // Drop potion if enemy is defeated
-                    this.dispose();
-                    System.out.println("Enemy defeated.");
-                }
-            }
-        }
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        stateMachine.update();
     }
 }

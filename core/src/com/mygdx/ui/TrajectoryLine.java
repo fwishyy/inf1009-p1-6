@@ -2,8 +2,6 @@ package com.mygdx.ui;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Collider;
-import com.mygdx.engine.entity.Entity;
 import com.mygdx.entity.Player;
 
 public class TrajectoryLine {
@@ -20,7 +18,7 @@ public class TrajectoryLine {
         shape.setAutoShapeType(true);
         shape.begin();
         shape.setColor(1, 1, 1, 1);
-        shape.line(position, player.getTarget());
+        shape.line(position, player.getCrosshairPosition());
         shape.end();
     }
 }

@@ -23,12 +23,11 @@ import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
-import com.mygdx.ui.Cursor;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.entity.Player;
+import com.mygdx.ui.Cursor;
 
 public class CharacterSelectionScene extends Scene {
 
@@ -42,7 +41,6 @@ public class CharacterSelectionScene extends Scene {
     private TextureRegionDrawable bgTextureDrawable;
     private SpriteBatch batch;
     private ShapeRenderer shape;
-    private EventListener<PointerEvent> pointerEventListener;
     private SceneManager sceneManager;
     private Skin skin;
     private BitmapFont font;

@@ -5,11 +5,18 @@ import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.fsm.states.IdleState;
+import com.mygdx.entity.fsm.states.CharacterState;
+import com.mygdx.entity.fsm.states.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.CharacterStateMachine;
 
-public class PlayerIdleState extends IdleState {
-    public PlayerIdleState(Player player) {
-        super(player);
+public class PlayerIdleState extends CharacterState {
+    public PlayerIdleState(Player player, CharacterStateMachine stateMachine) {
+        super(player, stateMachine);
+    }
+
+    @Override
+    public void onStateEnter() {
+        character.setAnimation("default");
     }
 
     @Override
@@ -19,11 +26,11 @@ public class PlayerIdleState extends IdleState {
         MoveAction moveAction = actionMap.getMoveAction();
         InputAction attackAction = actionMap.getAction("attack");
         if (moveAction.isTriggered()) {
-            stateMachine.setRunState();
+            stateMachine.setState(CharacterStateEnum.RUN);
         }
 
         if (attackAction.isTriggered()) {
-            stateMachine.setAttackState();
+            stateMachine.setState(CharacterStateEnum.ATTACK);
         }
     }
 

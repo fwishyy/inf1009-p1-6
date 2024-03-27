@@ -39,8 +39,7 @@ public class CollisionManager extends Manager {
         addCollisionListener(new EventListener<CollisionEvent>() {
             @Override
             public void onSignal(Event e) {
-                if (e instanceof CollisionEvent)
-                    resolveCollision((CollisionEvent) e);
+                if (e instanceof CollisionEvent) resolveCollision((CollisionEvent) e);
             }
         });
     }
@@ -53,9 +52,8 @@ public class CollisionManager extends Manager {
     }
 
     public void addCollider(Entity entity) {
-        Collider col = new Collider(entity);
+        Collider col = entity.getCollider();
         col.setEntity(entity);
-        entity.setCollider(col);
         this.colliderMap.put(entity, col);
     }
 
@@ -94,11 +92,8 @@ public class CollisionManager extends Manager {
 
     private void handleEntityDisposed(EntityDisposedEvent e) {
         Entity entity = e.getEntity();
-        Collider collider = colliderMap.get(entity);
-        if (collider != null) {
-            collider.dispose();
-            colliderMap.remove(entity);
-        }
+        System.out.println(entity.getType());
+        colliderMap.remove(entity);
     }
 
     public void drawCollider(ShapeRenderer shapeRenderer, Color color) {
@@ -154,13 +149,10 @@ public class CollisionManager extends Manager {
     private void checkCollisions(List<Collider> colliderList) {
         for (Collider curr : colliderList) {
             for (Collider other : colliderList) {
-                if (curr == other)
-                    continue;
+                if (curr == other) continue;
                 // if either colliders are not collidable, no collision event should happen
-                if (curr.getIsCollidable() == false || other.getIsCollidable() == false)
-                    continue;
-                if (curr.isCollide(other))
-                    curr.onCollide(other);
+                if (curr.getIsCollidable() == false || other.getIsCollidable() == false) continue;
+                if (curr.isCollide(other)) curr.onCollide(other);
             }
         }
     }

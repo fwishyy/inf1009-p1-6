@@ -6,22 +6,23 @@ import com.mygdx.engine.actions.InputAction;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.fsm.states.AttackState;
+import com.mygdx.entity.fsm.states.CharacterState;
+import com.mygdx.entity.fsm.states.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.CharacterStateMachine;
 import com.mygdx.projectiles.Fireball;
 
-public class PlayerAttackState extends AttackState {
+public class PlayerAttackState extends CharacterState {
 
     private float animationDuration;
     private float attackTimer;
 
-    public PlayerAttackState(Player player) {
-        super(player);
+    public PlayerAttackState(Player player, CharacterStateMachine stateMachine) {
+        super(player, stateMachine);
     }
 
     @Override
     public void onStateEnter() {
-        super.onStateEnter();
+        character.setAnimation("attack");
         animationDuration = character.getAnimationDuration();
     }
 
@@ -41,11 +42,11 @@ public class PlayerAttackState extends AttackState {
 
                 // calculate the target direction using the Player's target vector
                 // which represents where the cursor is aiming
-                Vector2 target = player.getTarget();
+                Vector2 target = player.getCrosshairPosition();
 
                 if (target != null) {
                     Vector2 direction = target.cpy().sub(origin);
-                    Fireball fireball = new Fireball("projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 40, 0.05f);
+                    Fireball fireball = new Fireball(player, "projectiles/fireball.png", origin.x, origin.y, "fireball", 1, 40, 0.05f);
                     fireball.setX(fireball.getX() - fireball.getWidth() / 2f);
                     fireball.setY(fireball.getY() - fireball.getHeight() / 2f);
                     fireball.setDirection(direction.nor());
@@ -55,7 +56,7 @@ public class PlayerAttackState extends AttackState {
             }
         } else {
             attackTimer = 0;
-            stateMachine.setIdleState();
+            stateMachine.setState(CharacterStateEnum.IDLE);
         }
     }
 

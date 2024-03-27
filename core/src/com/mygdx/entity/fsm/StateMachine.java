@@ -1,14 +1,33 @@
 package com.mygdx.entity.fsm;
 
-public class StateMachine {
-    private State currentState;
+import java.util.LinkedHashMap;
 
-    public void changeState(State newState) {
+public class StateMachine<E extends Enum<E>, S extends State> {
+
+    private final LinkedHashMap<E, S> stateMap;
+    private S currentState;
+    private E currentStateEnum;
+
+    public StateMachine() {
+        stateMap = new LinkedHashMap<>();
+    }
+
+    public E getCurrentState() {
+        return currentStateEnum;
+    }
+
+    public void addState(E enumConst, S state) {
+        stateMap.put(enumConst, state);
+    }
+
+    public void setState(E enumConst) {
         if (currentState != null) {
             currentState.onStateExit();
         }
+        S newState = stateMap.get(enumConst);
+        currentStateEnum = enumConst;
         currentState = newState;
-        newState.onStateEnter();
+        currentState.onStateEnter();
     }
 
     public void update() {

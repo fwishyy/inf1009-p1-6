@@ -16,7 +16,6 @@ public abstract class Scene extends ScreenAdapter {
     protected SpriteBatch batch;
     protected Stage stage;
     protected GameContainer container;
-    private State state;
     private SceneManager sceneManager;
 
     // TODO: implement show, hide, pause, resume methods (for now testing the rendering and handling of buttons)
@@ -37,15 +36,12 @@ public abstract class Scene extends ScreenAdapter {
     }
 
     @Override
+    public void dispose() {
+        stage.dispose();
+    }
+
+    @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public enum State {
-        LOADING, RUNNING, PAUSED, UNLOADING
     }
 }

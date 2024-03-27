@@ -29,7 +29,7 @@ public class Pickup extends Entity {
 
 	@Override
 	public void collide(Collider other) {
-		System.out.println("Collision detected with: " + other.getEntity().getType());
+//		System.out.println("Collision detected with: " + other.getEntity().getType());
 	    if (other.getEntity().getType().equals("player1")) {
 	        System.out.println("Potion collected by the player.");
 	        this.dispose();
