@@ -108,12 +108,14 @@ public class Player extends Character implements Actionable {
 
     }
 
+    // TODO: refactor or remove this
     public void move() {
         move(actionMap);
     }
 
     public void move(ActionMap actionMap) {
         stateMachine.setState(CharacterStateEnum.RUN);
+
     }
 
     @Override

@@ -15,7 +15,6 @@ import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.controls.KeyCodes;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.core.GameContainer;
-import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
 import com.mygdx.engine.input.PointerEvent;
@@ -33,7 +32,6 @@ import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.Boundary;
 import com.mygdx.mechanics.SpawnSystem;
-import com.mygdx.mechanics.Wave;
 import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
 
@@ -167,14 +165,6 @@ public class GameScene extends Scene {
         bg.update(batch);
         em.update();
         em.draw(batch, shapeRenderer);
-        for (Entity entity : em.getEntities()) {
-            if (entity instanceof Enemy) {
-                Enemy bgSprite = (Enemy) entity;
-                if (bgSprite.isDead()) {
-                    bgSprite.potionDrop();
-                }
-            }
-        }
 
         cm.update();
         bm.update(Gdx.graphics.getDeltaTime());
@@ -191,12 +181,14 @@ public class GameScene extends Scene {
         camera.batchUpdate(batch);
         camera.shapeUpdate(shapeRenderer);
 
-        // spawn system
-        enemySpawn.update(deltaTime);
         bound.update();
 
         // cursor update
         crosshair.update();
+
+        // spawn system
+        enemySpawn.update(deltaTime);
+        enemySpawn.updateDisplay(batch, camera.getCamera());
     }
 
     public void handlePointerEvent(PointerEvent e) {
