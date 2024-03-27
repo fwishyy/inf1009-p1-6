@@ -100,8 +100,8 @@ public class Player extends Character implements Actionable {
     }
 
     @Override
-    public void takeDamage(int damage, Vector2 position) {
-        super.takeDamage(damage, position);
+    public void takeDamage(float damage) {
+        super.takeDamage(damage);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class Player extends Character implements Actionable {
             Enemy skeleton = (Enemy) other.getEntity();
             if (skeleton.getCurrentFrame() == 3) { // Frames are 0-indexed, so the fourth frame is index 3
                 if (this.getCurrentHp() >= 0) {
-                    this.takeDamage(1, target);
+//                    this.takeDamage(1, target);
                     this.showMessage("-1", 2.0f, Color.RED);
                     System.out.println("Player took damage from skeleton attack.");
                 } else {

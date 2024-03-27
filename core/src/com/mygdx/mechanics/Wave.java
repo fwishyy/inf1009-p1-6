@@ -1,18 +1,26 @@
 package com.mygdx.mechanics;
 
 public class Wave {
+	
+	public enum waveState{
+		PAUSE, IN_PROGRESS, END
+	}
+	public static waveState state = waveState.PAUSE;
+	
 	private int initialEnemies = 0;
-	private float interval = 0f;
+	private float interval = 0f; // controls rate of spawning
 	private float multiplier = 0f; 
 	
-	private boolean stop = false;
-	private boolean waveEnded = false;
+	private boolean stop = false; // to stop spawning
+	private boolean waveEnded = false; // to track end of wave
 	private float timer = 0f;
-	private int enemyCount = 1;
+	private int enemyCount = 0; // track enemies currently existing
+	private int enemiesSpawned = 0; // track num of enemies spawned
 	private int waveCount = 1;
 	
 	private int bossWave = 0;
 	private int bossCount = 0;
+	private int bossSpawned = 0;
 	
 	public Wave() {}
 	
@@ -60,6 +68,10 @@ public class Wave {
 	public void setBossWave(int bossWave) {
 		this.bossWave = bossWave;
 	}
+	
+	public boolean isBossWave() {
+		return this.getBossWave() != 0 && this.getBossWave() % this.getWaveCount() == 0;
+	}
 
 	public int getBossCount() {
 		return bossCount;
@@ -67,6 +79,14 @@ public class Wave {
 
 	public void setBossCount(int bossCount) {
 		this.bossCount = bossCount;
+	}
+	
+	public int getBossSpawned() {
+		return this.bossSpawned;
+	}
+	
+	public void setBossSpawned(int bossSpawned) {
+		this.bossSpawned = bossSpawned;
 	}
 
 	public boolean isStop() {
@@ -80,6 +100,7 @@ public class Wave {
 	public void start() {
 		this.stop = false;
 		this.waveEnded = false;
+		state = waveState.IN_PROGRESS;
 	}
 
 	public boolean isWaveEnded() {
@@ -88,7 +109,6 @@ public class Wave {
 	
 	public void waveEnded() {
 		this.waveEnded = true;
-		this.enemyCount = 0;
 	}
 
 	public float getTimer() {
@@ -106,6 +126,18 @@ public class Wave {
 	public void setEnemyCount(int enemyCount) {
 		this.enemyCount = enemyCount;
 	}
+	
+	public void enemyDefeated() {
+		this.enemyCount -= 1;
+	}
+	
+	public int getEnemiesSpawned() {
+		return enemiesSpawned;
+	}
+
+	public void setEnemiesSpawned(int enemiesSpawned) {
+		this.enemiesSpawned = enemiesSpawned;
+	}
 
 	public int getWaveCount() {
 		return waveCount;
@@ -113,5 +145,6 @@ public class Wave {
 
 	public void setWaveCount(int currWave) {
 		this.waveCount = currWave;
-	}	
+	}
+
 }

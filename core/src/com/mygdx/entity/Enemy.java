@@ -5,10 +5,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.EntityAddedEvent;
+import com.mygdx.engine.utils.EventListener;
+import com.mygdx.events.EnemyDefeatedEvent;
 import com.mygdx.projectiles.Fireball;
 
 public class Enemy extends Character {
-
+	
+	EventListener<EnemyDefeatedEvent> winEventListener;
+	
     public Enemy(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
         this.currentHp = 20;
@@ -16,8 +20,8 @@ public class Enemy extends Character {
     }
 
     @Override
-    public void takeDamage(int damage, Vector2 position) {
-        super.takeDamage(damage, position);
+    public void takeDamage(float damage) {
+        super.takeDamage(damage);
     }
 
     public void potionDrop() {
@@ -48,11 +52,13 @@ public class Enemy extends Character {
             Fireball fireball = (Fireball) other.getEntity();
             if (!fireball.hasHit()) { // Check if the fireball has not already hit
                 fireball.completeHit(); // Prevent further damage by marking the fireball
-                this.takeDamage(2, new Vector2(getX(), getY())); // Apply damage
-                this.showMessage("-2", 2.0f, Color.YELLOW);
+//                this.takeDamage(5, new Vector2(getX(), getY())); // Apply damage
+                this.takeDamage(5);
+                this.showMessage("fuck you", 2.0f, Color.YELLOW);
                 if (this.currentHp <= 0) {
                     potionDrop(); // Drop potion if enemy is defeated
                     this.dispose();
+                    //TODO: add enemy defeated event to update enemy count
                     System.out.println("Enemy defeated.");
                 }
             }

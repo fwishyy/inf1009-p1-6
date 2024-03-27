@@ -10,11 +10,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
+import com.mygdx.mechanics.IDamage;
 import com.mygdx.ui.HealthBar;
 
 
 // Characters are generic animated entities for all on-screen things, like characters and monsters that have a health bar, the ability to take damage, and so on
-public class Character extends AnimatedEntity {
+public class Character extends AnimatedEntity implements IDamage {
 
     private String message = "";
     private float messageTime = 0f;
@@ -83,7 +84,7 @@ public class Character extends AnimatedEntity {
     }
 
     // take damage function
-    public void takeDamage(int damage, Vector2 position) {
+    public void takeDamage(float damage) {
         currentHp -= damage;
         if (currentHp < 0) {
             currentHp = 0;

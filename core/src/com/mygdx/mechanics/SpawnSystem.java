@@ -2,22 +2,27 @@ package com.mygdx.mechanics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.aicontrol.SeekBehaviour;
+import com.mygdx.camera.Camera;
 import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.physics.CollisionManager;
+import com.mygdx.engine.utils.EventListener;
 import com.mygdx.entity.Enemy;
+import com.mygdx.events.WinEvent;
 
 public class SpawnSystem {
-
+	
     private EntityManager em = null;
-    private CollisionManager cm = null;
     private BehaviourManager bm = null;
     private float screenHeight = Gdx.graphics.getHeight();
     private float screenWidth = Gdx.graphics.getWidth();
@@ -27,11 +32,13 @@ public class SpawnSystem {
     private Rectangle spawnArea = null;
 
     private Wave wave = null;
-    private boolean isSpawnBoss = true;
+    
+    private BitmapFont font = new BitmapFont();
+    private GlyphLayout layout = new GlyphLayout();
+    private String message = "Enemies Left: ";
 
     public SpawnSystem(GameContainer container, float interval, float multiplier, int initialEnemies) {
         this.em = container.getEntityManager();
-        this.cm = container.getCollisionManager();
         this.bm = container.getBehaviourManager();
         this.wave = new Wave(initialEnemies, interval, multiplier);
         // set spawn area, basically an oversized rectangle bigger than current screen
@@ -39,7 +46,7 @@ public class SpawnSystem {
     }
 
     public void update(float deltaTime) {
-
+    	
         // update timer
         float timer = wave.getTimer() + deltaTime;
         wave.setTimer(timer);
@@ -47,43 +54,54 @@ public class SpawnSystem {
         // center the spawn area
         Vector2 centerPos = em.getEntity("player1").getVector2();
         spawnArea.setCenter(centerPos);
-
-        // enemy spawn logic -- spawn new enemy every interval seconds
+        
+        float interval = wave.getInterval();
+        
+        // Boss spawner
+        if (wave.isBossWave()) {
+            if (timer >= interval && wave.getBossSpawned() < wave.getBossCount()) {
+            	System.out.println("Spawn boss");
+            	spawnBoss(getSpawnPosition());
+            	wave.setTimer(0f);
+            }
+        }
+        
+        // enemy spawn logic
         if (!wave.isStop()) {
-            int enemyCount = wave.getEnemyCount();
-            int initialEnemies = wave.getInitialEnemies();
-            float interval = wave.getInterval();
-
-            if (timer >= interval && enemyCount < initialEnemies) {
+            // normal spawner
+            if (timer >= interval &&  wave.getEnemiesSpawned() < wave.getInitialEnemies()) {
                 spawn(getSpawnPosition());
                 wave.setTimer(0f);
-                System.out.println("Wave: " + wave.getWaveCount() + " " + "Max Enemies: " + initialEnemies + " " + "Current Enemies: " + enemyCount);
+                System.out.println("Wave: " + wave.getWaveCount() + " " + "Max Enemies: " + wave.getInitialEnemies() + " " + "Enemies spawned: " + wave.getEnemiesSpawned());
             }
-
-            if (enemyCount >= initialEnemies) {
+            
+            if (wave.getEnemiesSpawned() >= wave.getInitialEnemies()) {
                 wave.stop();
-                wave.waveEnded();
                 System.out.println("Wave stopped at: " + wave.getWaveCount());
             }
         }
 
-        // Boss spawner
-        if (wave.getBossWave() != 0 && (wave.getBossWave() % wave.getWaveCount() == 0)) {
-            if (isSpawnBoss) {
-                for (int i = 0; i < wave.getBossCount(); i++) {
-                    System.out.println("Spawn boss");
-                    spawnBoss(getSpawnPosition());
-                }
-                isSpawnBoss = false;
-            }
+        // wave ends after all enemies have been defeated
+        if(wave.getEnemyCount() <= 0 && wave.isStop()) {
+        	wave.waveEnded();
+        	System.out.println("WAVE HAS ENDED");
         }
+    }
+    
+    public void updateDisplay(SpriteBatch batch, OrthographicCamera camera) {
+    	batch.begin();
+        font.setColor(Color.WHITE);
+        font.draw(batch, message + wave.getEnemyCount(), camera.position.x + camera.viewportWidth / 2 - 150, camera.position.y + camera.viewportHeight / 2 - 20);
+//        System.out.println(font.draw(batch, message, screenWidth, screenHeight));
+    	batch.end();
     }
 
     public void nextWave() {
-        wave.start();
         wave.setInitialEnemies((int) (wave.getInitialEnemies() * 1.5));
         wave.setWaveCount(wave.getWaveCount() + 1);
-        isSpawnBoss = true;
+        wave.setEnemiesSpawned(0);
+        wave.setEnemyCount(0);
+        wave.start();
     }
 
     public void nextWave(Wave wave) {
@@ -93,8 +111,9 @@ public class SpawnSystem {
         // continue next wave with new wave object
         this.wave = wave;
         this.wave.setWaveCount(waveCount + 1);
+        wave.setEnemiesSpawned(0);
+        wave.setEnemyCount(0);;
         this.wave.start();
-        isSpawnBoss = true;
     }
 
     public void nextWave(Wave wave, int nextWaveCount) {
@@ -103,7 +122,6 @@ public class SpawnSystem {
         this.wave = wave;
         this.wave.setWaveCount(nextWaveCount);
         this.wave.start();
-        isSpawnBoss = true;
     }
 
     public Wave getWave() {
@@ -169,7 +187,7 @@ public class SpawnSystem {
                 bm.addBehaviour(defaultEnemy, defaultSeek);
         }
 
-
+        wave.setEnemiesSpawned(wave.getEnemiesSpawned() + 1);
         wave.setEnemyCount(wave.getEnemyCount() + 1);
     }
 
@@ -178,6 +196,9 @@ public class SpawnSystem {
         EntityAddedEvent.addEvent(new EntityAddedEvent(yokai));
         SeekBehaviour seek = new SeekBehaviour(em.getEntity("player1"), 50);
         bm.addBehaviour(yokai, seek);
+        
+        wave.setEnemyCount(wave.getEnemyCount() + 1);
+        wave.setBossSpawned(wave.getBossSpawned() + 1);
     }
 
     private Vector2 getSpawnPosition() {

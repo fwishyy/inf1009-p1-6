@@ -153,11 +153,8 @@ public class GameScene extends Scene {
         System.out.println(isMageSelected);
 
         // create spawn system and set interval to spawn
-        enemySpawn = new SpawnSystem(container, 2, 1.5f, 1);
+        enemySpawn = new SpawnSystem(container, 4, 1.5f, 2);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
-        enemySpawn.getWave().setBossWave(5);
-        enemySpawn.getWave().setBossCount(2);
-        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 5);
 
         bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
     }
@@ -193,12 +190,16 @@ public class GameScene extends Scene {
         camera.batchUpdate(batch);
         camera.shapeUpdate(shapeRenderer);
 
-        // spawn system
-        enemySpawn.update(deltaTime);
+        
+        
         bound.update();
 
         // cursor update
         crosshair.update();
+        
+        // spawn system
+        enemySpawn.update(deltaTime);
+        enemySpawn.updateDisplay(batch, camera.getCamera());
     }
 
     public void handlePointerEvent(PointerEvent e) {
