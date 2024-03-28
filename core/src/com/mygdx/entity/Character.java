@@ -1,6 +1,5 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -13,6 +12,7 @@ import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 import com.mygdx.events.EnemyHitEvent;
+import com.mygdx.mechanics.pickups.Pickup;
 import com.mygdx.ui.HealthBar;
 
 
@@ -54,22 +54,8 @@ public class Character extends AnimatedEntity {
     }
 
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        batch.begin();
-        // Draw the message if there is one
-        if (!message.isEmpty()) {
-            layout.setText(font, message);
-            float textWidth = layout.width;
-            float textHeight = layout.height;
-
-            font.setColor(messageColor);
-            font.draw(batch, message, messagePosition.x - textWidth / 2, messagePosition.y + textHeight);
-        }
-
-        batch.end();
-
         super.draw(batch, shapeRenderer);
 
-        healthBar.update(maxHp, currentHp);
         healthBar.draw(batch, shapeRenderer);
     }
 
@@ -106,7 +92,7 @@ public class Character extends AnimatedEntity {
         // check whether character can take damage again
         if (canTakeDamage()) {
             currentHp -= damage;
-            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f));
+            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.RED));
             if (currentHp < 0) {
                 currentHp = 0;
             }
@@ -124,23 +110,10 @@ public class Character extends AnimatedEntity {
         return currentHp <= 0;
     }
 
-//    public void showMessage(String message, float time, Color color) {
-//        this.message = message;
-//        this.messageTime = time;
-//        this.messageColor = color;
-//        this.messagePosition.set(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50);
-//    }
-
     @Override
     public void update() {
         super.update();
-
-        if (messageTime > 0) {
-            messageTime -= Gdx.graphics.getDeltaTime();
-            messagePosition.y += messageSpeed * Gdx.graphics.getDeltaTime();
-        } else {
-            message = ""; // Clear the message when the time is up
-        }
+        healthBar.update(maxHp, currentHp);
 
         if (isDead() && stateMachine.getCurrentStateEnum() != CharacterStateEnum.DIE) {
             stateMachine.setState(CharacterStateEnum.DIE);

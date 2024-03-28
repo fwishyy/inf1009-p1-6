@@ -3,12 +3,11 @@ package com.mygdx.mechanics;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class BackGround {
+public class Background {
 	
 	private Texture texture = null;
 	private Vector2 startPos = null;
@@ -18,7 +17,7 @@ public class BackGround {
 	private HashMap<Integer, Vector2> gridMap;
 	private boolean useGrid = true;
 	
-	public BackGround(String texture, boolean useGrid) {
+	public Background(String texture, boolean useGrid) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 		this.startPos =  new Vector2(-(this.texture.getWidth() / 2), -(this.texture.getHeight() / 2));
 		this.useGrid = useGrid;
@@ -36,7 +35,7 @@ public class BackGround {
 	}
 	
 	//for specifying start position of texture
-	public BackGround(String texture, float x, float y) {
+	public Background(String texture, float x, float y) {
 		this.texture = new Texture(Gdx.files.internal(texture));
 		this.startPos =  new Vector2(x, y);
 		this.gridMap = new HashMap<>();

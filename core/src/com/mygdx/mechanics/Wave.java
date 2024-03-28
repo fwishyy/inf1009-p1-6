@@ -3,7 +3,8 @@ package com.mygdx.mechanics;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.events.EnemyDefeatedEvent;
+import com.mygdx.entity.Enemy;
+import com.mygdx.events.CharacterDeathEvent;
 
 public class Wave {
 
@@ -27,10 +28,10 @@ public class Wave {
     private int bossWave = 0;
     private int bossCount = 0;
     private int bossSpawned = 0;
-    private EventListener<EnemyDefeatedEvent> enemyDefeatedEventListener = new EventListener<EnemyDefeatedEvent>() {
+    private EventListener<CharacterDeathEvent> characterDeathEventListener = new EventListener<CharacterDeathEvent>() {
         @Override
         public void onSignal(Event e) {
-            enemyDefeated();
+            handleEnemyDefeated((CharacterDeathEvent) e);
         }
     };
 
@@ -38,7 +39,7 @@ public class Wave {
         this.initialEnemies = initialEnemies;
         this.interval = interval;
         this.multiplier = multiplier;
-        EnemyDefeatedEvent.addListener(EnemyDefeatedEvent.class, enemyDefeatedEventListener);
+        CharacterDeathEvent.addListener(CharacterDeathEvent.class, characterDeathEventListener);
     }
 
     public Wave(int initialEnemies, float interval, float multiplier, int waveCount) {
@@ -46,7 +47,7 @@ public class Wave {
         this.interval = interval;
         this.multiplier = multiplier;
         this.waveCount = waveCount;
-        EnemyDefeatedEvent.addListener(EnemyDefeatedEvent.class, enemyDefeatedEventListener);
+        CharacterDeathEvent.addListener(CharacterDeathEvent.class, characterDeathEventListener);
     }
 
     public int getInitialEnemies() {
@@ -139,8 +140,10 @@ public class Wave {
         this.enemyCount = enemyCount;
     }
 
-    public void enemyDefeated() {
-        this.enemyCount -= 1;
+    public void handleEnemyDefeated(CharacterDeathEvent e) {
+        if(e.getCharacter().getType() != "player1") {
+            enemyCount -= 1;
+        }
     }
 
     public int getEnemiesSpawned() {
@@ -160,6 +163,6 @@ public class Wave {
     }
 
     public void dispose() {
-        EventBus.removeListener(enemyDefeatedEventListener);
+        EventBus.removeListener(characterDeathEventListener);
     }
 }

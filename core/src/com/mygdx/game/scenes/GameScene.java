@@ -24,24 +24,18 @@ import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.entity.Enemy;
-import com.mygdx.entity.Pickup;
+import com.mygdx.mechanics.pickups.Pickup;
 import com.mygdx.entity.Player;
-import com.mygdx.events.EnemyDefeatedEvent;
-import com.mygdx.events.LoseEvent;
-import com.mygdx.events.WinEvent;
-import com.mygdx.mechanics.BackGround;
-import com.mygdx.mechanics.Boundary;
-import com.mygdx.mechanics.SpawnSystem;
-import com.mygdx.mechanics.HitIndicator;
+import com.mygdx.events.CharacterDeathEvent;
+import com.mygdx.mechanics.*;
 import com.mygdx.mechanics.powerups.PowerUp;
 import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
 
 public class GameScene extends Scene {
 
-    EventListener<WinEvent> winEventListener;
-    EventListener<LoseEvent> loseEventListener;
     EventListener<PointerEvent> pointerEventListener;
+    EventListener<CharacterDeathEvent> characterDeathEventListener;
     //ENGINE
     private GameContainer container;
     private EntityManager em;
@@ -68,14 +62,15 @@ public class GameScene extends Scene {
 
     // Spawn
     private SpawnSystem enemySpawn;
-    private BackGround bg;
+    private Background bg;
     private Boundary bound;
 
+    // Drops
+    private DropSystem dropSystem;
+
     // Powerups
-    private boolean isSelectingPowerUp;
     private PowerUpWindow powerUpWindow;
-    
-    HitIndicator hitIndicator;
+    private HitIndicator hitIndicator;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -93,16 +88,6 @@ public class GameScene extends Scene {
     public void show() {
         super.show();
 
-        winEventListener = new EventListener<WinEvent>() {
-            public void onSignal(Event e) {
-                onWin();
-            }
-        };
-        loseEventListener = new EventListener<LoseEvent>() {
-            public void onSignal(Event e) {
-                onLose();
-            }
-        };
         pointerEventListener = new EventListener<PointerEvent>() {
             public void onSignal(Event e) {
                 PointerEvent pointerEvent = (PointerEvent) e;
@@ -110,9 +95,15 @@ public class GameScene extends Scene {
             }
         };
 
-        WinEvent.addListener(WinEvent.class, winEventListener);
-        LoseEvent.addListener(LoseEvent.class, loseEventListener);
+        characterDeathEventListener = new EventListener<CharacterDeathEvent>() {
+            public void onSignal(Event e) {
+                CharacterDeathEvent characterDeathEvent = (CharacterDeathEvent) e;
+                handleCharacterDeathEvent(characterDeathEvent);
+            }
+        };
+
         PointerEvent.addListener(PointerEvent.class, pointerEventListener);
+        CharacterDeathEvent.addListener(CharacterDeathEvent.class, characterDeathEventListener);
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -147,7 +138,7 @@ public class GameScene extends Scene {
         playerControls.addInputAction("attack", KeyCodes.MOUSE1);
         pm.setActionMap(p1, playerControls);
 
-        bg = new BackGround("bg/new_bg.png", false);
+        bg = new Background("bg/new_bg.png", false);
 
         // create new camera and center it
         camera = new Camera();
@@ -160,14 +151,14 @@ public class GameScene extends Scene {
         boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
 
         // create spawn system and set interval to spawn
-        enemySpawn = new SpawnSystem(container, 2, 1.5f, 2);
+        enemySpawn = new SpawnSystem(container, p1, 2, 1.5f, 2);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
-//        enemySpawn.getWave().setBossWave(5);
-//        enemySpawn.getWave().setBossCount(2);
-//        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 1);
+
+        // drop system
+        dropSystem = new DropSystem();
 
         bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
-        
+
         hitIndicator = new HitIndicator();
     }
 
@@ -185,10 +176,6 @@ public class GameScene extends Scene {
 
         // draw collider for debugging purposes
         cm.drawCollider(shapeRenderer, Color.RED);
-
-        EventBus.processEvents(WinEvent.class);
-        EventBus.processEvents(LoseEvent.class);
-        EventBus.processEvents(EnemyDefeatedEvent.class);
 
         // camera updates
         camera.cameraUpdate(deltaTime, p1.getVector2());
@@ -211,7 +198,7 @@ public class GameScene extends Scene {
         if (enemySpawn.getWave().isWaveEnded()) {
             showPowerUpWindow();
         }
-        
+
         hitIndicator.update(batch);
     }
 
@@ -235,14 +222,11 @@ public class GameScene extends Scene {
         }
     }
 
-    private void onWin() {
-        System.out.println("WIN");
-        sm.setScene(new MainMenuScene(container));
-    }
-
-    private void onLose() {
-        System.out.println("LOSE");
-        sm.setScene(new LoseScene(container));
+    public void handleCharacterDeathEvent(CharacterDeathEvent e) {
+        if (e.getCharacter().getType().equals("player1")) {
+            System.out.println("LOSE");
+            sm.setScene(new LoseScene(container));
+        }
     }
 
     @Override
@@ -252,9 +236,8 @@ public class GameScene extends Scene {
         em.dispose();
         batch.dispose();
 
-        EventBus.removeListener(winEventListener);
-        EventBus.removeListener(loseEventListener);
         EventBus.removeListener(pointerEventListener);
+        EventBus.removeListener(characterDeathEventListener);
         hitIndicator.dispose();
 
         shapeRenderer = null;

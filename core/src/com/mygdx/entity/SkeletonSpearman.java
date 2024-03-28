@@ -6,7 +6,7 @@ import com.mygdx.entity.fsm.states.characters.enemy.EnemyMeleeAttackState;
 public class SkeletonSpearman extends Enemy {
     private EnemyMeleeAttackState attackState;
     public SkeletonSpearman() {
-        super("characters/Skeleton_Spearman/Idle.png", 0, 0, "skeletonWarrior", 1, 7, 0.1f);
+        super("characters/Skeleton_Spearman/Idle.png", 0, 0, "skeletonSpearman", 1, 7, 0.1f);
         this.addAnimation("characters/Skeleton_Spearman/Run.png", "run", 6);
         this.addAnimation("characters/Skeleton_Spearman/Attack_1.png", "attack", 4);
         this.addAnimation("characters/Skeleton_Spearman/Hurt.png", "hurt", 3);

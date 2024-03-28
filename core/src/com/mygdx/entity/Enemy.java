@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.characters.enemy.EnemyDeathState;
+import com.mygdx.entity.fsm.states.characters.enemy.EnemyDieState;
 import com.mygdx.entity.fsm.states.characters.enemy.EnemyHurtState;
 import com.mygdx.entity.fsm.states.characters.enemy.EnemyIdleState;
 import com.mygdx.entity.fsm.states.characters.enemy.EnemyRunState;
@@ -17,7 +17,7 @@ public class Enemy extends Character {
     protected EnemyIdleState idleState;
     protected EnemyRunState runState;
     protected EnemyHurtState hurtState;
-    protected EnemyDeathState deathState;
+    protected EnemyDieState dieState;
 
     // Enemy specific stats
     protected float strikingDistance;
@@ -28,12 +28,12 @@ public class Enemy extends Character {
         idleState = new EnemyIdleState(this, stateMachine);
         runState = new EnemyRunState(this, stateMachine);
         hurtState = new EnemyHurtState(this, stateMachine);
-        deathState = new EnemyDeathState(this, stateMachine);
+        dieState = new EnemyDieState(this, stateMachine);
 
         stateMachine.addState(CharacterStateEnum.IDLE, idleState);
         stateMachine.addState(CharacterStateEnum.RUN, runState);
         stateMachine.addState(CharacterStateEnum.HURT, hurtState);
-        stateMachine.addState(CharacterStateEnum.DIE, deathState);
+        stateMachine.addState(CharacterStateEnum.DIE, dieState);
 
         stateMachine.setState(CharacterStateEnum.IDLE);
 
@@ -64,26 +64,6 @@ public class Enemy extends Character {
 
     public void attack() {
         stateMachine.setState(CharacterStateEnum.ATTACK);
-    }
-
-    public void potionDrop() {
-        // check for a 1/5 chance to drop a potion
-        if (MathUtils.random(1, 5) == 1) {
-            // decide which potion to drop (50% chance each)
-            boolean dropHealthPotion = MathUtils.randomBoolean();
-
-            if (dropHealthPotion) {
-                // create a health potion at the enemy location
-                potion = new Pickup(new Vector2(getX(), getY()), "healthPotion");
-                EntityAddedEvent.addEvent(new EntityAddedEvent(potion));
-            } else {
-                // create a max health potion at the enemy location
-                potion = new Pickup(new Vector2(getX(), getY()), "maxHealthPotion");
-                EntityAddedEvent.addEvent(new EntityAddedEvent(potion));
-            }
-
-            // GameScene -> addEntity(potion);
-        }
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.mygdx.entity.projectiles;
 
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entity.Character;
 
 public class Fireball extends Projectile {
@@ -13,5 +12,6 @@ public class Fireball extends Projectile {
 
         addAffectedTag("skeletonWarrior");
         addAffectedTag("skeletonArcher");
+        addAffectedTag("skeletonSpearman");
     }
 }

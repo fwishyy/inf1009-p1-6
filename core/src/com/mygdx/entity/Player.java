@@ -8,10 +8,7 @@ import com.mygdx.engine.actions.Actionable;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.characters.player.PlayerAttackState;
-import com.mygdx.entity.fsm.states.characters.player.PlayerHurtState;
-import com.mygdx.entity.fsm.states.characters.player.PlayerIdleState;
-import com.mygdx.entity.fsm.states.characters.player.PlayerRunState;
+import com.mygdx.entity.fsm.states.characters.player.*;
 import com.mygdx.events.EnemyHitEvent;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
@@ -26,6 +23,7 @@ public class Player extends Character implements Actionable {
     private PlayerRunState runState;
     private PlayerAttackState attackState;
     private PlayerHurtState hurtState;
+    private PlayerDieState dieState;
 
     private ActionMap actionMap;
 
@@ -56,11 +54,13 @@ public class Player extends Character implements Actionable {
         this.attackState = new PlayerAttackState(this, stateMachine);
         this.runState = new PlayerRunState(this, stateMachine);
         this.hurtState = new PlayerHurtState(this, stateMachine);
+        this.dieState = new PlayerDieState(this, stateMachine);
 
         stateMachine.addState(CharacterStateEnum.IDLE, idleState);
         stateMachine.addState(CharacterStateEnum.RUN, runState);
         stateMachine.addState(CharacterStateEnum.ATTACK, attackState);
         stateMachine.addState(CharacterStateEnum.HURT, hurtState);
+        stateMachine.addState(CharacterStateEnum.DIE, dieState);
 
         stateMachine.setState(CharacterStateEnum.IDLE);
     }
@@ -98,42 +98,31 @@ public class Player extends Character implements Actionable {
         // to be included in potion collisionevent
     }
 
-    public void increaseMaxHp() {
+    public void increaseMaxHp(float amount) {
         maxHp += maxHp * (5.0f / 100.0f);
         System.out.println("New Max HP: " + this.maxHp);
+        EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(amount), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.GREEN));
     }
 
     // when player picks up healing potion, health will +10
-    public void heal() {
+    public void heal(float amount) {
         currentHp += 10;
-        if (currentHp > maxHp) currentHp = maxHp;
+        if (currentHp > maxHp) {
+            currentHp = maxHp;
+        }
         System.out.println("New Current HP: " + this.currentHp);
-
-    }
-
-    // TODO: refactor or remove this
-    public void move() {
-        move(actionMap);
-    }
-
-    public void move(ActionMap actionMap) {
-        stateMachine.setState(CharacterStateEnum.RUN);
-
+        EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(amount), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.GREEN));
     }
 
     @Override
     public void collide(Collider other) {
         // TODO: refactor this such that they lie on the other party, not the player
         if (other.getEntity().getType().equals("maxHealthPotion")) {
-            this.increaseMaxHp();
-//            this.showMessage("Max HP +5%", 2.0f, Color.GREEN);
-            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.GREEN));
+            this.increaseMaxHp(5);
             System.out.println("Max health increased by 5%");
         }
         if (other.getEntity().getType().equals("healthPotion")) {
-            this.heal();
-//            this.showMessage("+10 HP", 2.0f, Color.GREEN);
-            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.RED));
+            this.heal(5);
             System.out.println("Healed 10 HP.");
         }
     }

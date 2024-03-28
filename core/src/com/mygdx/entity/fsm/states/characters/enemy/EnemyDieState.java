@@ -3,17 +3,17 @@ package com.mygdx.entity.fsm.states.characters.enemy;
 import com.mygdx.entity.Enemy;
 import com.mygdx.entity.fsm.states.characters.CharacterState;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
-import com.mygdx.events.EnemyDefeatedEvent;
+import com.mygdx.events.CharacterDeathEvent;
 
-public class EnemyDeathState extends CharacterState {
+public class EnemyDieState extends CharacterState {
 
-    public EnemyDeathState(Enemy enemy, CharacterStateMachine stateMachine) {
+    public EnemyDieState(Enemy enemy, CharacterStateMachine stateMachine) {
         super(enemy, stateMachine);
     }
 
     @Override
     public void onStateEnter() {
-        EnemyDefeatedEvent.addEvent(new EnemyDefeatedEvent());
+        CharacterDeathEvent.addEvent(new CharacterDeathEvent(character));
         character.setAnimation("die", 1, true);
     }
 

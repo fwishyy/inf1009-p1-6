@@ -116,12 +116,15 @@ public abstract class Entity {
     }
 
     public void setTextureRegion(String texture) {
-        this.texture.getTexture().dispose();
+        if (this.texture != null) {
+            this.texture.getTexture().dispose();
+        }
         this.texture = new TextureRegion(new Texture(Gdx.files.internal(texture)));
+        this.sprite = new Sprite(this.texture);
         setWidth(this.texture.getRegionWidth());
         setHeight(this.texture.getRegionHeight());
-        this.sprite = null;
-        this.sprite = new Sprite(this.texture);
+        collider.setWidth(width);
+        collider.setHeight(height);
     }
 
     public float getX() {

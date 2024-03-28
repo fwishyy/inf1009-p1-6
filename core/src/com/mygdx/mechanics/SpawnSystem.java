@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -34,9 +33,10 @@ public class SpawnSystem {
     private BitmapFont enemyCountFont = new BitmapFont();
     private BitmapFont waveCountFont = new BitmapFont();
 
-    public SpawnSystem(GameContainer container, float interval, float multiplier, int initialEnemies) {
+    public SpawnSystem(GameContainer container, Player p1, float interval, float multiplier, int initialEnemies) {
         this.em = container.getEntityManager();
         this.bm = container.getBehaviourManager();
+        this.p1 = p1;
         this.wave = new Wave(initialEnemies, interval, multiplier);
         // set spawn area, basically an oversized rectangle bigger than current screen
         this.spawnArea = new Rectangle(-100, -100, screenWidth + 200, screenHeight + 200);
@@ -44,14 +44,12 @@ public class SpawnSystem {
 
     public void update(float deltaTime) {
 
-        this.p1 = (Player) em.getEntity("player1");
-
         // update timer
         float timer = wave.getTimer() + deltaTime;
         wave.setTimer(timer);
 
         // center the spawn area
-        Vector2 centerPos = em.getEntity("player1").getVector2();
+        Vector2 centerPos = p1.getVector2();
         spawnArea.setCenter(centerPos);
 
         float interval = wave.getInterval();

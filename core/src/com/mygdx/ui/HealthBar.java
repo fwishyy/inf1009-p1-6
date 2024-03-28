@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Entity;
+import com.mygdx.entity.Character;
 
 
 public class HealthBar {
@@ -20,17 +20,17 @@ public class HealthBar {
      * barHeight: height of health bar (fixed)
      */
 
-    private Entity entity;
+    private Character character;
     private float maxHp;
     private float currentHp;
     private float barWidth;
     private float barHeight;
     private Color healthColour;
-    private Vector2 positionOffset; // position relative to owner entity
+    private Vector2 positionOffset; // position relative to owner character
     private BitmapFont font;
 
-    public HealthBar(Entity entity, Vector2 positionOffset, Color healthColour, float barWidth, float barHeight) {
-        this.entity = entity;
+    public HealthBar(Character character, Vector2 positionOffset, Color healthColour, float barWidth, float barHeight) {
+        this.character = character;
         this.barWidth = barWidth; // initialise bar width
         this.barHeight = barHeight; // initalise bar height
         this.positionOffset = positionOffset;
@@ -50,8 +50,8 @@ public class HealthBar {
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         batch.begin();
         // TODO: fix health bar positioning
-        float x = entity.getX() + entity.getWidth() / 2 - barWidth / 2;
-        float y = entity.getY() - barHeight - positionOffset.y;
+        float x = character.getX() + character.getWidth() / 2 - barWidth / 2;
+        float y = character.getY() - barHeight - positionOffset.y;
 
         // GlyphLayout to measure the dimensions of HP value text
         GlyphLayout layout = new GlyphLayout();
