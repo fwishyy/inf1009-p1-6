@@ -29,16 +29,14 @@ public class EnemyRangedAttackState extends CharacterState {
         Character target = enemy.getTarget();
         Vector2 targetPos = target.getVector2();
         Vector2 origin = enemy.getVector2().cpy();
-        origin.x += enemy.getWidth() / 2f;
-        origin.y += enemy.getWidth() / 2f;
+        origin.x += enemy.getCollider().getWidth() / 2f;
+        origin.y += enemy.getCollider().getWidth() / 2f;
 
         attackTimer += Gdx.graphics.getDeltaTime();
         if (attackTimer >= animationDuration) {
             if (target != null) {
                 Vector2 direction = targetPos.cpy().sub(origin);
                 Arrow arrow = new Arrow(enemy, "projectiles/arrow.png", origin.x, origin.y, "arrow", 1, 1, 0.05f);
-                arrow.setX(arrow.getX() - arrow.getWidth() / 2f);
-                arrow.setY(arrow.getY() - arrow.getHeight() / 2f);
                 arrow.setDirection(direction.nor());
                 EntityAddedEvent.addEvent(new EntityAddedEvent(arrow));
                 attackTimer = 0;
