@@ -5,34 +5,32 @@ import com.mygdx.engine.core.Manager;
 import java.util.Stack;
 
 public class SceneManager extends Manager {
-    private Scene currentScene;
     private Stack<Scene> scenes;
 
     public SceneManager() {
-        // predictable first scene
-        currentScene = null;
         scenes = new Stack<>();
     }
 
-    public void setScene(Scene scene) {
-
-        if (currentScene != null) {
-            currentScene.dispose();
-            scenes.remove(currentScene);
+    public void setScene(Scene newScene) {
+        for (Scene scene : scenes) {
+            scene.dispose();
         }
-        currentScene = scene;
-        currentScene.show();
+        scenes.clear();
+        newScene.show();
+        scenes.push(newScene);
     }
 
-    public void addScene(Scene scene) {
+    public void pushScene(Scene scene) {
         scenes.push(scene);
+        scene.show();
     }
 
     public void popScene(Scene scene) {
+        scenes.peek().dispose();
         scenes.pop();
     }
 
-    public Scene getCurrentScene() {
-        return currentScene;
+    public void render(float deltaTime) {
+        scenes.peek().render(deltaTime);
     }
 }

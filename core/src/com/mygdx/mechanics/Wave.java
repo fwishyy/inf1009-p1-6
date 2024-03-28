@@ -1,150 +1,165 @@
 package com.mygdx.mechanics;
 
+import com.mygdx.engine.utils.Event;
+import com.mygdx.engine.utils.EventBus;
+import com.mygdx.engine.utils.EventListener;
+import com.mygdx.events.EnemyDefeatedEvent;
+
 public class Wave {
-	
-	public enum waveState{
-		PAUSE, IN_PROGRESS, END
-	}
-	public static waveState state = waveState.PAUSE;
-	
-	private int initialEnemies = 0;
-	private float interval = 0f; // controls rate of spawning
-	private float multiplier = 0f; 
-	
-	private boolean stop = false; // to stop spawning
-	private boolean waveEnded = false; // to track end of wave
-	private float timer = 0f;
-	private int enemyCount = 0; // track enemies currently existing
-	private int enemiesSpawned = 0; // track num of enemies spawned
-	private int waveCount = 1;
-	
-	private int bossWave = 0;
-	private int bossCount = 0;
-	private int bossSpawned = 0;
-	
-	public Wave() {}
-	
-	public Wave(int initialEnemies, float interval, float multiplier) {
-		this.initialEnemies = initialEnemies;
-		this.interval = interval ;
-		this.multiplier = multiplier;
-	}
-	
-	public Wave(int initialEnemies, float interval, float multiplier, int waveCount) {
-		this.initialEnemies = initialEnemies;
-		this.interval = interval ;
-		this.multiplier = multiplier;
-		this.waveCount = waveCount;
-	}
-	
-	public int getInitialEnemies() {
-		return initialEnemies;
-	}
 
-	public void setInitialEnemies(int initialEnemies) {
-		this.initialEnemies = initialEnemies;
-	}
-	
-	public float getInterval() {
-		return interval;
-	}
+    public enum waveState {
+        PAUSE, IN_PROGRESS, END
+    }
 
-	public void setInterval(float interval) {
-		this.interval = interval;
-	}
+    public static waveState state = waveState.PAUSE;
 
-	public float getMultiplier() {
-		return multiplier;
-	}
+    private int initialEnemies = 0;
+    private float interval = 0f; // controls rate of spawning
+    private float multiplier = 0f;
 
-	public void setMultiplier(float multiplier) {
-		this.multiplier = multiplier;
-	}
+    private boolean stop = false; // to stop spawning
+    private boolean waveEnded = false; // to track end of wave
+    private float timer = 0f;
+    private int enemyCount = 0; // track enemies currently existing
+    private int enemiesSpawned = 0; // track num of enemies spawned
+    private int waveCount = 1;
 
-	public int getBossWave() {
-		return bossWave;
-	}
+    private int bossWave = 0;
+    private int bossCount = 0;
+    private int bossSpawned = 0;
+    private EventListener<EnemyDefeatedEvent> enemyDefeatedEventListener = new EventListener<EnemyDefeatedEvent>() {
+        @Override
+        public void onSignal(Event e) {
+            enemyDefeated();
+        }
+    };
 
-	public void setBossWave(int bossWave) {
-		this.bossWave = bossWave;
-	}
-	
-	public boolean isBossWave() {
-		return this.getBossWave() != 0 && this.getBossWave() % this.getWaveCount() == 0;
-	}
+    public Wave(int initialEnemies, float interval, float multiplier) {
+        this.initialEnemies = initialEnemies;
+        this.interval = interval;
+        this.multiplier = multiplier;
+        EnemyDefeatedEvent.addListener(EnemyDefeatedEvent.class, enemyDefeatedEventListener);
+    }
 
-	public int getBossCount() {
-		return bossCount;
-	}
+    public Wave(int initialEnemies, float interval, float multiplier, int waveCount) {
+        this.initialEnemies = initialEnemies;
+        this.interval = interval;
+        this.multiplier = multiplier;
+        this.waveCount = waveCount;
+        EnemyDefeatedEvent.addListener(EnemyDefeatedEvent.class, enemyDefeatedEventListener);
+    }
 
-	public void setBossCount(int bossCount) {
-		this.bossCount = bossCount;
-	}
-	
-	public int getBossSpawned() {
-		return this.bossSpawned;
-	}
-	
-	public void setBossSpawned(int bossSpawned) {
-		this.bossSpawned = bossSpawned;
-	}
+    public int getInitialEnemies() {
+        return initialEnemies;
+    }
 
-	public boolean isStop() {
-		return stop;
-	}
+    public void setInitialEnemies(int initialEnemies) {
+        this.initialEnemies = initialEnemies;
+    }
 
-	public void stop() {
-		this.stop = true;
-	}
-	
-	public void start() {
-		this.stop = false;
-		this.waveEnded = false;
-		state = waveState.IN_PROGRESS;
-	}
+    public float getInterval() {
+        return interval;
+    }
 
-	public boolean isWaveEnded() {
-		return waveEnded;
-	}
-	
-	public void waveEnded() {
-		this.waveEnded = true;
-	}
+    public void setInterval(float interval) {
+        this.interval = interval;
+    }
 
-	public float getTimer() {
-		return timer;
-	}
+    public float getMultiplier() {
+        return multiplier;
+    }
 
-	public void setTimer(float timer) {
-		this.timer = timer;
-	}
+    public void setMultiplier(float multiplier) {
+        this.multiplier = multiplier;
+    }
 
-	public int getEnemyCount() {
-		return enemyCount;
-	}
+    public int getBossWave() {
+        return bossWave;
+    }
 
-	public void setEnemyCount(int enemyCount) {
-		this.enemyCount = enemyCount;
-	}
-	
-	public void enemyDefeated() {
-		this.enemyCount -= 1;
-	}
-	
-	public int getEnemiesSpawned() {
-		return enemiesSpawned;
-	}
+    public void setBossWave(int bossWave) {
+        this.bossWave = bossWave;
+    }
 
-	public void setEnemiesSpawned(int enemiesSpawned) {
-		this.enemiesSpawned = enemiesSpawned;
-	}
+    public boolean isBossWave() {
+        return this.getBossWave() != 0 && this.getBossWave() % this.getWaveCount() == 0;
+    }
 
-	public int getWaveCount() {
-		return waveCount;
-	}
+    public int getBossCount() {
+        return bossCount;
+    }
 
-	public void setWaveCount(int currWave) {
-		this.waveCount = currWave;
-	}
+    public void setBossCount(int bossCount) {
+        this.bossCount = bossCount;
+    }
 
+    public int getBossSpawned() {
+        return this.bossSpawned;
+    }
+
+    public void setBossSpawned(int bossSpawned) {
+        this.bossSpawned = bossSpawned;
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void stop() {
+        this.stop = true;
+    }
+
+    public void start() {
+        this.stop = false;
+        this.waveEnded = false;
+        state = waveState.IN_PROGRESS;
+    }
+
+    public boolean isWaveEnded() {
+        return waveEnded;
+    }
+
+    public void waveEnded() {
+        this.waveEnded = true;
+    }
+
+    public float getTimer() {
+        return timer;
+    }
+
+    public void setTimer(float timer) {
+        this.timer = timer;
+    }
+
+    public int getEnemyCount() {
+        return enemyCount;
+    }
+
+    public void setEnemyCount(int enemyCount) {
+        this.enemyCount = enemyCount;
+    }
+
+    public void enemyDefeated() {
+        this.enemyCount -= 1;
+    }
+
+    public int getEnemiesSpawned() {
+        return enemiesSpawned;
+    }
+
+    public void setEnemiesSpawned(int enemiesSpawned) {
+        this.enemiesSpawned = enemiesSpawned;
+    }
+
+    public int getWaveCount() {
+        return waveCount;
+    }
+
+    public void setWaveCount(int currWave) {
+        this.waveCount = currWave;
+    }
+
+    public void dispose() {
+        EventBus.removeListener(enemyDefeatedEventListener);
+    }
 }

@@ -34,6 +34,7 @@ public class Character extends AnimatedEntity {
     protected float currentHp;
     protected float speed;
     protected float damage;
+    protected float attackSpeed;
 
     protected float invincibilityDurationMS;
     protected long lastTookDamageMS;
@@ -89,6 +90,14 @@ public class Character extends AnimatedEntity {
 
     public void setDamage(float damage) {
         this.damage = damage;
+    }
+
+    public float getAttackSpeed() {
+        return attackSpeed;
+    }
+
+    public void setAttackSpeed(float attackSpeed) {
+        this.attackSpeed = attackSpeed;
     }
 
     // take damage function

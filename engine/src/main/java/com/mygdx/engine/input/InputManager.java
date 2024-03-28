@@ -8,12 +8,10 @@ import com.mygdx.engine.utils.EventBus;
 
 import java.util.LinkedHashMap;
 
-// TODO: add dragged events maybe
 public class InputManager extends InputAdapter {
     // InputMultiplexer is used to handle multiple input processors
     private final InputMultiplexer multiplexer;
     private final int mouseButtonOffset = 1001;
-    private ControllerHandler controllerHandler;
     private LinkedHashMap<Integer, Boolean> keyState;
 
     public InputManager(Input input) {
@@ -26,7 +24,7 @@ public class InputManager extends InputAdapter {
     }
 
     public void addInputProcessor(InputProcessor processor) {
-        multiplexer.addProcessor(0, processor);
+        multiplexer.addProcessor(processor);
     }
 
     public void removeInputProcessor(InputProcessor processor) {
@@ -57,33 +55,33 @@ public class InputManager extends InputAdapter {
     // *** Mouse ***
     // *************
 
-    // TODO: maybe check for coordinates here
-    // Currently not checked because InputManager then requires some knowledge of the coordinates, which may not be very friendly
     // There's also no way to distinguish between clicking buttons and clicking (to shoot), we add a custom mouse offset to define it in our keybindings
+    // Mouse events all return a false because we're multiplexing with other scene2d ui elements, such as stage, that should take precedence when possible
+    // The InputManager is always the first input processor to process the event
 
     @Override
     public synchronized boolean touchDragged(int screenX, int screenY, int pointer) {
         PointerEvent.addEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.HOVER, -1));
-        return true;
+        return false;
     }
 
     @Override
     public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
         PointerEvent.addEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.DOWN, button));
         keyState.put(button + mouseButtonOffset, true);
-        return true;
+        return false;
     }
 
     @Override
     public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
         PointerEvent.addEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.UP, button));
         keyState.put(button + mouseButtonOffset, false);
-        return true;
+        return false;
     }
 
     @Override
     public synchronized boolean mouseMoved(int screenX, int screenY) {
         PointerEvent.addEvent(new PointerEvent(screenX, screenY, PointerEvent.Type.HOVER, -1));
-        return true;
+        return false;
     }
 }

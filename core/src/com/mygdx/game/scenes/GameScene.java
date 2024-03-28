@@ -2,7 +2,6 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -27,11 +26,13 @@ import com.mygdx.engine.utils.EventListener;
 import com.mygdx.entity.Enemy;
 import com.mygdx.entity.Pickup;
 import com.mygdx.entity.Player;
+import com.mygdx.events.EnemyDefeatedEvent;
 import com.mygdx.events.LoseEvent;
 import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.Boundary;
 import com.mygdx.mechanics.SpawnSystem;
+import com.mygdx.mechanics.powerups.PowerUp;
 import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
 
@@ -49,6 +50,7 @@ public class GameScene extends Scene {
     private BehaviourManager bm;
     private SceneManager sm;
     private AudioManager am;
+
     //CONCRETE GAME LAYER FOR DEMO PURPOSES
     private HealthBar hbar;
     private Player p1;
@@ -63,13 +65,14 @@ public class GameScene extends Scene {
     //Camera
     private Camera camera;
 
-    //Spawn
+    // Spawn
     private SpawnSystem enemySpawn;
     private BackGround bg;
-
     private Boundary bound;
-    //Damage Indicators
-    private BitmapFont font;
+
+    // Powerups
+    private boolean isSelectingPowerUp;
+    private PowerUpWindow powerUpWindow;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -111,6 +114,16 @@ public class GameScene extends Scene {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         crosshair = new Cursor("mouse/crosshair.png");
+        // Powerup Menu Initial State
+        powerUpWindow = new PowerUpWindow(this);
+        powerUpWindow.setSize(500, 400);
+        powerUpWindow.setModal(true);
+        powerUpWindow.setMovable(true);
+        powerUpWindow.setPosition(Gdx.graphics.getWidth() / 2 - powerUpWindow.getWidth() / 2, Gdx.graphics.getHeight() / 2 - powerUpWindow.getHeight() / 2);
+        powerUpWindow.setVisible(false);
+
+        stage.addActor(powerUpWindow);
+        im.addInputProcessor(stage);
 
         //Create entities to spawn here
         // TODO: move all this into player
@@ -123,10 +136,7 @@ public class GameScene extends Scene {
         // in this case, remember that the current player using a spritesheet, so we have to calculate frame size of the 
         cm.addCollider(p1, p1.getWidth() / 2, p1.getHeight() / 2);
         // attempt at centering
-        cm.setOffset(
-                new Vector2(p1.getWidth() / 2 - cm.getCollider(p1).getWidth() / 2,
-                        p1.getHeight() / 2 - cm.getCollider(p1).getHeight() / 2),
-                p1);
+        cm.setOffset(new Vector2(p1.getWidth() / 2 - cm.getCollider(p1).getWidth() / 2, p1.getHeight() / 2 - cm.getCollider(p1).getHeight() / 2), p1);
 
         // player control mapping 
         ActionMap playerControls = new ActionMap("controls");
@@ -145,8 +155,6 @@ public class GameScene extends Scene {
         CharacterSelectionScene characterSelectionScene = CharacterSelectionScene.getInstance();
         boolean isMageSelected = characterSelectionScene.isMageSelected();
         boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
-
-        System.out.println(isMageSelected);
 
         // create spawn system and set interval to spawn
         enemySpawn = new SpawnSystem(container, 2, 1.5f, 2);
@@ -175,6 +183,7 @@ public class GameScene extends Scene {
 
         EventBus.processEvents(WinEvent.class);
         EventBus.processEvents(LoseEvent.class);
+        EventBus.processEvents(EnemyDefeatedEvent.class);
 
         // camera updates
         camera.cameraUpdate(deltaTime, p1.getVector2());
@@ -186,9 +195,27 @@ public class GameScene extends Scene {
         // cursor update
         crosshair.update();
 
+        // scene2d ui
+        stage.draw();
+        stage.act();
+
         // spawn system
         enemySpawn.update(deltaTime);
         enemySpawn.updateDisplay(batch, camera.getCamera());
+
+        if (enemySpawn.getWave().isWaveEnded()) {
+            showPowerUpWindow();
+        }
+    }
+
+    private void showPowerUpWindow() {
+        powerUpWindow.setVisible(true);
+    }
+
+    public void completePowerUpSelection(PowerUp powerUp) {
+        powerUpWindow.setVisible(false);
+        powerUp.activate(p1);
+        enemySpawn.nextWave();
     }
 
     public void handlePointerEvent(PointerEvent e) {
@@ -217,7 +244,6 @@ public class GameScene extends Scene {
         cm.dispose();
         em.dispose();
         batch.dispose();
-        font.dispose();
 
         EventBus.removeListener(winEventListener);
         EventBus.removeListener(loseEventListener);

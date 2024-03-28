@@ -4,13 +4,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.EntityAddedEvent;
-import com.mygdx.engine.utils.EventListener;
 import com.mygdx.entity.fsm.states.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.enemy.EnemyDeathState;
 import com.mygdx.entity.fsm.states.enemy.EnemyHurtState;
 import com.mygdx.entity.fsm.states.enemy.EnemyIdleState;
 import com.mygdx.entity.fsm.states.enemy.EnemyRunState;
-import com.mygdx.events.EnemyDefeatedEvent;
 
 
 public class Enemy extends Character {
@@ -21,7 +19,6 @@ public class Enemy extends Character {
     protected EnemyHurtState hurtState;
     protected EnemyDeathState deathState;
 
-    EventListener<EnemyDefeatedEvent> winEventListener;
     // Enemy specific stats
     protected float strikingDistance;
 

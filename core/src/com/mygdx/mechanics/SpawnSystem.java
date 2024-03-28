@@ -86,7 +86,6 @@ public class SpawnSystem {
         // wave ends after all enemies have been defeated
         if (wave.getEnemyCount() <= 0 && wave.isStop()) {
             wave.waveEnded();
-            System.out.println("WAVE HAS ENDED");
         }
     }
 
@@ -153,6 +152,7 @@ public class SpawnSystem {
     }
 
     public void dispose() {
+        wave.dispose();
         this.wave = null;
     }
 

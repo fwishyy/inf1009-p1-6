@@ -37,12 +37,14 @@ public class Player extends Character implements Actionable {
         addAnimation("characters/Mage_Fire/Run.png", "run", 8);
         addAnimation("characters/Mage_Fire/Fireball.png", "attack", 8);
 
-        // Player Stats
+        // Player Base Stats
         this.maxHp = 100;
         this.currentHp = 50;
-        this.fireRate = 3;
         this.invincibilityDurationMS = 1000;
-        this.damage = 1000;
+        this.damage = 50;
+        // Attack Speed represents attacks per minutes
+        // This has to be incorporated along with the animations
+        this.attackSpeed = 1;
 
         Vector2 healthBarOffset = new Vector2(38, -20);
         this.healthBar = new HealthBar(this, healthBarOffset, Color.GREEN, 80, 10);

@@ -13,15 +13,13 @@ public class MyGame extends Game {
     public void create() {
         super.create();
         mainMenuScene = new MainMenuScene(container);
-        gameScene = new GameScene(container);
 
-        sceneManager.addScene(mainMenuScene);
         sceneManager.setScene(mainMenuScene);
     }
 
     @Override
     public void render() {
-        sceneManager.getCurrentScene().render(Gdx.graphics.getDeltaTime());
+        sceneManager.render(Gdx.graphics.getDeltaTime());
         inputManager.processAllEvents();
     }
 

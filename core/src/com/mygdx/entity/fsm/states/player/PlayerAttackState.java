@@ -13,6 +13,7 @@ import com.mygdx.projectiles.Fireball;
 
 public class PlayerAttackState extends CharacterState {
 
+    private float animationSpeedScale;
     private float animationDuration;
     private float attackTimer;
 
@@ -24,6 +25,7 @@ public class PlayerAttackState extends CharacterState {
     public void onStateEnter() {
         character.setAnimation("attack");
         animationDuration = character.getAnimationDuration();
+        animationDuration *= (1 / character.getAttackSpeed());
     }
 
     @Override
@@ -31,7 +33,6 @@ public class PlayerAttackState extends CharacterState {
         Player player = (Player) character;
         ActionMap actionMap = player.getActionMap();
         InputAction attackAction = actionMap.getAction("attack");
-
 
         if (attackAction.isTriggered()) {
             attackTimer += Gdx.graphics.getDeltaTime();
@@ -62,6 +63,6 @@ public class PlayerAttackState extends CharacterState {
 
     @Override
     public void onStateExit() {
-
+        animationDuration /= (1 / character.getAttackSpeed());
     }
 }
