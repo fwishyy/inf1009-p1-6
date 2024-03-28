@@ -1,5 +1,6 @@
 package com.mygdx.aicontrol;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.behaviour.Behaviour;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.entity.Enemy;
@@ -16,9 +17,12 @@ public class EnemyBehaviour implements Behaviour {
     public void update(Entity entity, float deltaTime) {
         Enemy enemy = (Enemy) entity;
         enemy.setTarget(target);
-        float xDistanceFromTarget = Math.abs(enemy.getX() - target.getX());
-        float yDistanceFromTarget = Math.abs(enemy.getY() - target.getY());
-        boolean canStrike = xDistanceFromTarget <= enemy.getStrikingDistance() && yDistanceFromTarget <= enemy.getStrikingDistance();
+
+        Vector2 enemyPos = enemy.getVector2();
+        Vector2 targetPos = target.getVector2();
+
+        double distanceFromTarget = Math.sqrt(Math.pow((targetPos.x - enemyPos.x), 2) + Math.pow((targetPos.y - enemyPos.y), 2));
+        boolean canStrike = distanceFromTarget <= enemy.getStrikingDistance();
         if (!enemy.isDead()) {
             // found enemy and within striking range, time to attack!
             if (canStrike) {

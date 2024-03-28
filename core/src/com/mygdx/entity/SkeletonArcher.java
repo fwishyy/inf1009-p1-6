@@ -16,8 +16,8 @@ public class SkeletonArcher extends Enemy {
         this.maxHp = 50;
         this.currentHp = 50;
         this.speed = 80;
-        this.strikingDistance = 200;
-        this.damage = 60;
+        this.strikingDistance = 300;
+        this.damage = 10;
 
         this.attackState = new EnemyRangedAttackState(this, stateMachine);
         stateMachine.addState(CharacterStateEnum.ATTACK, attackState);

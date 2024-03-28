@@ -15,7 +15,7 @@ public class SkeletonWarrior extends Enemy {
         this.maxHp = 100;
         this.currentHp = 100;
         this.speed = 100;
-        this.strikingDistance = getWidth() / 2;
+        this.strikingDistance = 10;
         this.damage = 20;
 
         this.attackState = new EnemyMeleeAttackState(this, stateMachine);

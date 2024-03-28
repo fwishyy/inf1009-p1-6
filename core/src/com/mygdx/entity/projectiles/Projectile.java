@@ -26,11 +26,14 @@ public class Projectile extends AnimatedEntity {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);
         this.character = character;
         this.direction = new Vector2();
+
         this.affectedTags = new ArrayList<>();
+
         this.stateMachine = new ProjectileStateMachine(this);
         this.spawnedState = new ProjectileSpawnedState(this, stateMachine);
         this.movingState = new ProjectileMovingState(this, stateMachine);
         this.collidedState = new ProjectileCollidedState(this, stateMachine);
+
         stateMachine.addState(ProjectileStateEnum.SPAWNED, spawnedState);
         stateMachine.addState(ProjectileStateEnum.MOVING, movingState);
         stateMachine.addState(ProjectileStateEnum.COLLIDED, collidedState);
