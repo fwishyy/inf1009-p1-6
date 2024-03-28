@@ -77,6 +77,10 @@ public class AudioTrack {
     protected Music getMusic() {
         return music;
     }
+    
+    protected boolean musicIsPlaying() {
+    	return music.isPlaying();
+    }
 
     protected boolean isLoop() {
         return isLoop;

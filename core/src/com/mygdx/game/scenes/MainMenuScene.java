@@ -76,8 +76,17 @@ public class MainMenuScene extends Scene {
         hand = new MyCursor("mouse/hand.png");
         
         // Menu Screen Audio
+<<<<<<< Updated upstream
         am.addMusic("MenuMusic", "audio/music/Hell-Night.mp3");
         am.play("MenuMusic");
+=======
+        if (!am.musicIsPlaying("MenuMusic")) {
+        	am.addMusic("MenuMusic", "audio/music/Hell-Night.mp3");
+            am.setVolume("MenuMusic", 0.2f);
+            am.play("MenuMusic");
+        }
+        
+>>>>>>> Stashed changes
 
         table = new Table();
         textureAtlas = new TextureAtlas(Gdx.files.internal("sgx/skin/menu-ui.atlas"));

@@ -260,6 +260,19 @@ public class AudioManager extends Manager {
             }
         }
     }
+    
+    public boolean musicIsPlaying(String name) {
+    	boolean playingMusic = false;
+    	if (!audiolist.containsKey(name)) {
+            if (debug) {
+                System.out.println("AudioManager: '" + name + "' does not exist");
+            }
+        } else {
+        	AudioTrack audioTrack = audiolist.get(name);
+        	playingMusic = audioTrack.musicIsPlaying();
+        }
+    	return playingMusic;
+    }
 
     public synchronized void play(String name) {
 
