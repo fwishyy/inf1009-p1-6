@@ -15,10 +15,7 @@ import com.mygdx.engine.behaviour.BehaviourManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.entity.Enemy;
-import com.mygdx.entity.Player;
-import com.mygdx.entity.SkeletonArcher;
-import com.mygdx.entity.SkeletonWarrior;
+import com.mygdx.entity.*;
 
 public class SpawnSystem {
 
@@ -168,7 +165,7 @@ public class SpawnSystem {
         // create entities at the position
         switch (chooseEnemy) {
             case 0:
-                SkeletonWarrior skeletonWarrior = new SkeletonWarrior();
+                SkeletonSpearman skeletonWarrior = new SkeletonSpearman();
                 skeletonWarrior.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonWarrior));
                 bm.addBehaviour(skeletonWarrior, enemyBehaviour);
@@ -180,7 +177,7 @@ public class SpawnSystem {
                 bm.addBehaviour(skeletonArcher, enemyBehaviour);
                 break;
             case 2:
-                Enemy skeletonSpearman = new SkeletonWarrior();
+                SkeletonSpearman skeletonSpearman = new SkeletonSpearman();
                 skeletonSpearman.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonSpearman));
                 bm.addBehaviour(skeletonSpearman, enemyBehaviour);
