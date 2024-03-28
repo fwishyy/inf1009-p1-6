@@ -165,7 +165,7 @@ public class SpawnSystem {
         // create entities at the position
         switch (chooseEnemy) {
             case 0:
-                SkeletonSpearman skeletonWarrior = new SkeletonSpearman();
+                SkeletonWarrior skeletonWarrior = new SkeletonWarrior();
                 skeletonWarrior.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonWarrior));
                 bm.addBehaviour(skeletonWarrior, enemyBehaviour);
@@ -184,7 +184,7 @@ public class SpawnSystem {
                 break;
             default:
                 // create entities at the position
-                Enemy defaultEnemy = new SkeletonWarrior();
+                Enemy defaultEnemy = new SkeletonSpearman();
                 defaultEnemy.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(defaultEnemy));
                 bm.addBehaviour(defaultEnemy, enemyBehaviour);
