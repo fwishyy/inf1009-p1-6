@@ -1,7 +1,7 @@
 package com.mygdx.entity;
 
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.enemy.EnemyMeleeAttackState;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.enemy.EnemyMeleeAttackState;
 
 public class SkeletonWarrior extends Enemy {
     private EnemyMeleeAttackState attackState;

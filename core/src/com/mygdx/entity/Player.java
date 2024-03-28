@@ -7,11 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.actions.Actionable;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.player.PlayerAttackState;
-import com.mygdx.entity.fsm.states.player.PlayerHurtState;
-import com.mygdx.entity.fsm.states.player.PlayerIdleState;
-import com.mygdx.entity.fsm.states.player.PlayerRunState;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.player.PlayerAttackState;
+import com.mygdx.entity.fsm.states.characters.player.PlayerHurtState;
+import com.mygdx.entity.fsm.states.characters.player.PlayerIdleState;
+import com.mygdx.entity.fsm.states.characters.player.PlayerRunState;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
 

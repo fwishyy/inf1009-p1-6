@@ -4,7 +4,7 @@ import com.mygdx.engine.behaviour.Behaviour;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.entity.Enemy;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 
 public class EnemyBehaviour implements Behaviour {
     private Player target;

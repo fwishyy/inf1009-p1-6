@@ -1,4 +1,4 @@
-package com.mygdx.entity.fsm.states;
+package com.mygdx.entity.fsm.states.characters;
 
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.Character;

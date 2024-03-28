@@ -1,5 +1,7 @@
 package com.mygdx.entity.fsm;
 
+import com.mygdx.engine.entity.Collider;
+
 public abstract class State {
     protected StateMachine stateMachine;
 
@@ -10,9 +12,25 @@ public abstract class State {
         this.stateMachine = stateMachine;
     }
 
-    public void onStateEnter(){};
+    public void onStateEnter() {
+    }
 
-    public void onStateExit(){};
+    ;
+
+    public void onStateExit() {
+    }
+
+    ;
+
+    public void onCollideEnter(Collider other) {
+    }
+
+    ;
+
+    public void onCollideExit(Collider other) {
+    }
+
+    ;
 
     public abstract void update();
 }

@@ -4,11 +4,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.EntityAddedEvent;
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.enemy.EnemyDeathState;
-import com.mygdx.entity.fsm.states.enemy.EnemyHurtState;
-import com.mygdx.entity.fsm.states.enemy.EnemyIdleState;
-import com.mygdx.entity.fsm.states.enemy.EnemyRunState;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.enemy.EnemyDeathState;
+import com.mygdx.entity.fsm.states.characters.enemy.EnemyHurtState;
+import com.mygdx.entity.fsm.states.characters.enemy.EnemyIdleState;
+import com.mygdx.entity.fsm.states.characters.enemy.EnemyRunState;
 
 
 public class Enemy extends Character {
@@ -36,6 +36,10 @@ public class Enemy extends Character {
         stateMachine.addState(CharacterStateEnum.DIE, deathState);
 
         stateMachine.setState(CharacterStateEnum.IDLE);
+
+        collider.setWidth(64);
+        collider.setHeight(64);
+        collider.setOffset(new Vector2(collider.getWidth() / 2, collider.getHeight() / 2));
     }
 
     public void setTarget(Character target) {
@@ -51,7 +55,7 @@ public class Enemy extends Character {
     }
 
     public CharacterStateEnum getState() {
-        return (CharacterStateEnum) stateMachine.getCurrentState();
+        return (CharacterStateEnum) stateMachine.getCurrentStateEnum();
     }
 
     public void move() {

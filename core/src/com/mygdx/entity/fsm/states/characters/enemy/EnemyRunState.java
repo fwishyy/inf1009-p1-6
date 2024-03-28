@@ -1,11 +1,11 @@
-package com.mygdx.entity.fsm.states.enemy;
+package com.mygdx.entity.fsm.states.characters.enemy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entity.Character;
 import com.mygdx.entity.Enemy;
-import com.mygdx.entity.fsm.states.CharacterState;
-import com.mygdx.entity.fsm.states.CharacterStateMachine;
+import com.mygdx.entity.fsm.states.characters.CharacterState;
+import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 
 public class EnemyRunState extends CharacterState {
     private Character target;

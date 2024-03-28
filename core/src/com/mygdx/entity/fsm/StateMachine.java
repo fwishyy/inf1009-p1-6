@@ -12,8 +12,12 @@ public class StateMachine<E extends Enum<E>, S extends State> {
         stateMap = new LinkedHashMap<>();
     }
 
-    public E getCurrentState() {
+    public E getCurrentStateEnum() {
         return currentStateEnum;
+    }
+
+    public S getCurrentState() {
+        return currentState;
     }
 
     public void addState(E enumConst, S state) {

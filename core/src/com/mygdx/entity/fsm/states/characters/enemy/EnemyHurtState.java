@@ -1,10 +1,10 @@
-package com.mygdx.entity.fsm.states.enemy;
+package com.mygdx.entity.fsm.states.characters.enemy;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.entity.Enemy;
-import com.mygdx.entity.fsm.states.CharacterState;
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.CharacterStateMachine;
+import com.mygdx.entity.fsm.states.characters.CharacterState;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 
 public class EnemyHurtState extends CharacterState {
     float animationDuration;

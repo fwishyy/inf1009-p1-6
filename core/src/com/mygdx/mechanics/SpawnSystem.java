@@ -17,6 +17,7 @@ import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.entity.Enemy;
 import com.mygdx.entity.Player;
+import com.mygdx.entity.SkeletonArcher;
 import com.mygdx.entity.SkeletonWarrior;
 
 public class SpawnSystem {
@@ -173,7 +174,7 @@ public class SpawnSystem {
                 bm.addBehaviour(skeletonWarrior, enemyBehaviour);
                 break;
             case 1:
-                Enemy skeletonArcher = new SkeletonWarrior();
+                Enemy skeletonArcher = new SkeletonArcher();
                 skeletonArcher.setPosition(position.x, position.y);
                 EntityAddedEvent.addEvent(new EntityAddedEvent(skeletonArcher));
                 bm.addBehaviour(skeletonArcher, enemyBehaviour);

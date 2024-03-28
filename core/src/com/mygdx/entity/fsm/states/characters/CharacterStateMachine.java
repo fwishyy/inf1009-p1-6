@@ -1,4 +1,4 @@
-package com.mygdx.entity.fsm.states;
+package com.mygdx.entity.fsm.states.characters;
 
 import com.mygdx.entity.Character;
 import com.mygdx.entity.fsm.StateMachine;

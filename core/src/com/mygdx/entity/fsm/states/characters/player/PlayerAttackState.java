@@ -1,4 +1,4 @@
-package com.mygdx.entity.fsm.states.player;
+package com.mygdx.entity.fsm.states.characters.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -6,10 +6,10 @@ import com.mygdx.engine.actions.InputAction;
 import com.mygdx.engine.controls.ActionMap;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.entity.Player;
-import com.mygdx.entity.fsm.states.CharacterState;
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.CharacterStateMachine;
-import com.mygdx.projectiles.Fireball;
+import com.mygdx.entity.fsm.states.characters.CharacterState;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
+import com.mygdx.entity.projectiles.Fireball;
 
 public class PlayerAttackState extends CharacterState {
 

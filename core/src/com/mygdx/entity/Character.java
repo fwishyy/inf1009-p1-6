@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
-import com.mygdx.entity.fsm.states.CharacterStateEnum;
-import com.mygdx.entity.fsm.states.CharacterStateMachine;
+import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
+import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 import com.mygdx.ui.HealthBar;
 
 
@@ -140,7 +140,7 @@ public class Character extends AnimatedEntity {
             message = ""; // Clear the message when the time is up
         }
 
-        if (isDead() && stateMachine.getCurrentState() != CharacterStateEnum.DIE) {
+        if (isDead() && stateMachine.getCurrentStateEnum() != CharacterStateEnum.DIE) {
             stateMachine.setState(CharacterStateEnum.DIE);
         }
     }
