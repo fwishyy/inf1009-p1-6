@@ -32,6 +32,7 @@ import com.mygdx.events.WinEvent;
 import com.mygdx.mechanics.BackGround;
 import com.mygdx.mechanics.Boundary;
 import com.mygdx.mechanics.SpawnSystem;
+import com.mygdx.mechanics.HitIndicator;
 import com.mygdx.mechanics.powerups.PowerUp;
 import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
@@ -73,6 +74,8 @@ public class GameScene extends Scene {
     // Powerups
     private boolean isSelectingPowerUp;
     private PowerUpWindow powerUpWindow;
+    
+    HitIndicator hitIndicator;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -164,6 +167,8 @@ public class GameScene extends Scene {
 //        enemySpawn.nextWave(new Wave(10, 2, 1.5f), 1);
 
         bound = new Boundary(p1, bg.getMinPos(), bg.getMaxPos());
+        
+        hitIndicator = new HitIndicator();
     }
 
     @Override
@@ -206,6 +211,8 @@ public class GameScene extends Scene {
         if (enemySpawn.getWave().isWaveEnded()) {
             showPowerUpWindow();
         }
+        
+        hitIndicator.update(batch);
     }
 
     private void showPowerUpWindow() {
@@ -248,6 +255,7 @@ public class GameScene extends Scene {
         EventBus.removeListener(winEventListener);
         EventBus.removeListener(loseEventListener);
         EventBus.removeListener(pointerEventListener);
+        hitIndicator.dispose();
 
         shapeRenderer = null;
         p1 = null;

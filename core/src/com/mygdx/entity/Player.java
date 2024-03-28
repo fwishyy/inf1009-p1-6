@@ -12,6 +12,7 @@ import com.mygdx.entity.fsm.states.characters.player.PlayerAttackState;
 import com.mygdx.entity.fsm.states.characters.player.PlayerHurtState;
 import com.mygdx.entity.fsm.states.characters.player.PlayerIdleState;
 import com.mygdx.entity.fsm.states.characters.player.PlayerRunState;
+import com.mygdx.events.EnemyHitEvent;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.TrajectoryLine;
 
@@ -125,12 +126,14 @@ public class Player extends Character implements Actionable {
         // TODO: refactor this such that they lie on the other party, not the player
         if (other.getEntity().getType().equals("maxHealthPotion")) {
             this.increaseMaxHp();
-            this.showMessage("Max HP +5%", 2.0f, Color.GREEN);
+//            this.showMessage("Max HP +5%", 2.0f, Color.GREEN);
+            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.GREEN));
             System.out.println("Max health increased by 5%");
         }
         if (other.getEntity().getType().equals("healthPotion")) {
             this.heal();
-            this.showMessage("+10 HP", 2.0f, Color.GREEN);
+//            this.showMessage("+10 HP", 2.0f, Color.GREEN);
+            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.RED));
             System.out.println("Healed 10 HP.");
         }
     }

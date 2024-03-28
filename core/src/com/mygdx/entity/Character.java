@@ -12,6 +12,7 @@ import com.mygdx.engine.entity.AnimatedEntity;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
+import com.mygdx.events.EnemyHitEvent;
 import com.mygdx.ui.HealthBar;
 
 
@@ -105,6 +106,7 @@ public class Character extends AnimatedEntity {
         // check whether character can take damage again
         if (canTakeDamage()) {
             currentHp -= damage;
+            EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f));
             if (currentHp < 0) {
                 currentHp = 0;
             }
@@ -122,12 +124,12 @@ public class Character extends AnimatedEntity {
         return currentHp <= 0;
     }
 
-    public void showMessage(String message, float time, Color color) {
-        this.message = message;
-        this.messageTime = time;
-        this.messageColor = color;
-        this.messagePosition.set(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50);
-    }
+//    public void showMessage(String message, float time, Color color) {
+//        this.message = message;
+//        this.messageTime = time;
+//        this.messageColor = color;
+//        this.messagePosition.set(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50);
+//    }
 
     @Override
     public void update() {

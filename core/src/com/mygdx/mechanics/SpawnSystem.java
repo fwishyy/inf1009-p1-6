@@ -31,9 +31,8 @@ public class SpawnSystem {
 
     private Wave wave = null;
 
-    private BitmapFont font = new BitmapFont();
-    private GlyphLayout layout = new GlyphLayout();
-    private String message = "Enemies Left: ";
+    private BitmapFont enemyCountFont = new BitmapFont();
+    private BitmapFont waveCountFont = new BitmapFont();
 
     public SpawnSystem(GameContainer container, float interval, float multiplier, int initialEnemies) {
         this.em = container.getEntityManager();
@@ -89,8 +88,10 @@ public class SpawnSystem {
 
     public void updateDisplay(SpriteBatch batch, OrthographicCamera camera) {
         batch.begin();
-        font.setColor(Color.WHITE);
-        font.draw(batch, message + wave.getEnemyCount(), camera.position.x + camera.viewportWidth / 2 - 150, camera.position.y + camera.viewportHeight / 2 - 20);
+        enemyCountFont.setColor(Color.WHITE);
+        enemyCountFont.draw(batch, "Enemies: " + wave.getEnemyCount(), camera.position.x + camera.viewportWidth / 2 - 150, camera.position.y + camera.viewportHeight / 2 - 20);
+        waveCountFont.setColor(Color.WHITE);
+        waveCountFont.draw(batch, "Wave: " + wave.getWaveCount(), camera.position.x + camera.viewportWidth / 2 - 150, camera.position.y + camera.viewportHeight / 2 - 40);
 //        System.out.println(font.draw(batch, message, screenWidth, screenHeight));
         batch.end();
     }
