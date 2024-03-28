@@ -175,7 +175,7 @@ public class GameScene extends Scene {
         pm.update();
 
         // draw collider for debugging purposes
-        cm.drawCollider(shapeRenderer, Color.RED);
+        //cm.drawCollider(shapeRenderer, Color.RED);
 
         // camera updates
         camera.cameraUpdate(deltaTime, p1.getVector2());

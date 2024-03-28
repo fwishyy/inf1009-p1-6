@@ -9,6 +9,7 @@ import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 
 public class EnemyRunState extends CharacterState {
     private Character target;
+    float tolerance = 0.5f;
 
     public EnemyRunState(Enemy enemy, CharacterStateMachine stateMachine) {
         super(enemy, stateMachine);
@@ -24,9 +25,16 @@ public class EnemyRunState extends CharacterState {
         Enemy enemy = (Enemy) character;
         target = enemy.getTarget();
         if (target != null) {
+        	
             Vector2 targetPos = target.getVector2();
             Vector2 dir = new Vector2();
-            dir.x = (enemy.getX() - targetPos.x <= 0) ? 1 : -1;
+      
+            if (enemy.getX() - targetPos.x > tolerance) {
+                dir.x = -1;
+            } else if (enemy.getX() - targetPos.x < -tolerance) {
+                dir.x = 1;
+            }
+            
             dir.y = (enemy.getY() - targetPos.y <= 0) ? 1 : -1;
 
             if (dir.x == -1) {
