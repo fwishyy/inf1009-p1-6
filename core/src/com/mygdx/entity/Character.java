@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.engine.entity.AnimatedEntity;
-import com.mygdx.engine.entity.Collider;
+import com.mygdx.engine.physics.Collider;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 import com.mygdx.events.EnemyHitEvent;

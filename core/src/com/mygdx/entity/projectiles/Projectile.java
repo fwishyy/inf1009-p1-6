@@ -2,7 +2,7 @@ package com.mygdx.entity.projectiles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.AnimatedEntity;
-import com.mygdx.engine.entity.Collider;
+import com.mygdx.engine.physics.Collider;
 import com.mygdx.entity.Character;
 import com.mygdx.entity.fsm.states.projectiles.ProjectileCollidedState;
 import com.mygdx.entity.fsm.states.projectiles.ProjectileMovingState;

@@ -3,7 +3,7 @@ package com.mygdx.entity.fsm.states.characters.player;
 import com.mygdx.engine.actions.InputAction;
 import com.mygdx.engine.actions.MoveAction;
 import com.mygdx.engine.controls.ActionMap;
-import com.mygdx.engine.entity.Collider;
+import com.mygdx.engine.physics.Collider;
 import com.mygdx.entity.Player;
 import com.mygdx.entity.fsm.states.characters.CharacterState;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;

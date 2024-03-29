@@ -3,8 +3,8 @@ package com.mygdx.mechanics.pickups;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.physics.Collider;
 import com.mygdx.entity.Player;
 import com.mygdx.events.PlaySFXEvent;
 

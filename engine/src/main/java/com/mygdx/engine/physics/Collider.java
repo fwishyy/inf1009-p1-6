@@ -1,11 +1,11 @@
-package com.mygdx.engine.entity;
+package com.mygdx.engine.physics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.physics.CollisionEvent;
+import com.mygdx.engine.entity.Entity;
 
 public class Collider {
 

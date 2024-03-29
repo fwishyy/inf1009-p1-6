@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.core.Manager;
-import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.entity.EntityDisposedEvent;

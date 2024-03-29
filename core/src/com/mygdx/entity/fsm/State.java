@@ -1,6 +1,6 @@
 package com.mygdx.entity.fsm;
 
-import com.mygdx.engine.entity.Collider;
+import com.mygdx.engine.physics.Collider;
 
 public abstract class State {
     protected StateMachine stateMachine;
