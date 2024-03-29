@@ -66,26 +66,6 @@ public class Enemy extends Character {
         stateMachine.setState(CharacterStateEnum.ATTACK);
     }
 
-    public void potionDrop() {
-        // check for a 1/5 chance to drop a potion
-        if (MathUtils.random(1, 5) == 1) {
-            // decide which potion to drop (50% chance each)
-            boolean dropHealthPotion = MathUtils.randomBoolean();
-
-            if (dropHealthPotion) {
-                // create a health potion at the enemy location
-                potion = new Pickup(new Vector2(getX(), getY()), "healthPotion");
-                EntityAddedEvent.addEvent(new EntityAddedEvent(potion));
-            } else {
-                // create a max health potion at the enemy location
-                potion = new Pickup(new Vector2(getX(), getY()), "maxHealthPotion");
-                EntityAddedEvent.addEvent(new EntityAddedEvent(potion));
-            }
-
-            // GameScene -> addEntity(potion);
-        }
-    }
-
     @Override
     public void collide(Collider other) {
     }
