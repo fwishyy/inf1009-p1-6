@@ -104,7 +104,10 @@ public class GameScene extends Scene {
 
         PointerEvent.addListener(PointerEvent.class, pointerEventListener);
         CharacterDeathEvent.addListener(CharacterDeathEvent.class, characterDeathEventListener);
-
+        
+        am.addMusic("GameMusic", "audio/music/medieval-battle-music.mp3", 0.2f, true);
+        am.play("GameMusic");
+        
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         crosshair = new Cursor("mouse/crosshair.png");

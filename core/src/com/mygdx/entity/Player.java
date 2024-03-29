@@ -38,7 +38,7 @@ public class Player extends Character implements Actionable {
 
         // Player Base Stats
         this.maxHp = 100;
-        this.currentHp = 50;
+        this.currentHp = 100;
         this.invincibilityDurationMS = 1000;
         this.damage = 50;
         // Attack Speed represents attacks per minutes
