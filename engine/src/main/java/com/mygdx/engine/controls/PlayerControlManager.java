@@ -29,6 +29,10 @@ public class PlayerControlManager extends Manager {
         entity.setActionMap(actionMap);
     }
 
+    public void removeActionMap(Actionable entity) {
+        entityActionMaps.remove(entity);
+    }
+
     // Currently this updates frame by frame
     // TODO: change this for new actions
     public void update() {

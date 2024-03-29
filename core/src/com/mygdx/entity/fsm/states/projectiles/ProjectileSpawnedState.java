@@ -1,7 +1,6 @@
 package com.mygdx.entity.fsm.states.projectiles;
 
 import com.mygdx.entity.projectiles.Projectile;
-import com.mygdx.entity.projectiles.ProjectileStateEnum;
 import com.mygdx.entity.projectiles.ProjectileStateMachine;
 
 public class ProjectileSpawnedState extends ProjectileState {

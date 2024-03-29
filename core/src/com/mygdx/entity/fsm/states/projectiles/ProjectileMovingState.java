@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.physics.Collider;
 import com.mygdx.entity.Character;
 import com.mygdx.entity.projectiles.Projectile;
-import com.mygdx.entity.projectiles.ProjectileStateEnum;
 import com.mygdx.entity.projectiles.ProjectileStateMachine;
 
 import java.util.ArrayList;

@@ -7,6 +7,7 @@ import com.mygdx.entity.Character;
 import com.mygdx.entity.fsm.states.projectiles.ProjectileCollidedState;
 import com.mygdx.entity.fsm.states.projectiles.ProjectileMovingState;
 import com.mygdx.entity.fsm.states.projectiles.ProjectileSpawnedState;
+import com.mygdx.entity.fsm.states.projectiles.ProjectileStateEnum;
 
 import java.util.ArrayList;
 
