@@ -20,13 +20,9 @@ import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.input.InputManager;
-import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
-import com.mygdx.engine.utils.Event;
-import com.mygdx.engine.utils.EventBus;
-import com.mygdx.engine.utils.EventListener;
 import com.mygdx.ui.Cursor;
 
 
@@ -41,8 +37,7 @@ public class MainMenuScene extends Scene {
     private TextureAtlas textureAtlas;
     private Texture bgTexture;
     private TextureRegionDrawable bgTextureDrawable;
-    private EventListener<PointerEvent> pointerEventListener;
-    private SceneManager sceneManager;
+    private SceneManager sm;
     private Skin skin;
     private TextButton startButton;
     private TextButton settingsButton;
@@ -53,7 +48,7 @@ public class MainMenuScene extends Scene {
 
     public MainMenuScene(GameContainer container) {
         super(container);
-        sceneManager = container.getSceneManager();
+        sm = container.getSceneManager();
         im = container.getInputManager();
         am = container.getAudioManager();
     }
@@ -61,22 +56,16 @@ public class MainMenuScene extends Scene {
     @Override
     public void show() {
         super.show();
-        pointerEventListener = new EventListener<PointerEvent>() {
-            @Override
-            public void onSignal(Event e) {
-                if (e instanceof PointerEvent) handlePointerEvents((PointerEvent) e);
-            }
-        };
-        EventBus.addListener(PointerEvent.class, pointerEventListener);
 
         // Add 2 different cursors
         cursor = new Cursor("mouse/pointer.png");
         hand = new Cursor("mouse/hand.png");
 
         // Menu Screen Audio
-        am.addMusic("MenuMusic", "audio/music/Hell-Night.mp3");
-        am.setVolume("MenuMusic", 0.2f);
-        am.play("MenuMusic");
+        if (!am.isPlaying("MenuMusic")) {
+            am.addMusic("MenuMusic", "audio/music/Hell-Night.mp3");
+            am.play("MenuMusic");
+        }
 
         table = new Table();
         textureAtlas = new TextureAtlas(Gdx.files.internal("sgx/skin/menu-ui.atlas"));
@@ -132,8 +121,8 @@ public class MainMenuScene extends Scene {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // TODO Auto-generated method stub
                 System.out.println("START");
-                //sceneManager.setScene(new GameScene(container));
-                sceneManager.setScene(new CharacterSelectionScene(container));
+                //sm.setScene(new GameScene(container));
+                sm.setScene(new CharacterSelectionScene(container));
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -167,7 +156,7 @@ public class MainMenuScene extends Scene {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // TODO Auto-generated method stub
                 System.out.println("SETTINGS");
-                sceneManager.setScene(new SettingsScene(container));
+                sm.setScene(new SettingsScene(container));
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -176,13 +165,6 @@ public class MainMenuScene extends Scene {
 
         // Set cursor as the displayed cursor
         cursor.update();
-
-    }
-
-    private void handlePointerEvents(PointerEvent pointerEvent) {
-        PointerEvent.Type type = pointerEvent.getType();
-
-        // Not sure if want to remove this yet.
 
     }
 
@@ -196,7 +178,6 @@ public class MainMenuScene extends Scene {
 
     @Override
     public void dispose() {
-        EventBus.removeListener(pointerEventListener);
         stage.dispose();
         skin.dispose();
     }

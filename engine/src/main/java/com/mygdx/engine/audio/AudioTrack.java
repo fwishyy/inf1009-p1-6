@@ -8,6 +8,7 @@ public class AudioTrack {
     //protected String name;
     protected String path;
     protected float volume;
+    protected boolean isPlaying;
     protected boolean isLoop;
     protected boolean isFX;
     protected Music music;
@@ -34,11 +35,6 @@ public class AudioTrack {
 
     }
 
-    // Getter Methods
-    //protected String getName() {
-    //	return name;
-    //}
-
     protected String getPath() {
         return path;
     }
@@ -59,9 +55,9 @@ public class AudioTrack {
     protected void setVolume(float volume) {
         this.volume = volume;
         if (this.isFX) {
-        	this.sound.setVolume(0, volume);
+            this.sound.setVolume(0, volume);
         } else {
-        	this.music.setVolume(volume);
+            this.music.setVolume(volume);
         }
     }
 
@@ -80,6 +76,10 @@ public class AudioTrack {
 
     protected boolean isLoop() {
         return isLoop;
+    }
+
+    protected boolean isPlaying() {
+        return isPlaying;
     }
 
     protected void setLoop(boolean isLoop) {

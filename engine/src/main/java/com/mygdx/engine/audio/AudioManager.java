@@ -225,18 +225,18 @@ public class AudioManager extends Manager {
             }
         }
     }
-    
+
     public float getVolume(String name) {
-    	float audioVolume = 0;
-    	if (!audiolist.containsKey(name)) {
-    		if (debug) {
-    			System.out.println("AudioManager: '" + name + "' does not exist");
-    		}
-    	} else {
-    		AudioTrack getAudioTrack = audiolist.get(name);
-    		audioVolume = getAudioTrack.getVolume();
-    	} 
-    	return audioVolume;
+        float audioVolume = 0;
+        if (!audiolist.containsKey(name)) {
+            if (debug) {
+                System.out.println("AudioManager: '" + name + "' does not exist");
+            }
+        } else {
+            AudioTrack getAudioTrack = audiolist.get(name);
+            audioVolume = getAudioTrack.getVolume();
+        }
+        return audioVolume;
     }
 
     public void setFX(String name, boolean isFX) {
@@ -259,6 +259,18 @@ public class AudioManager extends Manager {
                 }
             }
         }
+    }
+
+    public boolean isPlaying(String name) {
+        if (!audiolist.containsKey(name)) {
+            if (debug) {
+                System.out.println("AudioManager: '" + name + "' does not exist");
+            }
+        } else {
+            AudioTrack audioTrack = audiolist.get(name);
+            return audioTrack.isPlaying();
+        }
+        return false;
     }
 
     public synchronized void play(String name) {
