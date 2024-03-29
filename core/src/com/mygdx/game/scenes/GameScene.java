@@ -109,7 +109,7 @@ public class GameScene extends Scene {
         PointerEvent.addListener(PointerEvent.class, pointerEventListener);
         CharacterDeathEvent.addListener(CharacterDeathEvent.class, characterDeathEventListener);
         
-        am.addMusic("GameMusic", "audio/music/medieval-battle-music.mp3", 0.2f, true);
+        am.setLoop("GameMusic", true);
         am.play("GameMusic");
         
         sfx = new SoundFX(am);

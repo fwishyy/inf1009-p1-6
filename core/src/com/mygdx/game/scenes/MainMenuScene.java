@@ -60,6 +60,7 @@ public class MainMenuScene extends Scene {
         // Add 2 different cursors
         cursor = new Cursor("mouse/pointer.png");
         hand = new Cursor("mouse/hand.png");
+        am.addMusic("GameMusic", "audio/music/medieval-battle-music.mp3");
 
         // Menu Screen Audio
         if (!am.isPlaying("MenuMusic")) {

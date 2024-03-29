@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.input.InputManager;
 import com.mygdx.ui.Cursor;
@@ -29,6 +30,7 @@ public class LoseScene extends Scene {
     private TextureRegionDrawable bgTextureDrawable;
     private EventListener<PointerEvent> pointerEventListener;
     private SceneManager sceneManager;
+    private AudioManager am;
     private InputManager im;
     private TextureAtlas textureAtlas;
     private Skin skin;
@@ -46,6 +48,7 @@ public class LoseScene extends Scene {
         super(container);
         sceneManager = container.getSceneManager();
         im = container.getInputManager();
+        am = container.getAudioManager();
     }
 
     @Override
@@ -143,6 +146,7 @@ public class LoseScene extends Scene {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				// TODO Auto-generated method stub
 				sceneManager.setScene(new MainMenuScene(container));
+				am.stop("GameMusic");
 				return super.touchDown(event, x, y, pointer, button);
 			}
         	
@@ -169,6 +173,7 @@ public class LoseScene extends Scene {
 
     @Override
     public void dispose() {
+    	stage.dispose();
         EventBus.removeListener(pointerEventListener);
     }
 }

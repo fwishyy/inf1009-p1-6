@@ -81,8 +81,8 @@ public class CharacterSelectionScene extends Scene {
         // Character 1 & 2
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
-        em.createEntity(1, AnimatedEntity.class, "characters/Mage_Fire/Idle.png", 200, 200, "playable1", 1, 7, 0.1f);
-        em.createEntity(1, AnimatedEntity.class, "characters/Skeleton_Warrior/Idle.png", 330, 200, "playable2", 1, 7, 0.1f);
+        em.createEntity(1, AnimatedEntity.class, "characters/Mage_Fire/Idle.png", Gdx.graphics.getWidth() / 2 - 125, Gdx.graphics.getHeight()/2, "playable1", 1, 7, 0.1f);
+        em.createEntity(1, AnimatedEntity.class, "characters/Skeleton_Warrior/Idle.png", Gdx.graphics.getWidth() / 2 + 10, Gdx.graphics.getHeight()/2, "playable2", 1, 7, 0.1f);
 
         // Create background texture
         bgTexture = new Texture("bg/PNG/main-menu-bg.jpg");
