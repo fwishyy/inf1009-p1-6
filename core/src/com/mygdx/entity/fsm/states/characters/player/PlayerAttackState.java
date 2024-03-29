@@ -10,6 +10,7 @@ import com.mygdx.entity.fsm.states.characters.CharacterState;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 import com.mygdx.entity.projectiles.Fireball;
+import com.mygdx.events.PlaySFXEvent;
 
 public class PlayerAttackState extends CharacterState {
 
@@ -52,6 +53,7 @@ public class PlayerAttackState extends CharacterState {
                     fireball.setY(fireball.getY() - fireball.getHeight() / 2f);
                     fireball.setDirection(direction.nor());
                     EntityAddedEvent.addEvent(new EntityAddedEvent(fireball));
+                    PlaySFXEvent.addEvent(new PlaySFXEvent("FireBallFX"));
                     attackTimer = 0;
                 }
             }

@@ -12,6 +12,7 @@ import com.mygdx.engine.entity.Collider;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 import com.mygdx.events.EnemyHitEvent;
+import com.mygdx.events.PlaySFXEvent;
 import com.mygdx.mechanics.pickups.Pickup;
 import com.mygdx.ui.HealthBar;
 
@@ -93,6 +94,10 @@ public class Character extends AnimatedEntity {
         if (canTakeDamage()) {
             currentHp -= damage;
             EnemyHitEvent.addEvent(new EnemyHitEvent(Float.toString(damage), new Vector2(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() - 50), 0.5f, Color.RED));
+            if(this instanceof SkeletonArcher  || this instanceof SkeletonWarrior || this instanceof SkeletonSpearman)
+            	PlaySFXEvent.addEvent(new PlaySFXEvent("SkeletonHurtFX"));
+            if(this instanceof Player)
+            	PlaySFXEvent.addEvent(new PlaySFXEvent("PlayerHurtFX"));
             if (currentHp < 0) {
                 currentHp = 0;
             }
@@ -117,6 +122,7 @@ public class Character extends AnimatedEntity {
 
         if (isDead() && stateMachine.getCurrentStateEnum() != CharacterStateEnum.DIE) {
             stateMachine.setState(CharacterStateEnum.DIE);
+            PlaySFXEvent.addEvent(new PlaySFXEvent("DeathFX"));
         }
     }
 }

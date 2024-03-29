@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Collider;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.entity.Player;
+import com.mygdx.events.PlaySFXEvent;
 
 public abstract class Pickup extends Entity {
 
@@ -28,6 +29,7 @@ public abstract class Pickup extends Entity {
         System.out.println("collider");
         if (other.getEntity().getType().equals("player1")) {
             Player player = (Player) other.getEntity();
+            PlaySFXEvent.addEvent(new PlaySFXEvent("PotionPickUpFX"));
             activate(player);
             this.dispose();
         }
