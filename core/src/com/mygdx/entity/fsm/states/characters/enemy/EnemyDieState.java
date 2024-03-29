@@ -13,13 +13,13 @@ public class EnemyDieState extends CharacterState {
 
     @Override
     public void onStateEnter() {
-        CharacterDeathEvent.addEvent(new CharacterDeathEvent(character));
         character.setAnimation("die", 1, true);
     }
 
     @Override
     public void update() {
         if (character.readyToDispose()) {
+            CharacterDeathEvent.addEvent(new CharacterDeathEvent(character));
             character.dispose();
         }
     }

@@ -13,12 +13,12 @@ public class PlayerDieState extends CharacterState {
     @Override
     public void onStateEnter() {
         character.setAnimation("die", 1, true);
-        CharacterDeathEvent.addEvent(new CharacterDeathEvent(character));
     }
 
     @Override
     public void update() {
         if (character.readyToDispose()) {
+            CharacterDeathEvent.addEvent(new CharacterDeathEvent(character));
             character.dispose();
         }
     }

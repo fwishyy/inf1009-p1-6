@@ -3,7 +3,7 @@ package com.mygdx.entity;
 import com.badlogic.gdx.math.Vector2;
 
 public interface Combatant {
-    void takeDamage(int damage);
+    void takeDamage(float damage);
 
     void attack();
 
