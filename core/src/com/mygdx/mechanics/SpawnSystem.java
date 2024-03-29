@@ -194,7 +194,8 @@ public class SpawnSystem {
     }
 
     private void spawnBoss(Vector2 position) {
-        Enemy yokai = new Enemy("characters/Yokai_Yamabushi_Tengu/Walk.png", position.x, position.y, "yokai", 1, 8, 0.1f);
+        Yokai yokai = new Yokai();
+        yokai.setPosition(position);
         EntityAddedEvent.addEvent(new EntityAddedEvent(yokai));
         EnemyBehaviour seek = new EnemyBehaviour(p1);
         bm.addBehaviour(yokai, seek);

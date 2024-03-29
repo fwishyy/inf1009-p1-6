@@ -13,5 +13,6 @@ public class Fireball extends Projectile {
         addAffectedTag("skeletonWarrior");
         addAffectedTag("skeletonArcher");
         addAffectedTag("skeletonSpearman");
+        addAffectedTag("yokai");
     }
 }
