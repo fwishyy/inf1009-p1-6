@@ -59,8 +59,8 @@ public class SettingsScene extends Scene{
 		
 		super.show();
 		// Add 2 different cursors
-        cursor = new Cursor("mouse/pointer.png");
-        hand = new Cursor("mouse/hand.png");
+        cursor = new Cursor("mouse/pointer.png", 18, 13);
+        hand = new Cursor("mouse/hand.png", 27, 11);
 		MenuMusicVolume = am.getVolume("MenuMusic");
 		
 		table = new Table();
@@ -117,6 +117,10 @@ public class SettingsScene extends Scene{
         stage.addActor(table);
         im.addInputProcessor(stage);
         
+        // The + and - in the volume buttons are textures, so need to scale the entire button instead of just text
+        volumeDown.setTransform(true);
+        volumeUp.setTransform(true);
+        
         // When the volume down button is pressed
         volumeDown.addListener(new InputListener() {
         	
@@ -125,7 +129,7 @@ public class SettingsScene extends Scene{
 		    	hand.update();
 		    	
 		    	// Scale the TextButton
-		    	volumeDown.getLabel().setFontScale(1.2f);
+		    	volumeDown.setScale(1.2f);
 		    }
 
 		    @Override
@@ -133,7 +137,7 @@ public class SettingsScene extends Scene{
 		    	cursor.update();
 		    	
 		    	// Reset the TextButton
-		    	volumeDown.getLabel().setFontScale(1f);
+		    	volumeDown.setScale(1.0f);
 		       
 		    }
 
@@ -160,7 +164,7 @@ public class SettingsScene extends Scene{
 		    	hand.update();
 		    	
 		    	// Scale the TextButton
-		    	volumeUp.getLabel().setFontScale(1.2f);
+		    	volumeUp.setScale(1.2f);
 		    }
 
 		    @Override
@@ -168,7 +172,7 @@ public class SettingsScene extends Scene{
 		    	cursor.update();
 		    	
 		    	// Reset the TextButton
-		    	volumeUp.getLabel().setFontScale(1f);
+		    	volumeUp.setScale(1.0f);
 		       
 		    }
 

@@ -58,8 +58,8 @@ public class MainMenuScene extends Scene {
         super.show();
 
         // Add 2 different cursors
-        cursor = new Cursor("mouse/pointer.png");
-        hand = new Cursor("mouse/hand.png");
+        cursor = new Cursor("mouse/pointer.png", 18, 13);
+        hand = new Cursor("mouse/hand.png", 27, 11);
         am.addMusic("GameMusic", "audio/music/medieval-battle-music.mp3");
 
         // Menu Screen Audio

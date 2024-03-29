@@ -71,8 +71,8 @@ public class CharacterSelectionScene extends Scene {
         Preferences character_prefs = Gdx.app.getPreferences("CharacterSelection");
 
         // Add 2 different cursors
-        cursor = new Cursor("mouse/pointer.png");
-        hand = new Cursor("mouse/hand.png");
+        cursor = new Cursor("mouse/pointer.png", 18, 13);
+        hand = new Cursor("mouse/hand.png", 27, 11);
         table = new Table();
         textureAtlas = new TextureAtlas(Gdx.files.internal("sgx/skin/menu-ui.atlas"));
         font = new BitmapFont(Gdx.files.internal("sgx/skin/font-export.fnt"));
