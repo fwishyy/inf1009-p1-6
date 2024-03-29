@@ -29,6 +29,7 @@ import com.mygdx.entity.Player;
 import com.mygdx.events.CharacterDeathEvent;
 import com.mygdx.mechanics.*;
 import com.mygdx.mechanics.powerups.PowerUp;
+import com.mygdx.sfx.SoundFX;
 import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
 import com.mygdx.ui.HitIndicator;
@@ -72,6 +73,8 @@ public class GameScene extends Scene {
     // Powerups
     private PowerUpWindow powerUpWindow;
     private HitIndicator hitIndicator;
+    
+    private SoundFX sfx;
 
     public GameScene(GameContainer container) {
         this.container = container;
@@ -108,6 +111,8 @@ public class GameScene extends Scene {
         
         am.addMusic("GameMusic", "audio/music/medieval-battle-music.mp3", 0.2f, true);
         am.play("GameMusic");
+        
+        sfx = new SoundFX(am);
         
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -204,6 +209,8 @@ public class GameScene extends Scene {
         }
 
         hitIndicator.update(batch);
+        
+        sfx.update();
     }
 
     private void showPowerUpWindow() {

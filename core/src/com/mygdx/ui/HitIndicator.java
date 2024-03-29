@@ -22,7 +22,6 @@ public class HitIndicator {
     private EventListener<EnemyHitEvent> enemyHitEventListener = new EventListener<EnemyHitEvent>() {
         @Override
         public void onSignal(Event e) {
-            System.out.println("=========== SHOW HIT INDICATOR ==============");
             showText((EnemyHitEvent) e);
         }
     };
