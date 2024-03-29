@@ -13,6 +13,7 @@ public class EnemyIdleState extends CharacterState {
     public void onStateEnter() {
         character.setAnimation("default");
     }
+
     @Override
     public void update() {
 

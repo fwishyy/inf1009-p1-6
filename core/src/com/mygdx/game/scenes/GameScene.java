@@ -1,7 +1,6 @@
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -24,10 +23,13 @@ import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
 import com.mygdx.entity.Enemy;
-import com.mygdx.mechanics.pickups.Pickup;
 import com.mygdx.entity.Player;
 import com.mygdx.events.CharacterDeathEvent;
-import com.mygdx.mechanics.*;
+import com.mygdx.mechanics.Background;
+import com.mygdx.mechanics.Boundary;
+import com.mygdx.mechanics.DropSystem;
+import com.mygdx.mechanics.SpawnSystem;
+import com.mygdx.mechanics.pickups.Pickup;
 import com.mygdx.mechanics.powerups.PowerUp;
 import com.mygdx.sfx.SoundFX;
 import com.mygdx.ui.Cursor;
@@ -73,7 +75,7 @@ public class GameScene extends Scene {
     // Powerups
     private PowerUpWindow powerUpWindow;
     private HitIndicator hitIndicator;
-    
+
     private SoundFX sfx;
 
     public GameScene(GameContainer container) {
@@ -108,12 +110,12 @@ public class GameScene extends Scene {
 
         PointerEvent.addListener(PointerEvent.class, pointerEventListener);
         CharacterDeathEvent.addListener(CharacterDeathEvent.class, characterDeathEventListener);
-        
+
         am.setLoop("GameMusic", true);
         am.play("GameMusic");
-        
+
         sfx = new SoundFX(am);
-        
+
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         crosshair = new Cursor("mouse/crosshair.png");
@@ -211,7 +213,7 @@ public class GameScene extends Scene {
         }
 
         hitIndicator.update(batch);
-        
+
         sfx.update();
     }
 

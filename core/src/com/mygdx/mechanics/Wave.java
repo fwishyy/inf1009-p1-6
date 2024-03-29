@@ -3,28 +3,20 @@ package com.mygdx.mechanics;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
-import com.mygdx.entity.Enemy;
 import com.mygdx.events.CharacterDeathEvent;
 
 public class Wave {
 
-    public enum waveState {
-        PAUSE, IN_PROGRESS, END
-    }
-
     public static waveState state = waveState.PAUSE;
-
     private int initialEnemies = 0;
     private float interval = 0f; // controls rate of spawning
     private float multiplier = 0f;
-
     private boolean stop = false; // to stop spawning
     private boolean waveEnded = false; // to track end of wave
     private float timer = 0f;
     private int enemyCount = 0; // track enemies currently existing
     private int enemiesSpawned = 0; // track num of enemies spawned
     private int waveCount = 1;
-
     private int bossWave = 0;
     private int bossCount = 0;
     private int bossSpawned = 0;
@@ -34,7 +26,6 @@ public class Wave {
             handleEnemyDefeated((CharacterDeathEvent) e);
         }
     };
-
     public Wave(int initialEnemies, float interval, float multiplier) {
         this.initialEnemies = initialEnemies;
         this.interval = interval;
@@ -78,12 +69,12 @@ public class Wave {
         return bossWave;
     }
 
-    public void setBossWave(int bossWave) {
-        this.bossWave = bossWave;
-    }
-
     public boolean isBossWave() {
         return this.getBossWave() != 0 && (this.getWaveCount() % this.getBossWave() == 0);
+    }
+
+    public void setBossWave(int bossWave) {
+        this.bossWave = bossWave;
     }
 
     public int getBossCount() {
@@ -141,7 +132,7 @@ public class Wave {
     }
 
     public void handleEnemyDefeated(CharacterDeathEvent e) {
-        if(e.getCharacter().getType() != "player1") {
+        if (e.getCharacter().getType() != "player1") {
             enemyCount -= 1;
         }
     }
@@ -164,5 +155,9 @@ public class Wave {
 
     public void dispose() {
         EventBus.removeListener(characterDeathEventListener);
+    }
+
+    public enum waveState {
+        PAUSE, IN_PROGRESS, END
     }
 }

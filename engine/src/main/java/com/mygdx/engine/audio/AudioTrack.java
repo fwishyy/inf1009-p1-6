@@ -78,10 +78,6 @@ public class AudioTrack {
         return isLoop;
     }
 
-    protected boolean isPlaying() {
-        return isPlaying;
-    }
-
     protected void setLoop(boolean isLoop) {
         this.isLoop = isLoop;
         if (this.isFX) {
@@ -89,6 +85,10 @@ public class AudioTrack {
         } else {
             this.music.setLooping(isLoop);
         }
+    }
+
+    protected boolean isPlaying() {
+        return isPlaying;
     }
 
     protected void setIsEnabled(boolean isFX) {

@@ -15,7 +15,7 @@ public class Cursor {
         cursor = Gdx.graphics.newCursor(cursorTexture, cursorTexture.getWidth() / 2, cursorTexture.getHeight() / 2);
 
     }
-    
+
     // Alternative constructor with self provided hotspot values
     public Cursor(String cursorImagePath, int hotspot_x, int hotspot_y) {
 

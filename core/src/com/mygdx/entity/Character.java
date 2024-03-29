@@ -19,29 +19,25 @@ import com.mygdx.ui.HealthBar;
 // Characters are generic animated entities for all on-screen things, like characters and monsters that have a health bar, the ability to take damage, and so on
 public class Character extends AnimatedEntity {
 
-    private String message = "";
-    private float messageTime = 0f;
-    private BitmapFont font = new BitmapFont();
-    private Color messageColor = new Color(Color.WHITE);
-    private GlyphLayout layout = new GlyphLayout();
-    private Vector2 messagePosition = new Vector2();
     private final float messageSpeed = 20f;
-
     // Character UI elements
     public HealthBar healthBar;
-
     // Character stats
     protected float maxHp;
     protected float currentHp;
     protected float speed;
     protected float damage;
     protected float attackSpeed;
-
     protected float invincibilityDurationMS;
     protected long lastTookDamageMS;
-
     // FSM
     CharacterStateMachine stateMachine;
+    private String message = "";
+    private float messageTime = 0f;
+    private BitmapFont font = new BitmapFont();
+    private Color messageColor = new Color(Color.WHITE);
+    private GlyphLayout layout = new GlyphLayout();
+    private Vector2 messagePosition = new Vector2();
 
     public Character(String texture, float x, float y, String type, int frameCountRow, int frameCountColumn, float frameDuration) {
         super(texture, x, y, type, frameCountRow, frameCountColumn, frameDuration);

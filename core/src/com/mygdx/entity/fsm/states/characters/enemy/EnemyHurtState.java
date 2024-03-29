@@ -23,7 +23,7 @@ public class EnemyHurtState extends CharacterState {
     @Override
     public void update() {
         animationTimer += Gdx.graphics.getDeltaTime();
-        if(animationTimer >= animationDuration) {
+        if (animationTimer >= animationDuration) {
             stateMachine.setState(CharacterStateEnum.IDLE);
         }
     }

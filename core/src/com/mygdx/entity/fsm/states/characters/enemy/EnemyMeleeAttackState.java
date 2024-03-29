@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.mygdx.entity.Character;
 import com.mygdx.entity.Enemy;
 import com.mygdx.entity.fsm.states.characters.CharacterState;
-import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.CharacterStateMachine;
 
 public class EnemyMeleeAttackState extends CharacterState {

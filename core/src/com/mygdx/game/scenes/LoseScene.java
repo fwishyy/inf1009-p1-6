@@ -15,13 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.engine.audio.AudioManager;
 import com.mygdx.engine.core.GameContainer;
 import com.mygdx.engine.input.InputManager;
-import com.mygdx.ui.Cursor;
 import com.mygdx.engine.input.PointerEvent;
 import com.mygdx.engine.scenes.Scene;
 import com.mygdx.engine.scenes.SceneManager;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventBus;
 import com.mygdx.engine.utils.EventListener;
+import com.mygdx.ui.Cursor;
 
 public class LoseScene extends Scene {
 
@@ -35,14 +35,14 @@ public class LoseScene extends Scene {
     private TextureAtlas textureAtlas;
     private Skin skin;
     private BitmapFont font;
-    
+
     private TextButton restartBtn;
     private TextButton menuBtn;
-    
+
     // Cursor
     private Cursor cursor;
     private Cursor hand;
-    
+
 
     public LoseScene(GameContainer container) {
         super(container);
@@ -63,21 +63,21 @@ public class LoseScene extends Scene {
         };
 
         EventBus.addListener(PointerEvent.class, pointerEventListener);
-        
-        
+
+
         // Add 2 different cursors
         cursor = new Cursor("mouse/pointer.png", 18, 13);
         hand = new Cursor("mouse/hand.png", 27, 11);
-        
+
         textureAtlas = new TextureAtlas(Gdx.files.internal("sgx/skin/menu-ui.atlas"));
         font = new BitmapFont(Gdx.files.internal("sgx/skin/font-export.fnt"));
         skin = new Skin(textureAtlas);
-        
+
         // Button style
         TextButtonStyle buttonStyle = new TextButtonStyle();
         buttonStyle.up = skin.getDrawable("Button-BG-shadow");
-        buttonStyle.font = font;  
-        
+        buttonStyle.font = font;
+
         // End scene buttons
         restartBtn = new TextButton("Restart", buttonStyle);
         menuBtn = new TextButton("Main Menu", buttonStyle);
@@ -87,71 +87,71 @@ public class LoseScene extends Scene {
         bgTexture = new Texture("bg/PNG/lose_screen.png");
         bgTextureDrawable = new TextureRegionDrawable(bgTexture);
         table.setBackground(bgTextureDrawable);
-        
+
         // Table for the 2 buttons
         table.add(restartBtn).row();
         table.add(menuBtn);
         stage.addActor(table);
         im.addInputProcessor(stage);
-        
+
         // Handler for the 2 buttons
         restartBtn.addListener(new InputListener() {
-        	
-        	@Override
-		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.update();
-		    	
-		    	// Scale the TextButton
-		    	restartBtn.getLabel().setFontScale(1.2f);
-		    }
 
-		    @Override
-		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.update();
-		    	
-		    	// Reset the TextButton
-		    	restartBtn.getLabel().setFontScale(1f);
-		       
-		    }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                hand.update();
 
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				// TODO Auto-generated method stub
-				sceneManager.setScene(new GameScene(container));
-				return super.touchDown(event, x, y, pointer, button);
-			}
-        	
+                // Scale the TextButton
+                restartBtn.getLabel().setFontScale(1.2f);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                cursor.update();
+
+                // Reset the TextButton
+                restartBtn.getLabel().setFontScale(1f);
+
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO Auto-generated method stub
+                sceneManager.setScene(new GameScene(container));
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
         });
-        
+
         menuBtn.addListener(new InputListener() {
-        	
-        	@Override
-		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	hand.update();
-		    	
-		    	// Scale the TextButton
-		    	menuBtn.getLabel().setFontScale(1.2f);
-		    }
 
-		    @Override
-		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-		    	cursor.update();
-		    	
-		    	// Reset the TextButton
-		    	menuBtn.getLabel().setFontScale(1f);
-		       
-		    }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                hand.update();
 
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				// TODO Auto-generated method stub
-				sceneManager.setScene(new MainMenuScene(container));
-				am.stop("GameMusic");
-				return super.touchDown(event, x, y, pointer, button);
-			}
-        	
+                // Scale the TextButton
+                menuBtn.getLabel().setFontScale(1.2f);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                cursor.update();
+
+                // Reset the TextButton
+                menuBtn.getLabel().setFontScale(1f);
+
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO Auto-generated method stub
+                sceneManager.setScene(new MainMenuScene(container));
+                am.stop("GameMusic");
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
         });
-        
+
         // Set cursor as the displayed cursor
         cursor.update();
     }
@@ -173,7 +173,7 @@ public class LoseScene extends Scene {
 
     @Override
     public void dispose() {
-    	stage.dispose();
+        stage.dispose();
         EventBus.removeListener(pointerEventListener);
     }
 }

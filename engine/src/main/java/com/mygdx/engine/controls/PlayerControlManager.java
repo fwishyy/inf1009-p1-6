@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class PlayerControlManager extends Manager {
 
-    private InputManager inputManager;
     private final LinkedHashMap<Actionable, ActionMap> entityActionMaps;
+    private InputManager inputManager;
 
     public PlayerControlManager(GameContainer container) {
         super(container);

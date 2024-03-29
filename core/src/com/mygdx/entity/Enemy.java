@@ -1,8 +1,6 @@
 package com.mygdx.entity;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.physics.Collider;
 import com.mygdx.entity.fsm.states.characters.CharacterStateEnum;
 import com.mygdx.entity.fsm.states.characters.enemy.EnemyDieState;
@@ -42,12 +40,12 @@ public class Enemy extends Character {
         collider.setOffset(new Vector2(collider.getWidth() / 2, collider.getHeight() / 2));
     }
 
-    public void setTarget(Character target) {
-        this.target = target;
-    }
-
     public Character getTarget() {
         return target;
+    }
+
+    public void setTarget(Character target) {
+        this.target = target;
     }
 
     public float getStrikingDistance() {

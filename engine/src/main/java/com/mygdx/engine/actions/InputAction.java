@@ -8,23 +8,24 @@ public class InputAction {
     public InputAction() {
 
     }
+
     public InputAction(int keyCode) {
         this.binding = keyCode;
-    }
-
-    public void setTriggered(boolean isTriggered) {
-        this.isTriggered = isTriggered;
     }
 
     public boolean isTriggered() {
         return isTriggered;
     }
 
-    public void setBinding(int binding) {
-        this.binding = binding;
+    public void setTriggered(boolean isTriggered) {
+        this.isTriggered = isTriggered;
     }
 
     public int getBinding() {
         return binding;
+    }
+
+    public void setBinding(int binding) {
+        this.binding = binding;
     }
 }

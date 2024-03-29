@@ -286,7 +286,7 @@ public class AudioManager extends Manager {
                 if (audiotrack.isLoop) {
                     audiotrack.getSound().loop(audiotrack.getVolume());
                 } else {
-                	System.out.println(audiotrack.getSound().toString() + ": " + audiotrack.getVolume());
+                    System.out.println(audiotrack.getSound().toString() + ": " + audiotrack.getVolume());
                     audiotrack.getSound().play(audiotrack.getVolume());
                 }
 

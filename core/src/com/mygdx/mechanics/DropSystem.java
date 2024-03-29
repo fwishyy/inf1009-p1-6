@@ -1,7 +1,6 @@
 package com.mygdx.mechanics;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.EntityAddedEvent;
 import com.mygdx.engine.utils.Event;
 import com.mygdx.engine.utils.EventListener;
@@ -9,14 +8,10 @@ import com.mygdx.entity.Enemy;
 import com.mygdx.events.CharacterDeathEvent;
 import com.mygdx.mechanics.pickups.HealingPotion;
 import com.mygdx.mechanics.pickups.IncreaseMaxHealthPotion;
-import com.mygdx.mechanics.pickups.Pickup;
-
-import java.util.ArrayList;
 
 public class DropSystem {
 
     private EventListener<CharacterDeathEvent> characterDeathEventListener;
-    private ArrayList<String> enemyTypes;
 
     public DropSystem() {
         this.characterDeathEventListener = new EventListener<CharacterDeathEvent>() {

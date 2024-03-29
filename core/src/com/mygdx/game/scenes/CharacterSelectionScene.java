@@ -29,6 +29,8 @@ import com.mygdx.ui.Cursor;
 
 public class CharacterSelectionScene extends Scene {
 
+    // Singleton instance
+    private static CharacterSelectionScene instance;
     private AudioManager am;
     private InputManager im;
     private EntityManager em;
@@ -47,13 +49,9 @@ public class CharacterSelectionScene extends Scene {
     private TextButton playBtn;
     private boolean mageSelected;
     private boolean skeletonSelected;
-
     // Cursor
     private Cursor cursor;
     private Cursor hand;
-
-    // Singleton instance
-    private static CharacterSelectionScene instance;
 
     public CharacterSelectionScene(GameContainer container) {
         super(container);
@@ -62,6 +60,11 @@ public class CharacterSelectionScene extends Scene {
         am = container.getAudioManager();
         em = container.getEntityManager();
         instance = this;
+    }
+
+    // Singleton pattern method to get the instance
+    public static CharacterSelectionScene getInstance() {
+        return instance;
     }
 
     @Override
@@ -81,8 +84,8 @@ public class CharacterSelectionScene extends Scene {
         // Character 1 & 2
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
-        em.createEntity(1, AnimatedEntity.class, "characters/Mage_Fire/Idle.png", Gdx.graphics.getWidth() / 2 - 125, Gdx.graphics.getHeight()/2, "playable1", 1, 7, 0.1f);
-        em.createEntity(1, AnimatedEntity.class, "characters/Skeleton_Warrior/Idle.png", Gdx.graphics.getWidth() / 2 + 10, Gdx.graphics.getHeight()/2, "playable2", 1, 7, 0.1f);
+        em.createEntity(1, AnimatedEntity.class, "characters/Mage_Fire/Idle.png", Gdx.graphics.getWidth() / 2 - 125, Gdx.graphics.getHeight() / 2, "playable1", 1, 7, 0.1f);
+        em.createEntity(1, AnimatedEntity.class, "characters/Skeleton_Warrior/Idle.png", Gdx.graphics.getWidth() / 2 + 10, Gdx.graphics.getHeight() / 2, "playable2", 1, 7, 0.1f);
 
         // Create background texture
         bgTexture = new Texture("bg/PNG/main-menu-bg.jpg");
@@ -249,11 +252,6 @@ public class CharacterSelectionScene extends Scene {
 
     public boolean isSkeletonSelected() {
         return skeletonSelected;
-    }
-
-    // Singleton pattern method to get the instance
-    public static CharacterSelectionScene getInstance() {
-        return instance;
     }
 
 }

@@ -424,12 +424,12 @@ public class AnimatedEntity extends Entity {
         this.loop = loop;
     }
 
-    public void setFlip(boolean flip) {
-        this.flip = flip;
-    }
-
     public boolean getFlip() {
         return this.flip;
+    }
+
+    public void setFlip(boolean flip) {
+        this.flip = flip;
     }
 
     public boolean getFlag() {

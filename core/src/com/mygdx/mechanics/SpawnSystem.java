@@ -100,7 +100,7 @@ public class SpawnSystem {
         wave.setEnemiesSpawned(0);
         wave.setBossSpawned(0);
         wave.setEnemyCount(0);
-        
+
         wave.start();
     }
 
@@ -114,7 +114,7 @@ public class SpawnSystem {
         wave.setEnemiesSpawned(0);
         wave.setBossSpawned(0);
         wave.setEnemyCount(0);
-        
+
         this.wave.start();
     }
 
@@ -202,10 +202,10 @@ public class SpawnSystem {
         EntityAddedEvent.addEvent(new EntityAddedEvent(yokai));
         EnemyBehaviour seek = new EnemyBehaviour(p1);
         bm.addBehaviour(yokai, seek);
-        
+
         wave.setBossSpawned(wave.getBossSpawned() + 1);
         wave.setEnemyCount(wave.getEnemyCount() + 1);
-        
+
     }
 
     private Vector2 getSpawnPosition() {
