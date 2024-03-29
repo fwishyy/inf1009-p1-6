@@ -53,7 +53,7 @@ public class PowerUpWindow extends Window {
         // DamageUP Powerup
         DamageUp damageUP = new DamageUp();
         Table leftTextTable = new Table();
-        Label leftTextLabel = new Label(damageUP.getDescription(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label leftTextLabel = new Label(damageUP.getDescription(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         leftTextLabel.setWrap(true);
         leftTextLabel.setWidth(200);
         leftTextTable.add(leftTextLabel).expand().left().pad(10).width(200).height(200).row();
@@ -71,7 +71,7 @@ public class PowerUpWindow extends Window {
         AttackSpeedUp atkSpeedUP = new AttackSpeedUp();
         // Create a table for the text on the right side
         Table rightTextTable = new Table();
-        Label rightTextLabel = new Label(atkSpeedUP.getDescription(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label rightTextLabel = new Label(atkSpeedUP.getDescription(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         rightTextLabel.setWrap(true);
         rightTextLabel.setWidth(200);
         rightTextTable.add(rightTextLabel).expand().right().pad(10).width(200).height(200).row();

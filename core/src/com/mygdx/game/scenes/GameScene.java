@@ -31,6 +31,7 @@ import com.mygdx.mechanics.*;
 import com.mygdx.mechanics.powerups.PowerUp;
 import com.mygdx.ui.Cursor;
 import com.mygdx.ui.HealthBar;
+import com.mygdx.ui.HitIndicator;
 
 public class GameScene extends Scene {
 
