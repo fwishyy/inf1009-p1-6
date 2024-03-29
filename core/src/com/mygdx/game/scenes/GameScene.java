@@ -131,7 +131,6 @@ public class GameScene extends Scene {
         im.addInputProcessor(stage);
 
         //Create entities to spawn here
-        // TODO: move all this into player
         em.createEntity(1, Player.class, "characters/Mage_Fire/Idle.png", 0, 0, "player1", 1, 7, 0.1f);
 
         // assignment of unique entities

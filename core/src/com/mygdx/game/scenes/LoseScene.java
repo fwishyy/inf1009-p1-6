@@ -116,7 +116,6 @@ public class LoseScene extends Scene {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
                 sceneManager.setScene(new GameScene(container));
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -144,7 +143,6 @@ public class LoseScene extends Scene {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
                 sceneManager.setScene(new MainMenuScene(container));
                 am.stop("GameMusic");
                 return super.touchDown(event, x, y, pointer, button);

@@ -18,7 +18,6 @@ public abstract class Scene extends ScreenAdapter {
     protected GameContainer container;
     private SceneManager sceneManager;
 
-    // TODO: implement show, hide, pause, resume methods (for now testing the rendering and handling of buttons)
     public Scene() {
         viewport = new ScreenViewport();
         batch = new SpriteBatch();

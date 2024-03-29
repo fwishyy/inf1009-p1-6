@@ -143,7 +143,6 @@ public class SettingsScene extends Scene {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
                 if (MenuMusicVolume > 0.0f) {
                     MenuMusicVolume -= 0.1f;
                     MenuMusicVolume = Math.round(MenuMusicVolume * 10.0f) / 10.0f;
@@ -178,7 +177,6 @@ public class SettingsScene extends Scene {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
 
                 if (MenuMusicVolume < 1.0f) {
                     MenuMusicVolume += 0.1f;
@@ -213,7 +211,6 @@ public class SettingsScene extends Scene {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
                 sceneManager.setScene(new MainMenuScene(container));
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -227,7 +224,6 @@ public class SettingsScene extends Scene {
 
     @Override
     public void render(float deltaTime) {
-        // TODO Auto-generated method stub
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
@@ -236,7 +232,6 @@ public class SettingsScene extends Scene {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
         stage.dispose();
         skin.dispose();
     }

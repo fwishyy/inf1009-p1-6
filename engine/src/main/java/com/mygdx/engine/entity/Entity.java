@@ -82,7 +82,6 @@ public abstract class Entity {
     }
 
     public void update() {
-        // TODO: transition this to FSM
     }
 
 

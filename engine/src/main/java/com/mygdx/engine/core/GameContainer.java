@@ -11,7 +11,6 @@ import com.mygdx.engine.physics.CollisionManager;
 import com.mygdx.engine.scenes.SceneManager;
 
 // Contains the Core of the engine
-// TODO: maybe turn this into a dependency injector
 public class GameContainer {
     private final Game parent;
     private EntityManager entityManager;

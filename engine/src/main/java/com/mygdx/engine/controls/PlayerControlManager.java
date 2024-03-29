@@ -32,9 +32,6 @@ public class PlayerControlManager extends Manager {
     public void removeActionMap(Actionable entity) {
         entityActionMaps.remove(entity);
     }
-
-    // Currently this updates frame by frame
-    // TODO: change this for new actions
     public void update() {
         for (Map.Entry<Actionable, ActionMap> entry : entityActionMaps.entrySet()) {
             ActionMap actionMap = entry.getValue();

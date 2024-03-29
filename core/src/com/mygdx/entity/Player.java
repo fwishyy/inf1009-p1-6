@@ -116,14 +116,5 @@ public class Player extends Character implements Actionable {
 
     @Override
     public void collide(Collider other) {
-        // TODO: refactor this such that they lie on the other party, not the player
-        if (other.getEntity().getType().equals("maxHealthPotion")) {
-            this.increaseMaxHp(5);
-            System.out.println("Max health increased by 5%");
-        }
-        if (other.getEntity().getType().equals("healthPotion")) {
-            this.heal(5);
-            System.out.println("Healed 10 HP.");
-        }
     }
 }

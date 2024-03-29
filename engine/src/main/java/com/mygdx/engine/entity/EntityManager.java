@@ -62,7 +62,6 @@ public class EntityManager extends Manager {
                 addEntity(en);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
                      IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("EntityManager.java: Error occurred when creating new entity.");
             }
@@ -91,7 +90,6 @@ public class EntityManager extends Manager {
                 addEntity(en);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
                      IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("EntityManager.java: Error occurred when creating new entity.");
             }
@@ -117,7 +115,6 @@ public class EntityManager extends Manager {
                 addEntity(en);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
                      IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("EntityManager.java: Error occurred when creating new entity.");
             }
@@ -142,7 +139,6 @@ public class EntityManager extends Manager {
                 addEntity(en);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
                      IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("EntityManager.java: Error occurred when creating new entity.");
             }
@@ -166,7 +162,6 @@ public class EntityManager extends Manager {
                 addEntity(en);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
                      IllegalArgumentException | InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("EntityManager.java: Error occurred when creating new entity.");
             }
