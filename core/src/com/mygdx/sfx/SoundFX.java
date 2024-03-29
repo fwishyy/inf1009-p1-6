@@ -34,9 +34,9 @@ public class SoundFX {
 	private void init() {
 		// add your soundFX here
 		am.addSound("SkeletonHurtFX", "audio/fx/skeleton-hurt.mp3", 0.2f, false);
-		am.addSound("PlayerHurtFX", "audio/fx/player-hurt.mp3", 0.2f, false);
-		am.addSound("PotionPickUpFX", "audio/fx/health-pickup.mp3", 0.5f, false);
-		am.addSound("FireBallFX", "audio/fx/fireball-whoosh.mp3", 0.2f, false);
-		am.addSound("DeathFX", "audio/fx/death.mp3", 0.2f, false);
+		am.addSound("PlayerHurtFX", "audio/fx/player-hurt.mp3", 0.5f, false);
+		am.addSound("PotionPickUpFX", "audio/fx/health-pickup.mp3", 1f, false);
+		am.addSound("FireBallFX", "audio/fx/fireball-whoosh.mp3", 0.4f, false);
+		am.addSound("DeathFX", "audio/fx/death.mp3", 0.3f, false);
 	}
 }

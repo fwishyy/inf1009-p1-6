@@ -55,7 +55,7 @@ public class AudioTrack {
     protected void setVolume(float volume) {
         this.volume = volume;
         if (this.isFX) {
-            this.sound.setVolume(0, volume);
+            this.sound.setVolume(sound.play(1), volume);
         } else {
             this.music.setVolume(volume);
         }
