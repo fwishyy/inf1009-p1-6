@@ -83,7 +83,7 @@ public class Wave {
     }
 
     public boolean isBossWave() {
-        return this.getBossWave() != 0 && this.getBossWave() % this.getWaveCount() == 0;
+        return this.getBossWave() != 0 && (this.getWaveCount() % this.getBossWave() == 0);
     }
 
     public int getBossCount() {

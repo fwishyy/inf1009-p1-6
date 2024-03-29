@@ -38,5 +38,6 @@ public class SoundFX {
 		am.addSound("PotionPickUpFX", "audio/fx/health-pickup.mp3", 1f, false);
 		am.addSound("FireBallFX", "audio/fx/fireball-whoosh.mp3", 0.4f, false);
 		am.addSound("DeathFX", "audio/fx/death.mp3", 0.3f, false);
+		am.addSound("YokaiHitFX", "audio/fx/yokai-hit.mp3", 0.4f, false);
 	}
 }

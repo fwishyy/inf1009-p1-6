@@ -98,6 +98,8 @@ public class Character extends AnimatedEntity {
             	PlaySFXEvent.addEvent(new PlaySFXEvent("SkeletonHurtFX"));
             if(this instanceof Player)
             	PlaySFXEvent.addEvent(new PlaySFXEvent("PlayerHurtFX"));
+            if(this instanceof Yokai)
+            	PlaySFXEvent.addEvent(new PlaySFXEvent("YokaiHitFX"));
             if (currentHp < 0) {
                 currentHp = 0;
             }

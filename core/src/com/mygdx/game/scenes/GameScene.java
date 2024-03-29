@@ -160,8 +160,10 @@ public class GameScene extends Scene {
         boolean isArcherSelected = characterSelectionScene.isSkeletonSelected();
 
         // create spawn system and set interval to spawn
-        enemySpawn = new SpawnSystem(container, p1, 2, 1.5f, 2);
+        enemySpawn = new SpawnSystem(container, p1, 1.75f, 1.5f, 2);
         enemySpawn.setBoundary(bg.getMinPos(), bg.getMaxPos());
+        enemySpawn.getWave().setBossWave(5);
+        enemySpawn.getWave().setBossCount(2);
 
         // drop system
         dropSystem = new DropSystem();
