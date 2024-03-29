@@ -184,6 +184,7 @@ public class SettingsScene extends Scene{
 					MenuMusicVolume += 0.1f;
 					MenuMusicVolume = Math.round(MenuMusicVolume * 10.0f) / 10.0f;
 					am.setVolume("MenuMusic", MenuMusicVolume);
+					am.setVolume("GameMusic", MenuMusicVolume);
 					volume.setText("BGM Volume: " + MenuMusicVolume);
 				}
 				return super.touchDown(event, x, y, pointer, button);
